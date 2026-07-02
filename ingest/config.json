@@ -1,0 +1,13 @@
+{
+  "topics": ["travel-tech", "booking-system", "hospitality-ai", "tourism-ai"],
+  "agentKeywords": "AI travel booking concierge itinerary agent open source",
+  "repoKeywords": "travel booking hospitality hotel management AI open source",
+  "verticalKeywords": "hotel property management booking engine open source",
+  "minStars": 100,
+  "licenses": ["MIT", "Apache-2.0"],
+  "keywords": {
+    "agents": ["travel concierge AI", "itinerary planner", "price comparison agent"],
+    "repos": ["OpenHotel", "Mews", "Open Travel", "booking engine"],
+    "verticals": ["Mews", "OpenHotel", "LibreBooking", "HotelDruid"]
+  }
+}
