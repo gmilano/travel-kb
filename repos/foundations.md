@@ -1,16 +1,14 @@
-# 🏗️ Repos fundacionales — Travel & Hospitality
+# 🏗️ Repos fundacionales
 
-> Bases para construir. Repos con trayectoria, comunidad y licencia abierta.
-> Pregunta guía: ¿podemos partir desde acá y añadir AI encima?
+> Bases sobre las cuales construir. Licencia abierta, comunidad activa.
+> Última actualización: 2026-07-02
 
-## Plataformas base
+## Plataformas y frameworks base
 
-| Repo | Licencia | Descripción | Por qué útil |
-|------|----------|-------------|--------------|
-| — | — | — | Por completar |
+| Repo | Licencia | Descripción | ¿Base para AI? |
+|------|----------|-------------|----------------|
+| [OpenHotelFR](https://github.com/nicolv23/OpenHotelFR) | MIT | OpenHotelFR est une application web développée en Python avec le framework Flask | Sí — 1 ★ |
+| [fiscalizations](https://github.com/MewsSystems/fiscalizations) | MIT | Mews.Fiscalizations is a .NET library that was built to help reporting of e-invo | Sí — 62 ★ |
 
-## Frameworks clave
-
-| Repo | Licencia | Descripción |
-|------|----------|-------------|
-| — | — | Por completar |
+---
+*Ver también: `verticals/solutions.md` para plataformas verticales completas.*
