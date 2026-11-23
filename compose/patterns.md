@@ -486,6 +486,89 @@ opera dentro de esos límites; el cobro lo hace quien hoy ya cobra." Eso es cier
 construible con licencias permisivas verificadas, y **no requiere que la aerolínea ceda nada**
 — que es la razón por la que es vendible.
 
+## Receta 13 — Auditoría de visibilidad agentic de un portfolio (la receta transversal del plano)
+
+**Para quién:** cadena hotelera, grupo de hoteles independientes, ente de turismo, cualquier
+cliente con más de ~20 propiedades o destinos y la pregunta *"¿por qué el agente no nos
+recomienda?"*.
+
+**Por qué funciona como primer engagement:** entrega **un número de línea de base en la primera
+semana**, antes de tocar nada. Es barato, es verificable y crea la métrica contra la cual se
+mide todo lo que venga después.
+
+**Piezas, todas verificadas el 2026-11-23:**
+
+| Paso | Pieza | Licencia | Qué hace exactamente |
+|------|-------|----------|----------------------|
+| 1. Cosechar | `scrapinghub/extruct` ([repo](https://github.com/scrapinghub/extruct)) | BSD-3-Clause | Extrae JSON-LD, microdata, RDFa y Open Graph de cada URL del portfolio. |
+| 2. Normalizar | `digitalbazaar/jsonld.js` ([repo](https://github.com/digitalbazaar/jsonld.js)) | BSD (leída del archivo) | `expand` + `canonize` para comparar documentos sin que el orden de claves cambie el resultado. |
+| 3. Clasificar | `schemaorg/schemaorg` ([repo](https://github.com/schemaorg/schemaorg)) | Apache-2.0 | El vocabulario es la verdad: ¿el nodo es `Hotel`/`LodgingBusiness` o es `Organization`? |
+| 4. Medir citas | `elmohq/elmo` ([repo](https://github.com/elmohq/elmo)) | MIT | Cuántas veces ChatGPT, Claude, Perplexity, Gemini, Copilot, Grok y AI Overviews citan la marca. Self-hostable. |
+| 5. Ver crawlers | `yaojingang/GEOInflow` ([repo](https://github.com/yaojingang/GEOInflow)) | MIT | Logs de crawl AI y referrals: quién pasó, qué leyó. |
+
+**Cómo se arma (concreto):**
+
+1. Un job por propiedad: `extruct` sobre la home, la ficha y la página de disponibilidad.
+2. `jsonld.js expand` sobre lo cosechado; se queda el `@type` de cada nodo raíz.
+3. Tres contadores por propiedad: **sin dato estructurado** / **tipo equivocado**
+   (`Organization`, `LocalBusiness`) / **tipo correcto** (`Hotel`, `LodgingBusiness`,
+   `VacationRental`). Ese es el reporte de la semana uno.
+4. En paralelo, `elmo` corre el set de prompts del cliente ("mejor hotel boutique en
+   {ciudad}") contra los motores y guarda **quién fue citado**.
+5. Se cruzan: **propiedades con tipo correcto vs propiedades citadas.** La correlación —o su
+   ausencia— es el hallazgo que se presenta.
+
+**El corte honesto, que hay que decir en la propuesta:** el paso 5 **no prueba causalidad**. Los
+motores no publican cómo eligen qué citar. Lo que se entrega es *"esto emitimos, esto nos
+citan, esto cambió cuando lo arreglamos"* — medición antes/después, no una teoría del
+algoritmo. Prometer ranking es prometer lo que nadie puede garantizar hoy.
+
+**Referencia de contraste:** `thisisshivamtiwari/hotel-ai-answers` (MIT, creado 2026-11-20) es
+un banco de prueba que compara página plana vs JSON-LD vs FAQ vs markup viejo sobre hoteles
+inventados. Tiene 0★ y tres días de vida — **no es una dependencia, es una metodología para
+mirar** antes de diseñar el experimento propio.
+
+---
+
+## Receta 14 — Emitir el tipo correcto desde el PMS open source (la receta que arregla el 41,1%)
+
+**El defecto que ataca** *[HotelRank 2026 vía prensa de hospitality]*: **41,1% de los sitios de
+hotel que emiten JSON-LD usan el tipo equivocado**, y la **mediana del score de schema es
+0/100**. No es un problema de contenido: es la plantilla.
+
+**Para quién:** cliente que ya corre QloApps, HotelDruid u Odoo —las tres plataformas que esta
+KB recomienda en `verticals/solutions.md`— y quiere que sus propiedades sean citables.
+
+**Cómo se cablea:**
+
+1. **Modelar una vez.** `api-platform/schema-generator` (MIT, 475★) genera los modelos desde el
+   vocabulario Schema.org. Los dos PMS del vertical son **PHP**, que es exactamente el target
+   de esta herramienta. Para el front en TypeScript, `google/schema-dts` (Apache-2.0, 1262★)
+   hace que emitir `Organization` donde va `Hotel` **no compile**.
+2. **Emitir en la plantilla, no en cada página.** QloApps → layout Smarty de ficha de
+   propiedad; HotelDruid → páginas de disponibilidad; Odoo → heredar la vista QWeb. Un
+   `@graph` con `Hotel` + `Offer` + `AggregateRating` + `geo`.
+3. **Un `@graph` por idioma y por entidad legal** si el cliente es EMEA — ver la nota de
+   fragmentación en `intel/market.md`.
+4. **Validar en CI.** Tres líneas que fallan el build:
+   - `extruct` sobre la URL de staging,
+   - assert de que existe al menos un nodo cuyo `@type` ∈ {`Hotel`, `LodgingBusiness`,
+     `VacationRental`},
+   - assert de que **no** hay un nodo `Organization` representando a la propiedad.
+   Esto convierte el 41,1% en un error de pipeline, que es donde debe vivir.
+5. **Publicar `llms.txt`** porque cuesta minutos —`alexpospekhov/searchstack-aeo` (MIT) lo
+   genera por CLI y es *cron-ready*— **y no cobrarlo como entregable de visibilidad.** La
+   evidencia de uso está en contra (`intel/trends.md` → 20).
+
+**Referencia del espacio, no dependencia:** `AdamBenDev/hospitality-geo-standard` (MIT, creado
+2026-11-16, **0★**) propone exactamente esta especificación con un validador CLI sin
+dependencias. Vale leerlo para no reinventar el `@graph`; **no vale ponerlo en el `package.json`
+de un cliente** con una semana de vida y cero adopción.
+
+**Lo que este patrón NO resuelve:** la distribución. Emitir `Hotel` correctamente te hace
+citable; **no te conecta a ninguna OTA.** El channel manager open source permisivo sigue sin
+existir (ver `verticals/solutions.md`).
+
 ## Lo que NO conviene prometer
 
 | Pedido frecuente | Por qué no, hoy | Qué ofrecer en cambio |

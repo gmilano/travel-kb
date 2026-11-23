@@ -12,6 +12,42 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — cuarta pasada (plano de visibilidad agentic)
+
+**Qué se midió:** la capa que decide si un proveedor de travel es **encontrado y citado** por
+un agente, que es anterior a todo lo que midieron las tres pasadas de hoy.
+
+**Lo que se movió esta semana, verificado:**
+
+| Agente / herramienta | Repo | Licencia | Stars | Push |
+|----------------------|------|----------|-------|------|
+| elmo (AEO/GEO, mide citas en ChatGPT/Claude/Perplexity/Gemini/Grok) | `elmohq/elmo` | MIT | 713 | 2026-11-19 |
+| GEOInflow (analítica de crawlers AI, self-hosted) | `yaojingang/GEOInflow` | MIT | 866 | 2026-11-14 |
+| GEORank | `yaojingang/GEORank` | Apache-2.0 | 542 | 2026-11-11 |
+| GetCito (AIO/AEO/GEO + tracking de visibilidad) | `ai-search-guru/getcito-…` | MIT | 424 | 2026-11-05 |
+| Searchstack (CLI, 22 comandos, cron-ready) | `alexpospekhov/searchstack-aeo` | MIT | 115 | 2026-09-29 |
+
+**La novedad real de la semana, y es chiquita a propósito:** aparecieron los **primeros repos
+de visibilidad específicos de hospitality**, todos con **0 estrellas**:
+
+- `AdamBenDev/hospitality-geo-standard` — **MIT**, creado el **2026-11-16** (hace 7 días):
+  especificación + validador CLI sin dependencias para `/llms.txt` y `@graph` JSON-LD de
+  `schema.org/Hotel`. Es, literalmente, la pieza que el plano no tenía.
+- `thisisshivamtiwari/hotel-ai-answers` — **MIT**, creado el **2026-11-20** (hace 3 días):
+  banco de prueba que compara página plana vs JSON-LD vs FAQ vs markup viejo sobre hoteles
+  inventados. **Metodología de evaluación, que es lo que falta para poder prometer un número.**
+- `Inari-Kira-Isla/aeo-demo-travel-food` — **sin licencia**, push **hoy**.
+- `y8y-hq/llms-txt-for-hotels` — **sin licencia**, creado 2026-09-13.
+
+**Cómo leer esto sin exagerarlo:** cuatro repos con cero estrellas no son un ecosistema. Son
+**una fecha**. Lo que se registra es que entre el 16 y el 23 de noviembre de 2026 aparecieron
+dos repos MIT que intentan estandarizar la visibilidad hotelera, y que **hasta este mes no
+existía ninguno**. Si el patrón se sostiene, la próxima pasada de travel debería encontrarlos
+con estrellas; si no, quedará registrado que el espacio se intentó y no prendió.
+
+**Búsquedas que devolvieron cero, escritas:** `hotel AEO GEO visibility` → **0**;
+`travel schema markup SEO` → **0**; `AI visibility monitoring brand citations stars:>=100` → **0**.
+
 ## 2026-11-23 — tercera pasada (plano de pago agentic)
 
 Tercer ciclo del mismo día. **No reemplaza a las dos pasadas anteriores**: las secciones de la

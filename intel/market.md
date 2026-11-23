@@ -164,6 +164,30 @@ ley** — se registra así porque un ciclo anterior lo arrastró sin poder verif
    hoy la **única región con un flujo agentic de punta a punta en producción**, y la pieza que
    falta para construirlo es la capa de mandato, que no existe en abierto (`AP2 mandate
    implementation stars:>=20` → 0). Receta en `compose/patterns.md` → Receta 12.
+**Agregado en la cuarta pasada del 2026-11-23 — visibilidad agentic: la región donde el
+problema ya tiene dueño y presupuesto.**
+
+- **Google puso en prueba viva la reserva hotelera agentic en EE.UU. en agosto de 2026**
+  *[fuente secundaria, cobertura de conferencia]*. Es la región donde el canal agentic deja de
+  ser hipótesis: si el motor reserva, **ser citado por el motor es ingreso, no marketing.**
+- **El defecto está medido y es mecánico** *[estudio HotelRank 2026 vía prensa de
+  hospitality]*: sobre 121.425 home pages de hotel en 7 países, **36,3% sin dato estructurado**,
+  **mediana de score 0/100**, y **41,1% de los que emiten JSON-LD usan el tipo equivocado**
+  (`Organization`/`LocalBusiness` en vez de `Hotel`/`LodgingBusiness`).
+- **La competencia es de proveedor cerrado.** Las herramientas de "AI visibility" para hoteles
+  que circulan en NA son productos comerciales. La capa open source equivalente existe y es
+  permisiva (`elmohq/elmo` MIT, `yaojingang/GEORank` Apache-2.0), **pero no sabe de travel.**
+
+**Oportunidad, dicha como entregable:** *remediación de schema a escala de portfolio*. No es un
+proyecto de AI: es un pipeline que audita N propiedades con `extruct`, detecta el tipo
+equivocado, corrige la plantilla del PMS una vez y **mide la variación de citas** con `elmo`.
+Se vende con un número de línea de base el día uno —cosa que casi ningún proveedor hace— y es
+defendible porque el 41,1% es un error reproducible, no una opinión.
+
+⚠️ **Lo que no hay que prometer en NA:** que publicar `llms.txt` mueve la aguja. La evidencia
+disponible dice lo contrario (ver `repos/foundations.md`), y un cliente de esta región
+contrasta.
+
 ### EMEA
 
 **Evidencia.** *[sin verificar]* 38% de adopción de AI en travel en Europa Occidental y 42% en
@@ -313,6 +337,33 @@ fuente independiente** (análisis de pagos), que describe un grupo de trabajo de
 especificaciones de comercio iniciado por agentes. **Sigue sin confirmarse en fuente primaria**,
 pero ya son dos fuentes independientes: es la explicación más probable del repo quieto desde
 junio (`intel/trends.md` → 18).
+**Agregado en la cuarta pasada del 2026-11-23 — visibilidad agentic: la única región donde la
+visibilidad es además una obligación legal.**
+
+- **Transparencia exigible desde agosto de 2026.** Las obligaciones de transparencia del AI Act
+  europeo pasaron a ser aplicables el **2 de agosto de 2026**: hay que **avisar al usuario que
+  habla con una máquina** y **etiquetar el contenido sintético** *[fuente secundaria; los
+  dominios oficiales de la UE no son alcanzables desde este entorno — ver límite declarado
+  arriba]*. Para travel esto toca de lleno la visibilidad: **la descripción de destino generada
+  con AI es contenido sintético etiquetable**, y el concierge del hotel es una máquina que debe
+  presentarse como tal.
+- **El riesgo de invisibilidad es estructural, no técnico.** La cobertura del sector (Skift,
+  sep/oct-2026) describe que **los hoteles independientes europeos corren el riesgo de ser
+  invisibles en las respuestas AI antes siquiera de competir por la reserva**, y que Booking
+  Holdings —con **más del 70% de cuota OTA en Europa**— es tratado como *gatekeeper*. Un
+  independiente que no emite schema propio sólo existe en la respuesta **a través de su OTA**.
+- **Financiamiento real:** las startups europeas de travel AI levantaron **158 M USD en los
+  primeros tres trimestres de 2026**, más del 20% del venture europeo revelado del año
+  *[fuente secundaria]*.
+- **Fragmentación como requisito de diseño:** multilingüe, multi-marca, multi-sistema de
+  reservas y multi-frontera regulatoria. Un `@graph` JSON-LD **por idioma y por entidad legal**,
+  no uno global.
+
+**Oportunidad:** *visibilidad con prueba de cumplimiento*. EMEA es la región donde el mismo
+entregable sirve dos veces: el JSON-LD que te hace citable y el registro fechado de
+etiquetado/divulgación que te hace auditable. **Vender las dos juntas, no la segunda como
+costo.**
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -408,6 +459,34 @@ algo que el protocolo resuelve — y presupuestarlo.
 documentación", no "no existe". La verificación pendiente de mayor valor para APAC en el
 próximo ciclo es ir a la documentación de los proveedores de pago dominantes de la región y
 ver si publicaron soporte agentic.
+**Agregado en la cuarta pasada del 2026-11-23 — visibilidad agentic: la región que etiqueta por
+ley y que además escribe la herramienta.**
+
+- **China etiqueta desde 2025 y fiscaliza en 2026.** Las medidas de etiquetado de contenido
+  generado por AI están **vigentes desde el 2025-09-01** y exigen etiqueta **explícita e
+  implícita** (la implícita va en los metadatos del archivo); la campaña **"Qinglang" de 2026**
+  amplió la fiscalización *[fuentes secundarias de seguimiento regulatorio]*. Para un operador
+  de travel que genera descripciones de destino o fotos de propiedad con AI para el mercado
+  chino, **el etiquetado no es buena práctica: es requisito de publicación.**
+- **Japón: *soft law*** con una ley marco que fija la estructura de política nacional, y
+  propuestas legislativas para endurecerla sobre modelos fundacionales. **Singapur: no
+  resuelto** — las fuentes se contradicen entre marcos voluntarios y un régimen de etiquetado
+  obligatorio de dos niveles. **Se registra el conflicto en lugar de elegir una versión**;
+  antes de comprometer alcance regulatorio en Singapur hay que confirmarlo contra la fuente
+  oficial.
+- **La herramienta del plano la está escribiendo APAC.** `yaojingang/GEOInflow` (MIT, 866★) y
+  `GEORank` (Apache-2.0, 542★) —las dos piezas más estrelladas de analítica GEO self-hosted—
+  se publican desde China, una de ellas junto al 北京日报社智源GEO. **Es el mismo patrón que la
+  KB ya registró en el vertical: Asia tiene el código.**
+- **Demanda que lo justifica:** 64% de los viajeros de APAC usa AI para planificar
+  (Booking.com, enero 2026, 32.800 encuestados en 34 mercados); otra encuesta de la misma casa
+  da 67%. *[cifras de proveedor — citar el rango y la fecha, no un número suelto]*
+
+**Oportunidad:** *visibilidad con etiquetado nativo*. El pipeline de contenido que un cliente
+de APAC necesita no es "generar descripciones": es **generar, etiquetar explícita e
+implícitamente, y dejar registro**. Construirlo sobre GEOInflow/GEORank aprovecha herramienta
+permisiva de la propia región.
+
 ### LATAM
 
 **Evidencia — y aquí la narrativa ha ido por delante de los datos durante tres industrias
@@ -520,6 +599,39 @@ caso de uso dominante** (`compose/patterns.md` → Receta 6).
 el asistente de turismo nacional —que ya tiene tres precedentes de compra estatal— y el pago
 entra después, con el operador privado, y con integración local presupuestada como trabajo
 propio.
+**Agregado en la cuarta pasada del 2026-11-23 — visibilidad agentic: la región donde el que
+necesita ser citado es el Estado.**
+
+- **Regulación: no hay regla de AI específica de la región, y se dice explícitamente.** En
+  Brasil, el **PL 2338/2023 sigue sin ser ley**: aprobado por el Senado en diciembre de 2024,
+  continúa en la Cámara de Diputados y a comienzos de noviembre de 2026 seguía esperando el
+  dictamen del relator, sin fecha de votación; el PL 6.237/2025 del Ejecutivo quedó anexado.
+  **Lo que sí rige hoy es la LGPD.** Sobre **México no se encontró fuente** de regulación de AI
+  o de protección al consumidor aplicable a este plano: **es una brecha de esta pasada, no una
+  ausencia confirmada.**
+- **El comprador de la región ya está en producción.** `Peru.travel` incorporó un asistente de
+  viaje con AI en **abril de 2026**, construido con tecnología de **Mindtrip**, presentado como
+  el primer asistente oficial de un portal nacional de turismo en Sudamérica; Chile (Sernatur)
+  y Argentina tienen equivalentes. Esta KB ya lo registra como *el Estado compra*
+  (`intel/trends.md` → 9).
+- **Por qué la visibilidad le pega distinto a ese comprador.** Un asistente estatal **informa y
+  deriva, no cobra** — por eso no necesita el plano de pago (ver LATAM en la tercera pasada).
+  Pero sí necesita exactamente lo contrario de lo que suele construir: **que los agentes de
+  terceros —ChatGPT, Gemini, Perplexity— citen al portal oficial** cuando alguien pregunta qué
+  hacer en Cusco. Hoy la inversión pública va al chatbot del portal; **el tráfico lo decide la
+  cita en el agente ajeno.**
+
+**Oportunidad, y es la más clara de la región:** *medición de citación para turismo nacional*.
+Entregable: línea de base de cuántas veces el portal oficial es citado frente a OTAs y blogs,
+por mercado emisor e idioma, con `elmohq/elmo` (MIT, self-hostable — importante para compra
+pública) + emisión de `TouristAttraction`/`TouristDestination` sobre el inventario del ente.
+**Es barato, es medible, y le da al comprador estatal justo lo que necesita para justificar la
+partida: un número que sube.**
+
+⚠️ **Brecha declarada:** no se encontró ninguna herramienta de visibilidad AI en español o
+portugués, ni ningún repo del plano con autor LATAM. Las cinco piezas utilizables son de EE.UU.
+y China. **El trabajo de localización es nuestro, y hay que presupuestarlo.**
+
 ## Posicionamiento Globant
 
 1. **Vender la brecha planificación→compra, no "un agente que reserva".** 52/2 en EE.UU.,

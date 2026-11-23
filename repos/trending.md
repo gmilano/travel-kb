@@ -11,6 +11,43 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — cuarta pasada (plano de visibilidad agentic)
+
+| Repo | Licencia | Stars | Push | Por qué entra |
+|------|----------|-------|------|---------------|
+| [webmachinelearning/webmcp](https://github.com/webmachinelearning/webmcp) | W3C Software and Document License | 5012 | **2026-11-23** | WebMCP: el sitio le **declara funciones** al agente en vez de que el agente lea la pantalla. Push hoy; incubación W3C, **no es estándar**. |
+| [schemaorg/schemaorg](https://github.com/schemaorg/schemaorg) | Apache-2.0 | 6316 | 2026-11-20 | El vocabulario que los motores sí consumen. Vivo. |
+| [AnswerDotAI/llms-txt](https://github.com/AnswerDotAI/llms-txt) | Apache-2.0 | 2700 | 2026-09-24 | La propuesta `/llms.txt`. Entra **con la evidencia en contra pegada** (abajo). |
+| [OvertureMaps/schema](https://github.com/OvertureMaps/schema) | CC-BY-4.0 | 219 | 2026-11-22 | Donde aterriza la alineación OpenTravel↔Overture (GERS IDs). Licencia **de contenido**: obliga a atribuir. |
+| [AdamBenDev/hospitality-geo-standard](https://github.com/AdamBenDev/hospitality-geo-standard) | MIT | **0** | 2026-11-21 | Creado hace 7 días. Primer intento MIT de estandarizar GEO de hospitality. |
+
+### El estándar más recomendado del año tiene la evidencia de uso en contra
+
+`llms.txt` aparece en casi todas las guías de "hotel AI-friendly" de 2026. Lo medido *[fuentes
+secundarias]*: adopción **9,3%** en top-1000 dominios (Rankability, sep-2026), y —el dato que
+importa— **97% de los ~38.000 dominios con un `llms.txt` válido no recibieron ni una petición
+del archivo en mayo de 2026** (Ahrefs), con 96% de las peticiones que sí hubo provenientes de
+bots. **Ningún proveedor grande confirma usarlo para decidir citas.**
+
+Se deja publicado como apuesta barata; **no se vende como palanca.** La palanca con evidencia
+es el JSON-LD del tipo correcto.
+
+### El generador de `llms.txt` más estrellado no tiene licencia y está quieto
+
+`firecrawl/llmstxt-generator` — **540★, sin archivo de licencia** (`LICENSE`, `LICENSE.md` y
+`LICENSE.txt` devuelven 404), **sin push desde 2025-06-17** (17 meses). Mismo caso en
+`amplifying-ai/awesome-generative-engine-optimization` (542★, sin licencia). **No usar como
+dependencia**: sin licencia no hay permiso de uso, por más público que sea el repo.
+
+### El organismo de estándares del vertical, medido
+
+`OpenTravel` —que se sumó a Overture Maps (Linux Foundation) en agosto de 2025 bajo el título
+*"AI-ready travel infrastructure"*— tiene **12 repos en GitHub, máximo 22 estrellas, 8 sin
+licencia declarada y ningún push desde enero de 2025**. El detalle repo por repo está en
+`repos/foundations.md`. **La capa que la prensa llama infraestructura del vertical es, otra vez,
+la que está quieta** — el mismo patrón que la tercera pasada encontró en el plano de pago, con
+un agravante: acá además falta el permiso legal de uso.
+
 ## 2026-11-23 — tercera pasada (plano de pago agentic)
 
 Tercer ciclo del mismo día; las dos secciones anteriores quedan intactas debajo. **El hallazgo

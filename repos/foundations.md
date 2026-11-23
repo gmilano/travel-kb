@@ -206,6 +206,99 @@ nada sobre cobrar un viaje en particular.** Las reglas que hacen distinto al pag
 reembolso regulado (US DOT, EU261)— **no están en ninguno de estos protocolos**, y es el
 mismo lugar donde esta KB ya ubicó la IP defendible del vertical.
 
+## Plano de visibilidad agentic — el vocabulario que el agente lee
+
+Fundacional en el sentido estricto: no son productos de travel, son **el vocabulario y las
+herramientas con las que se describe la oferta para que una máquina la entienda**. Todo
+verificado el 2026-11-23 leyendo el archivo de licencia, no el badge.
+
+| Repo | Licencia (leída) | Stars | Último push | Para qué sirve en travel |
+|------|------------------|-------|-------------|--------------------------|
+| [schemaorg/schemaorg](https://github.com/schemaorg/schemaorg) | Apache-2.0 | 6316 | 2026-11-20 | El vocabulario mismo. `Hotel`, `LodgingBusiness`, `VacationRental`, `Trip`, `TouristAttraction` viven acá. Vivo y con push esta semana. |
+| [google/schema-dts](https://github.com/google/schema-dts) | Apache-2.0 | 1262 | 2026-11-01 | Tipos TypeScript de Schema.org en JSON-LD. **Convierte "emitir el tipo correcto" en un error de compilación** en vez de un hallazgo de auditoría. |
+| [scrapinghub/extruct](https://github.com/scrapinghub/extruct) | BSD-3-Clause | 985 | 2026-10-15 | Extrae metadata embebida (JSON-LD, microdata, RDFa, Open Graph) de HTML. **La pieza con la que se audita la cobertura propia y la del competidor.** |
+| [digitalbazaar/jsonld.js](https://github.com/digitalbazaar/jsonld.js) | BSD (leída del archivo) | 1819 | 2026-03-04 | Procesador JSON-LD en JavaScript: expand, compact, normalizar. Necesario para comparar dos documentos sin que gane el que ordenó distinto las claves. |
+| [api-platform/schema-generator](https://github.com/api-platform/schema-generator) | MIT (leída del archivo) | 475 | 2026-06-29 | Genera modelos PHP desde Schema.org y otros vocabularios RDF. Relevante porque **los PMS open source del vertical son PHP** (QloApps, HotelDruid). |
+| [AnswerDotAI/llms-txt](https://github.com/AnswerDotAI/llms-txt) | Apache-2.0 | 2700 | 2026-09-24 | La propuesta `/llms.txt`. Se incluye **con la advertencia de abajo**, que es la parte importante. |
+| [OvertureMaps/schema](https://github.com/OvertureMaps/schema) | **CC-BY-4.0** | 219 | 2026-11-22 | Esquema de Overture Maps (Linux Foundation). Importa a travel porque **OpenTravel se sumó a Overture** para alinear sus esquemas de localización con los GERS IDs. |
+| [webmachinelearning/webmcp](https://github.com/webmachinelearning/webmcp) | **W3C Software and Document License** | 5012 | **2026-11-23** | WebMCP: que un sitio le declare sus funciones al agente en vez de que el agente lea la pantalla. Incubación W3C, push **hoy**. |
+
+Ocho filas, ocho repos verificados. Dos advertencias que no se pueden deducir del badge:
+
+### `jsonld.js` y la licencia que la API no sabe leer
+
+La API de GitHub reporta `NOASSERTION` para `digitalbazaar/jsonld.js`. El archivo `LICENSE`
+dice, en su primera línea, *"You may use the jsonld.js project under the terms of the BSD
+License"*. **No es ambigüedad: es BSD, y el clasificador automático no lo reconoce.** Lo mismo
+al revés en `api-platform/schema-generator`, cuyo `LICENSE` es el texto MIT **sin el encabezado
+"MIT License"**, por lo que un grep ingenuo lo reporta como sin licencia. Es la regla de esta
+KB otra vez: *la licencia se lee en el archivo.*
+
+### `OvertureMaps/schema` y `webmcp` no son Apache ni MIT, y eso cambia el trabajo
+
+- **CC-BY-4.0** (Overture) es una licencia de **contenido**, no de software: obliga a
+  **atribuir**. Embeber el esquema en un entregable de cliente exige crédito explícito.
+- La **W3C Software and Document License** permite uso y modificación, pero es una licencia de
+  **documento de especificación en incubación**. WebMCP no es un estándar: es un borrador con
+  5012 estrellas. **No comprometerlo en un roadmap de cliente como si fuera API estable.**
+
+### ⚠️ `llms.txt`: el estándar que se recomienda en todas las guías y que no lee casi nadie
+
+Es el hallazgo más accionable del plano, y va contra lo que dice la prensa de hospitality.
+Fuentes secundarias, marcadas como tales:
+
+- **Adopción ~9-10%.** Rankability (scan de septiembre 2026) mide **9,3%** de los top-1000
+  dominios con `llms.txt` o `llms-full.txt` confirmado, y **8,3%** en los top-10.000. SE
+  Ranking, sobre 300.000 dominios, mide **10,13%**. *[fuentes secundarias, metodologías
+  distintas]*
+- **Uso ~cero.** En el estudio de Ahrefs sobre ~38.000 dominios con un `llms.txt` válido,
+  **el 97% no recibió ni una sola petición del archivo en mayo de 2026**, y el 96% de las
+  peticiones que sí llegaron eran de bots. *[fuente secundaria; el sitio del estudio no es
+  alcanzable desde este entorno de ingesta — ver límite declarado en `intel/market.md`]*
+- **Ningún proveedor grande confirma leerlo** para decidir qué cita. Anthropic publica su
+  propio `llms.txt` sin afirmar que sus crawlers usen el estándar; la guía de Google indica
+  que archivos de ese tipo **no son necesarios** para aparecer en búsqueda generativa.
+
+**Qué hacer con esto en un engagement.** Publicar `llms.txt` cuesta casi nada y no hace daño:
+se deja como apuesta barata. **Lo que no se puede hacer es venderlo como la palanca de
+visibilidad** — y es exactamente lo que recomiendan las guías de hospitality que circulan este
+año. La palanca medible es el **JSON-LD del tipo correcto**, que sí se sabe que los motores
+consumen. Si un cliente llega con "necesitamos `llms.txt`", la respuesta honesta es *sí, y
+primero arreglemos el schema, que es donde está el 100% de la evidencia de uso.*
+
+### El cuerpo de estándares del vertical, medido repo por repo
+
+`OpenTravel` es el organismo de estándares de distribución de travel. En agosto de 2025 se sumó
+a la **Overture Maps Foundation** bajo el paraguas de la Linux Foundation —el comunicado habla
+de *"AI-ready travel infrastructure"*— y su sitio anuncia que pasará a llamarse **Open Travel
+Foundation**. Esto es lo que hay en su organización de GitHub, medido el 2026-11-23:
+
+| Repo | Licencia | Stars | Último push |
+|------|----------|-------|-------------|
+| `OpenTravel/OTM-DE` | **NONE** | 22 | 2020-11-23 |
+| `OpenTravel/OTM-DE-Utilities` | **NONE** | 10 | 2024-04-01 |
+| `OpenTravel/OpenTravel-Specifications` | **NONE** | 7 | 2024-11-26 |
+| `OpenTravel/OTM-DE-Compiler` | NOASSERTION | 5 | 2024-01-31 |
+| `OpenTravel/OTM-DE-Docs` | **NONE** | 4 | 2016-05-24 |
+| `OpenTravel/OTA-Publication-Site` | **NONE** | 1 | 2024-09-09 |
+| `OpenTravel/otm-dex` | Apache-2.0 | 0 | 2020-10-12 |
+| `OpenTravel/ota2-repository-playbooks` | Apache-2.0 | 0 | 2024-05-19 |
+| `OpenTravel/otm-test-workgroup` | **NONE** | 0 | 2024-03-05 |
+| `OpenTravel/otm-workgroup-models` | **NONE** | 0 | 2024-09-12 |
+| `OpenTravel/OTM_repo_test_sw` | **NONE** | 0 | 2025-01-16 |
+| `OpenTravel/ota2-exporter-utility` | **NONE** | 0 | 2025-01-15 |
+
+Doce repos. **El máximo es 22 estrellas. Ocho no declaran licencia. Nada tuvo push desde enero
+de 2025.** La especificación OTA 1.0 se publica además bajo el *OpenTravel License Agreement*,
+que **no es una licencia open source** y requiere aceptar términos del consorcio.
+
+**La lectura, y es incómoda:** el vocabulario que efectivamente usan los agentes para encontrar
+oferta de travel **no es el del organismo de travel** — es `schema.org`, Apache-2.0, 6316
+estrellas, con push esta semana. Para un engagement eso simplifica la decisión: **modelar la
+oferta en Schema.org y tratar a OTA/OTM como formato de integración con GDS heredado, no como
+capa de descubrimiento.** La alineación con Overture es real y vale seguirla, pero a hoy es un
+anuncio con un año y tres meses, no código.
+
 ## Brechas medidas, no silenciadas
 
 Estas consultas se corrieron sobre `search/repositories` el 2026-11-21 y devolvieron lo que

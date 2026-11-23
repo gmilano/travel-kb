@@ -119,6 +119,61 @@ payment mandate`, `AP2 mandate implementation` y `travel refund chargeback agent
 **0 repositorios** (detalle en `repos/foundations.md`). El plano de pago agentic es
 **horizontal y robusto; su aterrizaje en travel no existe todavía en abierto.**
 
+## Visibilidad agentic — ser encontrado antes de poder ejecutar
+
+Las tres pasadas anteriores de hoy midieron planos de **ejecución**: cruzar la frontera, saber
+dónde está el avión, cobrar. Esta mide el plano que viene **antes que todos ellos**. Si el
+agente no encuentra al proveedor y no lo cita, no hay frontera que cruzar ni pago que cortar.
+
+**El hallazgo, dicho de una vez:** la herramienta de visibilidad agentic **existe, es permisiva
+y está viva** — y **ninguna sabe qué es un hotel, una tarifa o una ruta.** Es el primer plano
+de esta KB donde el problema no es la licencia (como en verticals), ni la quietud del repo
+(como en pago agentic), sino que **toda la capa utilizable es horizontal**.
+
+| Nombre | Repo | Licencia | Stars | Último push | Descripción |
+|--------|------|----------|-------|-------------|-------------|
+| GEOInflow | [yaojingang/GEOInflow](https://github.com/yaojingang/GEOInflow) | MIT | 866 | 2026-11-14 | Analítica self-hosted de crawlers web y AI para GEO: visitantes, referrals de AI search, logs de crawl, cobertura de contenido y conversión. Publicado con el 北京日报社智源GEO (APAC). |
+| elmo | [elmohq/elmo](https://github.com/elmohq/elmo) | MIT | 713 | 2026-11-19 | Plataforma AEO/GEO open source: mide cómo ChatGPT, Claude, Perplexity, Gemini, Copilot, Grok y AI Overviews mencionan y **citan** una marca. Self-hostable, cada métrica auditable en código. |
+| GEORank | [yaojingang/GEORank](https://github.com/yaojingang/GEORank) | Apache-2.0 | 542 | 2026-11-11 | Plataforma de ranking GEO del mismo autor que GEOInflow. Apache-2.0, la única de la capa con patente expresamente licenciada. |
+| GetCito | [ai-search-guru/getcito-…](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool) | MIT | 424 | 2026-11-05 | Herramienta de optimización para AI search (AIO/AEO/GEO) y tracking de visibilidad. |
+| Searchstack | [alexpospekhov/searchstack-aeo](https://github.com/alexpospekhov/searchstack-aeo) | MIT | 115 | 2026-09-29 | Stack AEO/GEO/SEO por CLI: 22 comandos, 9 APIs, generador de `llms.txt`, reportes Markdown, listo para cron. **La pieza más fácil de meter en un pipeline de cliente.** |
+
+Cinco filas, cinco repos reales, verificados hoy por `ls-remote` + `search/repositories` + lectura
+del archivo de licencia. **Ninguno es de travel.**
+
+### Lo travel-específico de este plano, medido
+
+| Repo | Licencia | Stars | Creado | Qué es |
+|------|----------|-------|--------|--------|
+| [AdamBenDev/hospitality-geo-standard](https://github.com/AdamBenDev/hospitality-geo-standard) | MIT | **0** | 2026-11-16 | Especificación MIT + validador CLI sin dependencias para GEO de hospitality: `/llms.txt` y JSON-LD `@graph` de `schema.org/Hotel`. **Una semana de vida.** |
+| [thisisshivamtiwari/hotel-ai-answers](https://github.com/thisisshivamtiwari/hotel-ai-answers) | MIT | **0** | 2026-11-20 | Banco de prueba: ¿puede un asistente responder preguntas de huésped desde el sitio del hotel? Compara página plana vs JSON-LD vs FAQ vs markup desactualizado, sobre hoteles inventados. |
+| [y8y-hq/llms-txt-for-hotels](https://github.com/y8y-hq/llms-txt-for-hotels) | **sin archivo de licencia** | **0** | 2026-09-13 | Plantilla de `llms.txt` para hoteles y alojamiento corto, con ejemplos JSON-LD de `Hotel` y `VacationRental`. |
+| [Inari-Kira-Isla/aeo-demo-travel-food](https://github.com/Inari-Kira-Isla/aeo-demo-travel-food) | **sin archivo de licencia** | **0** | 2026-03-06 | Plantilla AEO travel-food con Schema.org, `llms.txt` y markup AI-friendly. Push **hoy**. |
+
+**Las cuatro tienen cero estrellas.** Dos se crearon en los últimos siete días y dos no tienen
+archivo de licencia. No se presentan como dependencias: se presentan como **prueba fechada de
+que el espacio está vacío y de que alguien empezó a llenarlo esta semana.**
+
+### Las búsquedas que devolvieron cero, escritas
+
+Medido sobre `search/repositories` el 2026-11-23. Se registran porque **un cero medido es
+información; no escribirlo se parece demasiado a cobertura.**
+
+| Búsqueda | Resultados |
+|----------|-----------|
+| `LodgingBusiness schema hotel structured data` | **0** |
+| `travel schema markup SEO` | **0** |
+| `hotel AEO GEO visibility` | **0** |
+| `AI visibility monitoring brand citations stars:>=100` | **0** |
+| `destination management DMO open source` | **0** |
+| `schema.org LodgingBusiness` | 1 — `evelan-de/sanity-plugin-schema-markup` (MIT, 0★), plugin de Sanity, no de travel |
+| `hotel schema.org JSON-LD` | 3 — **las tres con 0★** |
+| `travel llms.txt` | 6 — las tres primeras con **0★** |
+| `generative engine optimization stars:>=100` | **14** — la capa horizontal, sana |
+
+La asimetría está en las dos últimas filas: **14 repos horizontales con más de 100 estrellas;
+cero repos de travel con más de cero.**
+
 ## Re-medición 2026-11-23 — control anti-fabricación
 
 Dos días después del ciclo anterior, las mismas consultas sobre los mismos slugs:

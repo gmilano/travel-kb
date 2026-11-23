@@ -118,3 +118,42 @@ Kamra PMS; no como pieza a desplegar.**
 ---
 *Ver también: `repos/foundations.md` (ruteo, datos e identidad) y `compose/patterns.md`
 (recetas concretas).*
+
+## Lo que agregó la cuarta pasada del 2026-11-23
+
+La pasada midió el **plano de visibilidad agentic**, y eso cambia una cosa concreta para las
+plataformas verticales que esta KB recomienda: **ninguna emite, de fábrica, el JSON-LD que un
+agente necesita para citar la propiedad.**
+
+**La evidencia del problema** *[fuentes secundarias, estudio HotelRank 2026 citado por prensa
+de hospitality]*: sobre **121.425 home pages de hotel en 7 países**, **36,3% no tiene ninguna
+dato estructurado**; sólo **~10,6%** alcanza una marca "buena"; la **mediana del score de
+schema hotelero es 0 sobre 100**; y —el dato que más importa— **41,1% de los sitios que sí
+emiten JSON-LD usan el tipo equivocado**, típicamente `Organization` o `LocalBusiness` en lugar
+de `Hotel` / `LodgingBusiness`.
+
+**Por qué esto es una oportunidad de customización y no una queja.** El 41,1% es un bug
+mecánico, no un problema de contenido: el tipo está mal. Es exactamente la clase de defecto que
+se arregla **una vez en la plantilla del PMS y se propaga a todas las propiedades**.
+
+| Plataforma | Lenguaje | Dónde se emite el JSON-LD | Trabajo real |
+|------------|----------|---------------------------|--------------|
+| [QloApps](https://github.com/Qloapps/QloApps) | PHP (PrestaShop) | Plantillas Smarty del front hotelero | Agregar `@graph` con `Hotel` + `Offer` + `AggregateRating` en el layout de ficha de propiedad. |
+| [HotelDruid](https://github.com/digital-druid/hoteldruid) | PHP | Páginas de disponibilidad/reserva | Igual, con menos capa de tema: el riesgo es que el HTML es generado a mano. |
+| [Odoo](https://github.com/odoo/odoo) (hotel) | Python / QWeb | Vistas QWeb del website | Heredar la vista y añadir el bloque JSON-LD; es el más limpio de los tres. |
+
+**La pieza que convierte esto en un entregable verificable:**
+[`scrapinghub/extruct`](https://github.com/scrapinghub/extruct) (BSD-3-Clause, 985★) extrae el
+JSON-LD/microdata/RDFa de una URL, y
+[`google/schema-dts`](https://github.com/google/schema-dts) (Apache-2.0, 1262★) convierte
+"emitir el tipo correcto" en un **error de compilación** en vez de un hallazgo de auditoría
+seis meses después. Para los dos PMS PHP,
+[`api-platform/schema-generator`](https://github.com/api-platform/schema-generator) (MIT, 475★)
+genera los modelos desde el vocabulario.
+
+⚠️ **Lo que no cambió, y conviene no prometer:** sigue sin existir un channel manager open
+source permisivo. Lo medido este ciclo: los módulos de Odoo para conectividad OTA son
+**AGPL-3** o **licencia propietaria de Odoo**, y el channel manager de QloApps es **un servicio
+SaaS pago**, no software libre. La conectividad de distribución sigue siendo trabajo de
+integración presupuestado, no una pieza que se adopta.
+

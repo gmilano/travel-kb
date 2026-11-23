@@ -329,6 +329,76 @@ otra gobernanza —varias fuentes secundarias mencionan la FIDO Alliance en abri
 canónico, no el destino del estándar. Antes de descartarlo en una propuesta, verificar dónde
 vive hoy.
 
+## 19. El plano de visibilidad es el primero que está completo y es todo horizontal
+
+Medido el 2026-11-23 (cuarta pasada). Los tres planos anteriores de esta KB tenían el mismo
+defecto de forma: **faltaba la pieza**. Frontera: se lee el documento, no se conoce la regla.
+Vuelo: se sabe dónde está el avión, no qué se le debe al pasajero. Pago: la especificación está
+quieta. El plano de visibilidad **rompe el patrón**: la herramienta está, es permisiva, está
+activa y es buena.
+
+| Capa | ¿Existe? | Mejor pieza | Licencia | Stars |
+|------|----------|-------------|----------|-------|
+| Vocabulario | **sí** | `schemaorg/schemaorg` | Apache-2.0 | 6316 |
+| Tipado / emisión | **sí** | `google/schema-dts` | Apache-2.0 | 1262 |
+| Auditoría de lo emitido | **sí** | `scrapinghub/extruct` | BSD-3-Clause | 985 |
+| Medición de citas | **sí** | `elmohq/elmo` | MIT | 713 |
+| Analítica de crawlers AI | **sí** | `yaojingang/GEOInflow` | MIT | 866 |
+| **Cualquiera de las anteriores sabiendo qué es un hotel** | **no** | — | — | **0** |
+
+**Qué significa comercialmente, que es lo contrario de lo que parece.** Un plano completo y
+permisivo **no es una mala noticia para un integrador: es la mejor de las cuatro.** En
+frontera, vuelo y pago, la respuesta honesta a un cliente incluye "esta pieza hay que
+construirla y es riesgo". Acá la respuesta es **"la máquina ya está; lo que no existe es el
+adaptador al dominio"** — y el adaptador de dominio es exactamente lo que un studio vertical
+hace mejor y más rápido que un proveedor horizontal. **El trabajo es ensamblar y domeñar, no
+inventar.**
+
+## 20. El estándar que todas las guías recomiendan no tiene evidencia de uso
+
+`llms.txt` es, en 2026, la recomendación número uno de las guías de "hotel AI-friendly". Lo
+medido *[fuentes secundarias; los sitios de los estudios no son alcanzables desde este entorno
+de ingesta]*:
+
+| Qué | Medición | Fuente |
+|-----|----------|--------|
+| Adopción, top-1000 dominios | **9,3%** | Rankability, scan sep-2026 |
+| Adopción, 300.000 dominios | 10,13% | SE Ranking |
+| Dominios con `llms.txt` válido que **no recibieron ni una petición** en mayo-2026 | **97%** | Ahrefs (~38.000 dominios) |
+| De las peticiones que sí hubo, cuántas eran de bots | 96% | Ahrefs |
+| Proveedores grandes que confirman usarlo para decidir citas | **ninguno** | — |
+
+**La asimetría que importa:** la adopción (~10%) se cita todo el tiempo; **el uso (~0%) no se
+cita nunca.** Y la adopción sin uso es, exactamente, una métrica de vanidad.
+
+**La regla que queda:** publicar `llms.txt` —cuesta minutos, no hace daño, y si mañana un
+proveedor empieza a leerlo ya está puesto— **y no venderlo jamás como la palanca.** La palanca
+con evidencia de consumo es el JSON-LD del tipo correcto. Esta distinción es defendible frente
+a un cliente que haya leído las mismas guías, y es la clase de cosa por la que un cliente
+decide que le decimos la verdad.
+
+## 21. El organismo de estándares del vertical no tiene licencia
+
+`OpenTravel` —el cuerpo que define la distribución de travel, miembro de la Linux Foundation,
+que se sumó a Overture Maps en agosto de 2025 bajo el título *"AI-ready travel infrastructure"*
+y que anuncia que pasará a llamarse Open Travel Foundation— tiene en GitHub: **12 repos, máximo
+22 estrellas, 8 sin licencia declarada, ningún push desde enero de 2025.** La especificación
+OTA 1.0 se distribuye además bajo el *OpenTravel License Agreement*, que **no es open source**.
+
+Enfrente, el vocabulario que los motores efectivamente consumen —`schema.org`— es Apache-2.0,
+6316 estrellas y tuvo push esta semana.
+
+**La conclusión de arquitectura, y es directa:** para descubrimiento agentic, **modelar en
+Schema.org**; tratar OTA/OTM como **formato de integración con GDS heredado**, que es donde
+sigue siendo imprescindible. No son competidores: son capas distintas que la prensa del sector
+mezcla. Seguir la alineación con Overture (GERS IDs) porque es real y puede cambiar esto —pero
+a hoy el anuncio tiene un año y tres meses **y no hay código que lo acompañe.**
+
+⚠️ **Cautela, la misma que en el punto 18:** un repo sin push no implica un organismo inactivo.
+OpenTravel publica especificaciones fuera de GitHub y su trabajo de comités no es visible ahí.
+Lo medido es **el estado de su código público y de sus licencias**, que es lo que determina si
+podemos construir encima — no la salud del organismo.
+
 ---
 *Fuentes: Phocuswright 2026, IATA Global Passenger Survey 2026, Expedia Group APAC 2026,
 Criteo, Visa 2026, Agoda, prensa especializada de travel, textos regulatorios de UE/APAC/LATAM,
