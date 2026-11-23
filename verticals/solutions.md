@@ -189,3 +189,55 @@ este archivo ya aplica a Nominatim.
    de arriba informan, planifican y distribuyen datos; **ninguna emite un billete.** Para
    hotelería este archivo tiene PMS completos; para tierra no hay equivalente, y la diferencia
    hay que decirla en la primera reunión.
+
+## Lo que agregó la sexta pasada del 2026-11-23
+
+Plano de emisiones y reporte. La pregunta de este archivo es siempre la misma:
+qué plataforma real se puede customizar con IA encima. Para este plano la
+respuesta tiene una forma distinta a la de los planos anteriores.
+
+### No hay una plataforma vertical de emisiones de viaje que sea open source
+
+Buscado y medido este ciclo: **no existe el "Odoo de la huella de viaje"**. Lo
+que hay es un **modelo** (TIM, licencia de contenido, sin código), una
+**implementación** de ese modelo (`flightyco2`, MIT) y **wrappers MCP**
+(`timcp` Apache-2.0, `climatiq-mcp-server` MIT). Es una librería y un
+protocolo, no un sistema con usuarios, roles y pantallas.
+
+Consecuencia para un engagement: el plano de emisiones **no se customiza, se
+construye**, y se enchufa a la plataforma que el cliente ya tiene (su sistema
+de expense, su PMS, su motor de reservas). Es integración, no implantación.
+
+### Lo que sí es customizable, y dónde enchufa
+
+| Plataforma del cliente | Dónde entra el cálculo | Pieza |
+|---|---|---|
+| Sistema de expense / viajes corporativos | Una fila por vuelo del expense report → tier 1/2/3 | `abahgat/timcp` (Apache-2.0) |
+| Motor de búsqueda y reserva | CO₂ por leg **junto al precio**, en la misma respuesta | `andreacappelletti97/google-flights-mcp` (ISC) |
+| Producto propio sin dependencia externa | Motor embebido, sin API key | `dupontcyborg/flightyco2` (MIT) |
+
+### ⚠️ Lo que los listados recomiendan en este plano y no conviene tomar
+
+- **`majidkabir/Sootcase` y `majidkabir/Carbonara`** aparecen descritos como
+  "open freight CO₂e calculator" siguiendo GLEC e ISO 14083, están **activos
+  hoy** y son las opciones más completas del espacio. Son **PolyForm
+  Noncommercial 1.0.0**: Globant **no puede usarlas en trabajo de cliente**.
+  Leer el `LICENSE` antes de ponerlas en una propuesta.
+- **`google/travel-impact-model`** se cita como si fuera una librería. **No lo
+  es**: no contiene código, y su licencia se contradice entre el archivo
+  `LICENSE` (CC BY 4.0) y el `README` (CC BY-SA 4.0). No es Apache-2.0 —
+  ese Apache-2.0 cubre los íconos de las figuras.
+- **`branliu0/flight-calculator`** y **`muhammad7hadii/flight-emissions-app`**
+  aparecen en resultados de búsqueda y **no tienen archivo de licencia**. Sin
+  licencia explícita, todos los derechos reservados.
+- **`VIMS-Coder/Sootcase`** lo devuelve el buscador y **no existe**: `git
+  clone` da 404.
+
+### El hueco de producto más claro de este plano
+
+**Emisiones de alojamiento: cero.** No se encontró ningún repo permisivo de
+huella de hotel (ni HCMI, ni CHSB, ni ISO 14083 para la cama). El vertical sabe
+medir el vuelo con precisión de tres tiers y **no sabe medir la noche de
+hotel**. Para un cliente hotelero que necesita reportar bajo CSRD, hoy eso se
+resuelve con planilla y consultoría — que es exactamente la definición de un
+hueco de producto.

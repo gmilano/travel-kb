@@ -508,3 +508,71 @@ ingesta (`ai-act-service-desk.ec.europa.eu`, `opensky-network.org`, `zenodo.org`
 quinta pasada `era.europa.eu` y `transport.ec.europa.eu`, que afectan al Reglamento de
 Ejecución (UE) 2026/253 y a COM(2026) 232 final) llevan la
 advertencia pegada al hallazgo, no en una nota al pie.*
+
+## 25. La emisión dejó de ser reporte anual y pasó a ser atributo de compra
+
+Sexta pasada, 2026-11-23. Hasta ahora la huella de carbono de un viaje se
+calculaba **después**, una vez por año, para un informe de sostenibilidad. Dos
+hechos medidos este ciclo muestran el desplazamiento:
+
+- `andreacappelletti97/google-flights-mcp` (ISC, commit del 2026-11-01)
+  devuelve **CO₂ por leg junto al precio**, en la misma respuesta de búsqueda.
+- `abahgat/timcp` (Apache-2.0) expone Scope 3 categoría 6 como **tool
+  invocable**, no como exportación de planilla.
+
+Cuando la emisión viaja en la misma estructura que la tarifa, deja de ser
+contabilidad y pasa a ser **criterio de ranking**. Eso cambia el requisito del
+producto: ya no alcanza con poder calcular la huella del viaje cerrado, hay que
+poder calcularla **para cada opción que se muestra**, con la latencia de una
+búsqueda.
+
+## 26. El modelo de referencia del vertical no tiene licencia de software, y nadie lo nota
+
+`google/travel-impact-model` es el modelo que usa la coalición Travalyst y la
+referencia de hecho del cálculo de emisiones aéreas. Medido este ciclo
+clonando el repo:
+
+- No contiene implementación. Es `README.md` + `contributing.md` + `images/` +
+  `projects/`.
+- Su archivo `LICENSE` dice **CC BY 4.0**; su `README.md`, línea 694, dice
+  **CC BY-SA 4.0**. El repo se contradice.
+- **No es Apache-2.0.** El único Apache-2.0 del repo está en las notas al pie
+  2 y 4 y cubre **los íconos de las figuras**.
+
+Las tres cosas sobreviven porque casi nadie abre el `LICENSE` de un repo de
+Google. La tendencia real: **en el plano de emisiones, la pieza central del
+vertical se distribuye bajo licencia de contenido, no de software** — sin
+concesión de patente y, en una de las dos lecturas, con ShareAlike vírico sobre
+el dato derivado.
+
+## 27. Lo mejor mantenido del cálculo de emisiones es deliberadamente no comercial
+
+Las dos calculadoras alineadas a GLEC / ISO 14083 más activas del espacio
+—`majidkabir/Sootcase` y `majidkabir/Carbonara`, ambas con commits del
+**2026-11-23**, el día de esta pasada— son **PolyForm Noncommercial 1.0.0**.
+Están vivas, cubren carretera, ferrocarril, mar, aire y vía navegable con ruteo
+mundial, y **una consultora no puede usarlas en un engagement**.
+
+Es el segundo plano de esta KB donde lo mejor mantenido es lo que no se puede
+vender (el primero fue `MikkoParkkola/trvl`, también PolyForm, registrado en el
+ciclo 9). El patrón emergente: **en travel, el autor individual que mantiene
+bien elige licencia no comercial precisamente para que las consultoras no lo
+usen gratis.** Buscar "open source" sin leer el `LICENSE` produce un plan de
+proyecto que no se puede ejecutar.
+
+## 28. La regulación de emisiones es el único eje del vertical donde EMEA va claramente adelante
+
+Comparadas las cuatro regiones este ciclo, el stack obligatorio sólo existe
+completo en una:
+
+| Región | Obligación de reporte de emisiones de viaje |
+|---|---|
+| **EMEA** | CSRD/ESRS (Scope 3 cat. 6) + ReFuelEU (2% hoy, 6% en 2030) + EU ETS |
+| **North America** | **Ninguna específica de viajes encontrada.** CORSIA vía ICAO alcanza a aerolíneas, no a programas corporativos |
+| **APAC** | Calendarios de SAF por país (Singapur 1% movido a 2027, Japón 10% a 2030), sin régimen de reporte homogéneo |
+| **LATAM** | Mandato brasileño de SAF **esperado para enero de 2027**, sin detalles publicados |
+
+En los otros planos de esta KB (pago, visibilidad, tierra) la ventaja regional
+rota. En emisiones no rota: **el producto se diseña contra requisitos europeos
+y se degrada hacia las otras tres regiones**, no al revés. Eso invierte el
+orden de diseño habitual de un engagement norteamericano.

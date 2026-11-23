@@ -12,6 +12,38 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — sexta pasada (plano de emisiones: lo que el regulador obliga a calcular)
+
+Licencias leídas en el `LICENSE` del repo tras `git clone --depth 1`. Fecha =
+último commit de `HEAD`. **Sin estrellas: la API de GitHub estaba bloqueada
+para esta sesión y no se inventan números.**
+
+| Agente / servidor MCP | Licencia (archivo leído) | Último commit | Por qué entra |
+|---|---|---|---|
+| https://github.com/abahgat/timcp | Apache-2.0 | 2026-02-01 | Primer servidor MCP que expone Scope 3 categoría 6 como tool (`tim_get_scope3_flight_emissions` + batch). Convierte el reporte CSRD en algo que un agente puede ejecutar. |
+| https://github.com/andreacappelletti97/google-flights-mcp | ISC | 2026-11-01 | Devuelve CO₂ por leg **junto al precio**, en la misma respuesta. Es el primer repo visto que trata la emisión como atributo de compra y no como reporte posterior. |
+| https://github.com/jagan-shanmugam/climatiq-mcp-server | MIT | 2025-03-28 | Multimodal (coche, avión, tren). Entra con reserva: ~20 meses sin commits y depende de la API comercial de Climatiq. |
+
+Tres filas, tres repos reales.
+
+**Lo que cambió respecto de lo que esta KB creía.** Hasta esta pasada,
+`repos/foundations.md` afirmaba que alrededor del Travel Impact Model "nadie
+publicó el tooling". A noviembre de 2026 eso ya no es cierto: hay un port MIT
+fiel (`flightyco2`, validado al 0,07% contra el ejemplo de Google) y un
+servidor MCP Apache-2.0 (`timcp`). La brecha se cerró y la KB no se había
+enterado.
+
+**La tendencia de fondo, no el repo suelto:** el cálculo de emisiones está
+pasando de *reporte anual de sostenibilidad* a *tool que se llama en el momento
+de la compra*. `google-flights-mcp` devolviendo CO₂ al lado del precio es esa
+transición hecha código.
+
+**⚠️ Señal negativa del ciclo:** las dos calculadoras GLEC/ISO 14083 más
+activas del espacio (`majidkabir/Sootcase` y `majidkabir/Carbonara`, ambas con
+commits del 2026-11-23) son **PolyForm Noncommercial 1.0.0**. Están vivas, son
+buenas y Globant no puede usarlas en un engagement. Es el segundo plano de esta
+KB donde lo mejor mantenido es lo no comercial.
+
 ## 2026-11-23 — quinta pasada (plano terrestre: tren, bus y transporte público)
 
 **Qué se midió:** el tramo que esta KB venía declarando "hueco abierto" en `intel/market.md`

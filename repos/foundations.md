@@ -513,8 +513,8 @@ pasajero) tiene cero.
 | `GDS PNR parser stars:>=5` | **0** | Segunda medición independiente del hueco de PNR ya registrado arriba. |
 | `airline schedule SSIM stars:>=5` | **0** | SSIM es **el** formato de horarios de la industria (IATA Standard Schedules Information Manual). Cero parsers abiertos. |
 | `IROPS irregular operations airline stars:>=1` | **0** | Ni siquiera con umbral de 1★. El término que la industria usa para su problema más caro no aparece en GitHub. |
-| `aviation emissions CO2 stars:>=20` | **0** | Cero, pese a que el modelo de referencia (`google/travel-impact-model`) existe: nadie publicó el tooling alrededor. |
-| `travel carbon footprint stars:>=30` | 2, **0 utilizables** | `CarbonFootprintAGU` (GPL-3.0, sin push desde 2021-03-20) y `J0ANMM/carbon-calculator` (MIT, sin push desde 2023-05-21). Ambos muertos. |
+| `aviation emissions CO2 stars:>=20` | **0 en su momento — ⚠️ CORREGIDO el 2026-11-23** | Esta fila decía que "nadie publicó el tooling" alrededor de `google/travel-impact-model`. **Es falso a noviembre de 2026**: existe `dupontcyborg/flightyco2` (MIT, port fiel validado al 0,07%, commit 2026-11-16) y `abahgat/timcp` (Apache-2.0). La búsqueda filtraba por estrellas; el tooling existe por debajo de ese umbral. Ver *Plano de emisiones y reporte* al final de este archivo. |
+| `travel carbon footprint stars:>=30` | 2, **0 utilizables** | `CarbonFootprintAGU` (GPL-3.0, sin push desde 2021-03-20) y `J0ANMM/carbon-calculator` (MIT, **último commit real 2022-05-28**, no 2023-05-21 como decía esta fila — corregido el 2026-11-23 clonando el repo). Ambos muertos. |
 | `flight status MCP server stars:>=10` | **1** | Solo `CPLX/flighty-mcp-server` (35★, MIT, sin push desde 2026-08-31). **El estado de vuelo — el dato que más se consulta en todo travel — tiene un (1) MCP server por encima de 10★.** |
 
 **La forma de esta brecha, dicha de una vez:** el open source de vuelo **sabe dónde está el
@@ -563,3 +563,146 @@ estado legislativo posterior al 2026-05-13 de los tres instrumentos europeos de 
 
 ---
 *Ver también: `verticals/solutions.md` para plataformas verticales completas.*
+
+## Plano de emisiones y reporte — el tramo que la regulación vuelve obligatorio
+
+Sexta pasada del 2026-11-23. Las cinco pasadas anteriores cubrieron frontera,
+operación de vuelo, pago agentic, visibilidad agentic y tierra. Este plano
+quedaba abierto, y es el único del vertical donde el entregable no lo pide el
+viajero sino el regulador: CSRD/ESRS en EMEA, CORSIA en ICAO, Scope 3
+categoría 6 en el reporte corporativo de cualquier cliente con programa de
+viajes.
+
+**Esta pasada corrige una brecha que esta misma KB había registrado como
+vacía.** La línea 516 de este archivo decía que la búsqueda
+`aviation emissions CO2 stars:>=20` devolvía **0** y que "nadie publicó el
+tooling alrededor" de `google/travel-impact-model`. Es falso a noviembre de
+2026: el tooling existe, es MIT y Apache-2.0, y está vivo. Se listan abajo.
+
+### Método de verificación de esta tabla
+
+Las licencias **no** salen de la descripción del repo ni de la API de GitHub
+(bloqueada para esta sesión): salen de `git clone --depth 1` y de leer el
+archivo `LICENSE` del repo. La fecha es la del último commit de `HEAD`.
+**No se registran estrellas**: esta sesión no tuvo forma de medirlas, y las
+estrellas inventadas son exactamente el defecto que el ciclo 9 encontró en los
+ciclos 5, 6 y 8 de esta KB.
+
+### Capa usable — permisiva y viva
+
+| Repo | Licencia (leída en LICENSE) | Último commit | Qué es |
+|---|---|---|---|
+| https://github.com/dupontcyborg/flightyco2 | MIT | 2026-11-16 | Port fiel de TIM 3.0.0 a TypeScript, validado contra el ejemplo publicado de Google **dentro del 0,07%**. Curvas de quemado EEA por aeronave, ajuste de distancia GAIA, conversión well-to-wake CORSIA, asignación por área de asiento. Corre client-side. |
+| https://github.com/abahgat/timcp | Apache-2.0 | 2026-02-01 | Servidor MCP sobre la API del Travel Impact Model. 6 tools, entre ellas `tim_get_scope3_flight_emissions` y su variante batch. Es la pieza que convierte el plano en algo que un agente puede llamar. |
+| https://github.com/andreacappelletti97/google-flights-mcp | ISC | 2026-11-01 | Servidor MCP de vuelos que devuelve CO₂ por leg junto al precio. ISC es permisiva y OSI, equivalente funcional a MIT. |
+| https://github.com/davidmegginson/ourairports-data | Dominio público (Unlicense) | 2026-11-23 | Coordenadas, ICAO e ISO de país de todo aeropuerto con código IATA. Se actualiza a diario — commit del día de esta pasada. Es el join key de todo cálculo de distancia. |
+
+Cuatro filas. Son las cuatro reales, permisivas y vivas que se encontraron.
+
+### Capa de metodología — y la contradicción de licencia que importa
+
+| Repo | Licencia | Último commit | Veredicto |
+|---|---|---|---|
+| https://github.com/google/travel-impact-model | **Contradictoria — ver abajo** | 2026-11-04 | Metodología, **no código** |
+
+`google/travel-impact-model` no contiene implementación. El repo entero es
+`README.md` + `contributing.md` + `images/` + `projects/`. "Usar TIM" significa
+una de dos cosas: implementarlo (lo hizo `flightyco2`) o llamar a la API de
+Google (lo hace `timcp`).
+
+⚠️ **El repo se contradice a sí mismo sobre su licencia, y nadie lo nota:**
+
+- El archivo `LICENSE` dice `Attribution 4.0 International` — **CC BY 4.0**.
+- El `README.md`, línea 694, dice **CC BY-SA 4.0**, con ShareAlike.
+
+No son lo mismo y la diferencia es cara: ShareAlike es vírico sobre el dato
+derivado. Si Globant publica una tabla de factores derivada de TIM y aplica
+CC BY-SA, se obliga a liberar bajo la misma licencia; si aplica CC BY, puede no
+estar cumpliendo. **Resolver con Google/Travalyst por escrito antes de publicar
+dato derivado, no elegir la lectura conveniente.**
+
+⚠️ **Y lo que casi todo el mundo infiere mal:** TIM **no es Apache-2.0**. La
+única mención de Apache-2.0 en el repo está en las notas al pie 2 y 4, y cubre
+**los íconos de las figuras** (Material Design Icons), no el modelo. Un filtro
+automático de "Google ⇒ Apache" lo clasifica mal. Ninguna de las dos lecturas
+—CC BY o CC BY-SA— es una licencia de software: son licencias de contenido, y
+no dan permiso de patente.
+
+### Lo que TIM sí aporta y no hay que reimplementar
+
+`projects/scope3_cat6_flight_emissions.md` define el esquema de **tres tiers**
+que el reporte corporativo necesita, y es la parte directamente reutilizable:
+
+| Tier | Cuándo | Insumo |
+|---|---|---|
+| 1 (alta exactitud) | Hay registro de vuelos pasados concretos | Origen, destino, fecha |
+| 2 (fallback) | Se conoce la ruta, no el vuelo | Origen y destino |
+| 3 (estimación básica) | Sólo hay agregado | Distancia total recorrida |
+
+TIM descompone en WTT (upstream del combustible), TTW (combustión) y cubre
+vuelos comerciales programados desde 2019. Está alineado a **ISO 14083**, que
+define el viaje puerta a puerta — y aquí está el límite que hay que decirle al
+cliente: **TIM estima sólo el tramo aéreo**. Aeropuerto, tren y coche al
+aeropuerto quedan fuera, y ISO 14083 los pide. El viaje completo no lo cubre
+ningún repo permisivo encontrado.
+
+### Capa descartada — medida, no asumida
+
+| Repo | Licencia | Último commit | Por qué no |
+|---|---|---|---|
+| https://github.com/majidkabir/Sootcase | **PolyForm Noncommercial 1.0.0** | 2026-11-23 | Se describe como "open freight CO₂e calculator" y sigue GLEC/ISO 14083, pero **prohíbe uso comercial**. Una consultora no puede usarlo en engagement. Activo hoy mismo — la trampa es que parece la mejor opción. |
+| https://github.com/majidkabir/Carbonara | **PolyForm Noncommercial 1.0.0** | 2026-11-23 | Mismo autor, misma licencia, mismo veredicto. Su propio README aclara que no está certificado contra ISO 14083. |
+| https://github.com/branliu0/flight-calculator | **SIN archivo de licencia** | 2020-05-25 | Sin licencia = todos los derechos reservados. Muerto hace 6 años. |
+| https://github.com/muhammad7hadii/flight-emissions-app | **SIN archivo de licencia** | 2026-10-24 | Activo, pero sin licencia y su propio README dice que no es un modelo regulatorio ni operacional. Educativo. |
+| https://github.com/hdykiel/emissions | Apache-2.0 | 2022-01-04 | Licencia correcta, pero WIP declarado y muerto desde 2022. |
+| https://github.com/J0ANMM/carbon-calculator | MIT | 2022-05-28 | Multimodal (vuelo, bus, coche, ferry). Muerto. **Corrección:** la línea 517 de este archivo lo daba como "sin push desde 2023-05-21"; el commit real de `HEAD` es **2022-05-28**, un año antes. |
+| https://github.com/jagan-shanmugam/climatiq-mcp-server | MIT | 2025-03-28 | Licencia correcta, pero wrapper de la **API comercial de Climatiq**: el repo es libre, el dato se paga. Sin commits en ~20 meses. |
+| https://github.com/VIMS-Coder/Sootcase | — | — | **404.** Lo devolvió el buscador; `git clone` falla. No existe. |
+
+### El dato de abajo no es tan libre como el código de arriba
+
+`flightyco2` es MIT, pero su cadena de datos **no es uniforme**, y su propio
+`data/README.md` lo documenta con una honestidad que conviene copiar:
+
+| Fuente | Licencia | Estado en el repo |
+|---|---|---|
+| OurAirports | Dominio público | Se baja fresco en cada corrida |
+| GAIA (ratios de distancia/combustible, ADS-B 2019) | CC-BY, registro Zenodo inmutable | Commiteado (~1 MB) |
+| Planilla EEA (curvas de quemado por aeronave) | **"murky"**, según el propio repo | **gitignored** — no se puede auto-bajar, se descarga a mano |
+| DEFRA 2024 (factores UK) | Gubernamental UK | Regenerable por script |
+
+⚠️ **La planilla EEA es la dependencia operativa real de este plano.** No se
+puede automatizar su descarga ("la URL rota"), su licencia está sin aclarar, y
+sin ella `flightyco2` cae al fallback DEFRA. Para un entregable de cliente eso
+significa: o se resuelve la licencia EEA, o se documenta que una fracción de los
+vuelos se calcula con un método menos exacto. El repo ya marca por vuelo qué
+método corrió — **esa columna es auditoría, no detalle: no la borren al
+integrar.**
+
+### Brechas del plano de emisiones, medidas el 2026-11-23
+
+| Lo que se buscó | Resultado |
+|---|---|
+| Librería permisiva de emisiones de **hotel** (ISO 14083 / HCMI / CHSB) | **Cero.** Ningún repo MIT/Apache de huella de alojamiento. El vertical mide el vuelo y no mide la cama. |
+| Cobertura **puerta a puerta** ISO 14083 en un repo permisivo | **Cero.** TIM cubre sólo el tramo aéreo y lo dice; los repos multimodales permisivos (`J0ANMM`) están muertos. |
+| Implementación OSS de cumplimiento **CORSIA** o **EU ETS** (cálculo de obligación, cancelación de EEU) | **Cero.** Hay modelos de estimación, no hay herramienta de cumplimiento. Es software de compliance y vive cerrado. |
+| Calculadora GLEC/ISO 14083 con licencia comercialmente usable | **Cero.** Las dos que existen (`Sootcase`, `Carbonara`) son PolyForm Noncommercial. |
+| Servidor MCP de emisiones **sin API key de terceros** | **Cero.** `timcp` necesita key de Google; `climatiq-mcp-server` necesita key de Climatiq. El único camino sin key es embeber `flightyco2` (MIT) como librería. |
+
+### ⚠️ Lo que esta sesión NO pudo verificar, dicho en voz alta
+
+La política de egreso de esta sesión devolvió **403 en el CONNECT** para todo
+host que no fuera GitHub. Verificado con `curl -sS -I`:
+
+| URL | Resultado |
+|---|---|
+| `https://travelimpactmodel.org/about-tim` | 403 del proxy — **no verificable aquí** |
+| `https://developers.google.com/travel/impact-model` | 403 del proxy — **no verificable aquí** |
+| `https://zenodo.org/records/8369564` (GAIA) | 403 del proxy — **no verificable aquí** |
+| `https://travalyst.org/work/aviation-industry/` | 403 del proxy — **no verificable aquí** |
+| `https://flightyco2.com` | 403 del proxy — **no verificable aquí** |
+
+403 del proxy **no** significa que el sitio esté caído: significa que esta
+sesión no tenía permiso de salida. Esas cinco URLs se citan en esta KB como
+referencia de contexto y **están sin verificar**. Todas las URLs de GitHub de
+este archivo sí se verificaron, con `git ls-remote` o `git clone --depth 1`.

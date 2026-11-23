@@ -11,6 +11,34 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — sexta pasada (plano de emisiones: modelo, dato y la licencia que no cierra)
+
+Licencias leídas en el `LICENSE` del repo tras `git clone --depth 1`. Fecha =
+último commit de `HEAD`. **Columna de estrellas eliminada a propósito en esta
+sección: la API de GitHub estaba bloqueada y las estrellas fabricadas son el
+defecto que el ciclo 9 encontró en los ciclos 5, 6 y 8.**
+
+| Repo | Licencia (archivo leído) | Último commit | Por qué entra |
+|---|---|---|---|
+| https://github.com/dupontcyborg/flightyco2 | MIT | 2026-11-16 | Port fiel de TIM 3.0.0, validado contra el ejemplo publicado de Google **dentro del 0,07%**. Es la única implementación permisiva del modelo de referencia del vertical. |
+| https://github.com/davidmegginson/ourairports-data | Dominio público (Unlicense) | 2026-11-23 | Commit del día. Aeropuertos con IATA/ICAO/país: el join key de todo cálculo de distancia. |
+| https://github.com/google/travel-impact-model | **CC BY 4.0 en `LICENSE`, CC BY-SA 4.0 en el README** | 2026-11-04 | El modelo de referencia — y un repo que **se contradice sobre su propia licencia**. No contiene código. |
+
+Tres filas. Son los tres repos de infraestructura del plano que son reales y
+relevantes; el resto del espacio se descartó por licencia o por estar muerto, y
+está tabulado en `repos/foundations.md`.
+
+**⚠️ El hallazgo de licencia de este ciclo.** `google/travel-impact-model` dice
+dos cosas distintas: el archivo `LICENSE` es **CC BY 4.0**; el `README.md`,
+línea 694, dice **CC BY-SA 4.0**. ShareAlike es vírico sobre el dato derivado y
+la otra lectura no. Además **no es Apache-2.0**: el único Apache-2.0 del repo
+está en las notas al pie 2 y 4 y cubre **los íconos de las figuras**. Un filtro
+"Google ⇒ Apache" lo clasifica mal y nadie lo revisa.
+
+**Corrección de dato propio:** la línea 517 de `repos/foundations.md` daba
+`J0ANMM/carbon-calculator` como "sin push desde 2023-05-21". El commit real de
+`HEAD` es **2022-05-28**. Corregido en origen.
+
 ## 2026-11-23 — quinta pasada (plano terrestre: venta y distribución del tramo no aéreo)
 
 | Repo | Licencia (archivo leído) | Stars | Push | Por qué entra |

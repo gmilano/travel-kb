@@ -343,3 +343,54 @@ Dos de ocho eran exactas. **La corrección no es deflactar por reflejo: es volve
 
 ---
 *Verificación: `git ls-remote` para existencia, contenido del archivo de licencia para licencia.*
+
+## Emisiones — el único plano donde el agente debe negarse a estimar
+
+Sexta pasada del 2026-11-23. Licencias leídas en el archivo `LICENSE` de cada
+repo tras `git clone --depth 1`; fecha = último commit de `HEAD`. Sin
+estrellas: esta sesión no pudo medirlas (API de GitHub bloqueada) y no se
+inventan.
+
+| Agente / servidor | Repo | Licencia | Último commit | Qué expone |
+|---|---|---|---|---|
+| TIM MCP (`timcp`) | https://github.com/abahgat/timcp | Apache-2.0 | 2026-02-01 | 6 tools sobre la API del Travel Impact Model: `tim_get_typical_flight_emissions`, `tim_get_specific_flight_emissions`, `tim_get_scope3_flight_emissions` y variantes batch |
+| google-flights-mcp | https://github.com/andreacappelletti97/google-flights-mcp | ISC | 2026-11-01 | Búsqueda de vuelos con CO₂ por leg junto al precio |
+| climatiq-mcp-server | https://github.com/jagan-shanmugam/climatiq-mcp-server | MIT | 2025-03-28 | Emisiones de coche, avión y tren vía API Climatiq |
+
+Tres filas. Son los tres servidores MCP de emisiones reales que se encontraron
+y se pudieron clonar.
+
+### La razón de existir de este plano, dicha por el autor de `timcp`
+
+El README de `timcp` justifica el servidor con una frase que conviene citar a
+cliente: **los LLM alucinan números de emisiones**. Un modelo que responde
+"ese vuelo emite unos 230 kg de CO₂" sin haber llamado a nada produce una cifra
+plausible, consistente y falsa — y a diferencia de una recomendación de hotel
+equivocada, esta termina en un reporte CSRD firmado.
+
+Regla de diseño para cualquier agente de viaje de Globant que toque
+sostenibilidad: **la emisión es un valor calculado por herramienta, nunca un
+token generado.** Si la herramienta no responde, el agente dice que no sabe. Un
+agente que estima emisiones de memoria es un pasivo de auditoría.
+
+### ⚠️ Los dos requieren llave ajena
+
+| Servidor | Llave | Consecuencia |
+|---|---|---|
+| `timcp` | API key del Travel Impact Model de Google | El cálculo sale de la infraestructura de Google, con su cuota y su disponibilidad |
+| `climatiq-mcp-server` | API key de Climatiq (comercial) | El repo es MIT, **el dato se paga** |
+
+No se encontró **ningún** servidor MCP de emisiones que funcione sin llave de
+terceros. El único camino sin dependencia externa es embeber
+`dupontcyborg/flightyco2` (MIT, port fiel de TIM validado al 0,07%) como
+librería y exponerlo uno mismo como tool — ver el patrón nuevo en
+`compose/patterns.md`.
+
+### Las búsquedas de este plano que devolvieron cero, escritas
+
+| Búsqueda | Resultado |
+|---|---|
+| Agente MCP de emisiones de **alojamiento** | **Cero.** Todo el plano es aéreo. |
+| Agente de cumplimiento **CORSIA / EU ETS** | **Cero.** |
+| Servidor MCP de emisiones **sin API key de terceros** | **Cero.** |
+| Agente que cubra el viaje **puerta a puerta** (ISO 14083) | **Cero.** |

@@ -701,3 +701,102 @@ obviedad: es el entregable.**
 ---
 *Toda licencia citada fue verificada leyendo el archivo de licencia del repo, no el badge de
 GitHub. Ver `agents/top.md` → "Verificar antes de usar".*
+
+## Receta 17 — Huella de vuelo sin llave ajena (la receta que quita la dependencia de Google)
+
+**Problema.** Los dos servidores MCP de emisiones que existen necesitan llave
+de un tercero: `timcp` una API key del Travel Impact Model de Google,
+`climatiq-mcp-server` una key comercial de Climatiq. Para un cliente que no
+quiere que el cálculo que firma su reporte dependa de la cuota de un proveedor
+externo, ninguno sirve.
+
+**Piezas, todas verificadas este ciclo leyendo su `LICENSE`:**
+
+| Pieza | Repo | Licencia |
+|---|---|---|
+| Motor de cálculo | https://github.com/dupontcyborg/flightyco2 | MIT |
+| Aeropuertos (join key) | https://github.com/davidmegginson/ourairports-data | Dominio público |
+| Esquema de tiers del reporte | https://github.com/google/travel-impact-model | ⚠️ CC BY / CC BY-SA — ver aviso |
+
+**Cableado:**
+
+1. Tomar de `flightyco2` el núcleo de cálculo TIM 3.0.0 (MIT, se puede
+   embeber). Es un port validado contra el ejemplo publicado de Google
+   **dentro del 0,07%** — ese número es el criterio de aceptación del test de
+   regresión, no un dato de marketing.
+2. Correr `npm run data:airports` contra `ourairports-data` en el build. Es
+   dominio público y se actualiza a diario; fijar el commit en el lockfile para
+   que el cálculo sea reproducible.
+3. ⚠️ **Resolver la planilla EEA antes de prometer cobertura.** Las curvas de
+   quemado por aeronave vienen de un `.xlsx` de la EEA que el propio repo
+   mantiene **gitignored**, porque "la URL rota" y su licencia está sin
+   aclarar. Sin ella el motor cae al fallback DEFRA 2024.
+4. **No borrar la columna de método.** `flightyco2` registra por vuelo si
+   calculó con TIM o con DEFRA. Esa columna es la traza de auditoría: el
+   reporte tiene que poder decir qué porcentaje de los vuelos se calculó con el
+   método exacto y cuál con el fallback.
+5. Exponerlo como tool MCP propia (`compute_flight_emissions`) con la firma de
+   `timcp` (Apache-2.0, se puede leer y adaptar), de modo que el día que se
+   quiera volver a la API de Google el agente no cambie.
+
+**Lo que esta receta sí promete:** cálculo de tramo aéreo, sin llave de
+terceros, auditable, con licencia que Globant puede embeber en producto de
+cliente.
+
+**Lo que NO promete:** el viaje puerta a puerta. TIM cubre **sólo el vuelo**;
+ISO 14083 pide además aeropuerto, tren y coche. No existe repo permisivo que
+cierre eso — está en las brechas de `repos/foundations.md`.
+
+⚠️ **Aviso de licencia que hay que pasar a legales antes de publicar dato
+derivado:** `google/travel-impact-model` dice **CC BY 4.0** en su archivo
+`LICENSE` y **CC BY-SA 4.0** en la línea 694 de su `README`. Si vale la segunda,
+publicar una tabla de factores derivada obliga a liberarla bajo la misma
+licencia. El código de `flightyco2` es MIT y no arrastra ese problema; **el
+dato derivado del modelo sí**. Resolver por escrito con Google/Travalyst.
+
+## Receta 18 — Scope 3 categoría 6 para el programa de viajes de un cliente (la receta de EMEA)
+
+**Problema.** Un cliente con obligación **CSRD/ESRS** tiene que reportar las
+emisiones de los viajes de negocio de su gente. Los datos que tiene son
+desparejos: de algunos viajes conoce el vuelo exacto, de otros sólo la ruta, de
+otros sólo kilómetros agregados.
+
+**La pieza que resuelve esto ya está escrita y no hay que inventarla.**
+`projects/scope3_cat6_flight_emissions.md`, dentro del repo de TIM, define los
+tres tiers y la regla de prioridad: **usar siempre el tier más alto que el dato
+permita.**
+
+| Tier | Dato disponible | Qué se llama |
+|---|---|---|
+| 1 — alta exactitud | Origen, destino y **fecha** del vuelo concreto | `tim_get_specific_flight_emissions` |
+| 2 — fallback | Origen y destino, sin vuelo | `tim_get_typical_flight_emissions` |
+| 3 — estimación básica | Sólo distancia agregada | Factor por distancia |
+
+**Cableado:**
+
+1. `abahgat/timcp` (Apache-2.0) como servidor MCP. Expone
+   `tim_get_scope3_flight_emissions` y **su variante batch** — para un año de
+   viajes de una empresa, el batch no es una optimización, es el único modo
+   viable.
+2. Un clasificador determinista **antes** del agente: cada fila del expense
+   report cae en tier 1, 2 o 3 **según qué campos tiene**, no según lo que el
+   LLM crea. El tier lo decide un `if`, no un modelo.
+3. El agente orquesta, agrupa y explica; **no estima**. Si `timcp` no responde,
+   la fila queda marcada como no calculada. Una fila faltante es un hallazgo de
+   auditoría; una fila inventada es un reporte falso firmado.
+4. Persistir por fila: tier usado, WTT, TTW y versión del modelo (TIM 3.0.0).
+   El auditor va a pedir reproducibilidad, y el modelo cambia de versión.
+5. Para la parte no aérea del viaje, **declarar el vacío en el propio
+   entregable**: ningún repo permisivo cubre hotel ni puerta a puerta. Decirlo
+   es más barato que descubrirlo en la revisión del auditor.
+
+**Por qué esta receta es de EMEA y no global.** Es la única región donde esto
+es **obligación legal** (CSRD/ESRS). En North America no se encontró mandato
+federal equivalente para viajes — ahí el mismo entregable se vende a
+sostenibilidad corporativa o a finanzas, por compromiso o exigencia de
+inversor, y el ciclo de compra es otro.
+
+⚠️ **El riesgo que justifica toda la receta** lo dice el propio README de
+`timcp`: **los LLM alucinan números de emisiones.** Una cifra inventada aquí no
+produce un hotel equivocado, produce un número en un reporte regulatorio
+firmado. La emisión se calcula con herramienta o no se responde.

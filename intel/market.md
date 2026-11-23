@@ -218,6 +218,42 @@ permisivo, vivo y contractualmente limpio**, y hoy no lo ocupa nadie en esta reg
 que lo haga en ninguna región del mundo, y aquí ni siquiera hay API oficial de la que colgarse.
 
 
+
+#### Sexta pasada 2026-11-23 — adopción, regulación y el plano de emisiones
+
+**Adopción.** Deloitte (outlook 2026) registra que el uso de IA generativa en
+la planificación de viajes **se triplicó entre 2023 y 2025**, con millennials
+al frente, mientras la compra y el contenido siguen sin estar conectados. Un
+informe de marzo de 2026 difundido por Skift pone a las plataformas de IA
+autónomas como las más usadas, con **64% de adopción entre quienes usan IA**, y
+la cohorte boomer **duplicada al 27%**. Del lado de la oferta, Google pasó la
+reserva agentic de hotel a **testeo en vivo en EE.UU. en agosto de 2026**.
+
+**El techo, que conviene decirle al cliente.** Una encuesta del Oliver Wyman
+Forum encontró que **sólo el 7%** de los consumidores dejaría que un asistente
+de IA "se encargue de todo" y le notifique el resultado. La delegación total no
+es el producto; la delegación con punto de control humano sí.
+
+**Regulación.** El movimiento principal es federal: en **marzo de 2026** la
+Casa Blanca publicó recomendaciones legislativas para un marco nacional de IA,
+empujando hacia un estándar único en lugar del mosaico estatal. Para un
+despliegue multiestado eso reduce fricción, pero todavía es recomendación, no
+ley.
+
+**Emisiones — la brecha regional.** Las búsquedas de esta pasada **no
+encontraron un mandato federal estadounidense de reporte de emisiones de viaje
+equivalente a CSRD**. La obligación que sí alcanza a las aerolíneas de la
+región es **CORSIA**, vía ICAO, no vía Washington. Consecuencia práctica: en
+Norteamérica el Scope 3 categoría 6 se reporta **por compromiso corporativo
+voluntario o por exigencia de cliente/inversor**, no por ley de viajes — lo que
+cambia a quién se le vende (sostenibilidad corporativa y finanzas, no
+compliance).
+
+⚠️ **Cifra que esta pasada rechaza:** circula un dato de "40% de los viajes de
+placer de EE.UU. asistidos por IA" y un PIB de 43.000 M USD atribuido a WTTC,
+publicado por un sitio de baja calidad. **No se pudo verificar contra fuente
+primaria. No usar en material de cliente.**
+
 ### EMEA
 
 **Evidencia.** *[sin verificar]* 38% de adopción de AI en travel en Europa Occidental y 42% en
@@ -442,6 +478,51 @@ partir; hay una especificación excelente. El presupuesto es de implementación,
 integración — y la diferencia entre esas dos palabras es todo el proyecto.
 
 
+
+#### Sexta pasada 2026-11-23 — adopción, regulación y el plano de emisiones
+
+**Adopción.** El informe EMEA 2026 de Marriott Bonvoy (más de **22.000 adultos
+en 11 mercados**) encuentra que **más de la mitad** de los viajeros de EMEA ya
+usó IA para planificar o investigar un viaje, y que la franja de **55–64 años
+pasó de 18% en 2024 a 29%**. El mismo informe anota que los viajeros **notan
+cuando la IA se equivoca** — en un mercado con esa tasa de uso, el error es
+visible, no anecdótico.
+
+**Adopción empresarial: ancha y poco profunda.** Phocuswright mide **más del
+60%** de las compañías experimentando o escalando IA agentic, pero **sólo el
+6%** escalándola a través de múltiples dominios y funciones. El resto es
+táctico, montado sobre infraestructura existente. En hotelería, las barreras
+declaradas son privacidad y seguridad del dato **46%**, costo **42%** e
+integración con sistemas legacy **40%** — ⚠️ esa encuesta **no es específica de
+EMEA**, se cita como orden de magnitud.
+
+**Regulación — y por qué EMEA es la región que define este plano.** El **EU AI
+Act** entra en plena aplicación, y la Comisión publicó en **julio de 2026** sus
+*Guidelines on Transparency Obligations for AI Systems*. Skift describe el
+mercado como fragmentado, donde compliance, idioma y soberanía del dato deciden
+quién puede operar IA a escala.
+
+Pero lo que vuelve a EMEA el centro del plano de emisiones es el stack
+regulatorio climático, que **no tiene equivalente en ninguna otra región**:
+
+| Instrumento | Qué obliga | Estado |
+|---|---|---|
+| **CSRD / ESRS** | Reporte corporativo de sostenibilidad, incluye Scope 3 categoría 6 (viajes de negocio) | En aplicación |
+| **ReFuelEU Aviation** | Mezcla de SAF en aeropuertos de la UE: **2% desde 2025**, **6% en 2030**, 70% en 2050 | En vigor |
+| **EU ETS aviación** | Derechos de emisión para vuelos intra-EEE | En vigor |
+
+⚠️ **Corrección de un error que circula:** varias guías presentan "6% en 2026".
+El escalón de **6% es 2030**; en 2026 la obligación sigue siendo **2%**.
+
+**Inversión y players.** Las startups europeas de IA en viajes levantaron
+**158 M USD en los tres primeros trimestres de 2026**, más del **20%** del
+capital de riesgo europeo divulgado del vertical. Despliegues concretos: Accor
+con IDeaS (G3 RMS) en su portfolio global; **Finnair**, primera aerolínea del
+mundo en crear una Native Order sobre Nevio. Skift advierte que los hoteles
+independientes europeos corren el riesgo de ser **invisibles en las respuestas
+de IA antes de llegar a competir por la reserva** — eso conecta directo con el
+plano de visibilidad de la cuarta pasada.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -599,6 +680,47 @@ después el agente.
 licencia) ni sobre THSR-Sniper (elude un control de acceso). Son los dos repos que un buscador
 pone primero y los dos que no se pueden entregar.
 
+
+
+#### Sexta pasada 2026-11-23 — adopción, regulación y el plano de emisiones
+
+**Adopción: la región que más usa IA en viajes.** Booking.com mide **64% de los
+viajeros de APAC** usando herramientas de IA al planificar o durante el viaje.
+Del lado empresarial, el informe *Future of APAC Travel 2026* de Expedia
+reporta **79% de las empresas de viajes de la región ya usando IA y 97%
+planeando hacerlo**. Agoda ubica cerca del **63%** la intención de uso para el
+próximo viaje. Son las tasas más altas de las cuatro regiones.
+
+**Players.** Phocuswright describe a las OTA chinas posicionándose para
+exportar su modelo mobile-first —contenido, pagos, partnerships y ahora reserva
+asistida por IA— **a APAC primero**. Trip.com reporta un crecimiento interanual
+de **~400% en volumen de órdenes asistidas por IA**. Fliggy publicó su skill
+`flyai` para agentes.
+
+**Regulación — brecha explícita, no silencio.** Las búsquedas de esta pasada
+**no encontraron regulación de IA específica para viajes en APAC**. Lo único
+cercano es una sanción del regulador de mercado chino (SAMR) a Trip.com Group
+por infracción antimonopolio — que es **competencia, no IA**. Quien planifique
+un engagement regional debe asumir **diversidad regulatoria por país** (China,
+Japón, Singapur, India tienen marcos de gobernanza de IA distintos y en
+movimiento) y resolverlo país por país, no con una política regional única.
+
+**Emisiones — el calendario que se movió.** Singapur es el caso más concreto y
+el más citado con fecha equivocada:
+
+| Jurisdicción | Medida | Fecha real |
+|---|---|---|
+| **Singapur** | Objetivo SAF del 1% | **Movido de 2026 a 2027** |
+| **Singapur** | Tasa al pasajero que lo financia | Billetes vendidos desde **1 oct 2026** |
+| **Singapur** | Primer uplift de SAF | Objetivo **mediados de 2027** |
+| **Japón** | 10% de SAF para vuelos de salida | **Objetivo a 2030**, detalles de aplicación aún en desarrollo |
+
+⚠️ La tasa al pasajero de Singapur **empieza antes que el mandato de
+combustible**: hay más de medio año en que el billete ya la cobra y el SAF
+todavía no vuela. Eso es un problema de **explicabilidad en el punto de venta**
+—por qué el billete subió sin que cambie nada visible— y es exactamente el tipo
+de cosa que un agente tiene que poder responder con una cita, no con una
+estimación.
 
 ### LATAM
 
@@ -788,6 +910,55 @@ pudo escribir lo contrario para otros planos. **Acá no, y registrarlo así es e
 narrativa "LATAM está más adelante de lo que se cree" es verdadera por plano, no en general, y
 el plano terrestre es donde no se sostiene.
 
+
+
+#### Sexta pasada 2026-11-23 — adopción, regulación y el plano de emisiones
+
+**Adopción.** Un estudio patrocinado por Booking.com ubica a Latinoamérica
+**liderando globalmente en familiaridad con la IA**, con **89%** de los
+encuestados declarando que conocen la IA y cómo funciona. La cobertura de WTM
+Latin America describe la adopción acelerada de IA ocurriendo **junto a nuevas
+exigencias de seguridad y pagos digitales** — en esta región la preocupación
+por el fraude es alta, y va pegada a la adopción, no separada de ella. Skift
+argumenta que los hábitos de planificación intensivos en búsqueda preparan el
+terreno para una adopción rápida del descubrimiento guiado por IA.
+
+**Tamaño, con la cautela correspondiente.** MarketsandMarkets proyecta el
+mercado regional de IA en turismo de **~93,7 M USD (2024) a ~372,6 M USD
+(2029), 25,9% CAGR**. ⚠️ Es el nicho "IA en turismo", **no** el gasto total de
+IA en viajes: no sirve para dimensionar un pipeline de plataforma.
+
+**Players y movimientos de Estado.** El caso nacional más claro es **Perú**:
+MINCETUR y PROMPERÚ integraron un asistente virtual de viaje con IA
+directamente en la plataforma oficial **Peru.travel**. En el sector privado,
+**Rappi** empujó su vertical de viajes en enero de 2026, con foco en lealtad,
+personalización e IA.
+
+**Regulación — brecha explícita.** Las búsquedas de esta pasada **no
+encontraron regulación de IA específica para viajes en Latinoamérica**. La
+única referencia regulatoria que aparece en la cobertura regional es el **EU AI
+Act**, que es extrarregional. Para un engagement LATAM eso significa que el
+marco aplicable sale de las leyes nacionales de protección de datos y de
+consumidor, no de una norma de IA de viajes: hay que resolverlo país por país.
+
+**Emisiones — lo que viene y todavía no está firme.** Brasil es el movimiento
+relevante de la región, y las fuentes son finas e inconsistentes entre sí:
+
+| Qué | Estado según fuentes de esta pasada |
+|---|---|
+| Mandato brasileño de SAF | Se espera que **entre en vigor en enero de 2027**; detalles aún sin publicar |
+| Mecanismo brasileño | Descrito como **metas basadas en emisiones + book & claim** (cumplir comprando atributos de SAF usado en otro lugar) |
+
+⚠️ **No verificado contra fuente primaria de gobierno.** Se registra como señal
+direccional, no como fecha de compliance. Si un cliente brasileño planifica
+sobre esto, hay que confirmarlo en la norma antes de comprometer alcance.
+
+**Por qué book & claim importa técnicamente.** Si el cumplimiento se satisface
+con atributos y no con combustible físico en el tanque, el sistema necesita un
+**registro de atributos auditables separado del itinerario**: la emisión del
+vuelo y el crédito aplicado son dos hechos distintos que no deben colapsarse en
+un solo número. Un modelo de datos que guarde sólo "CO₂ del viaje" no puede
+reportar esto.
 
 ## Posicionamiento Globant
 
