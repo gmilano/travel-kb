@@ -1050,3 +1050,164 @@ archivada, de ningún repo sin licencia ni de ningún modelo de 2021. Las siete 
 licencia leída del archivo, dos tuvieron push el día en que se midieron, y la más grande tiene
 208 forks: la capa tiene integradores reales. **Es el único tramo del plano de la reseña donde
 Globant adopta en lugar de construir.**
+
+## Receta 25 — Herramienta de estado de equipaje de tres estados (la receta base del plano)
+
+**El problema.** Un agente de servicio al pasajero recibe *"¿dónde está mi maleta?"*. No puede
+saberlo. Lo que sí puede saber es **qué registro existe sobre esa pieza y de cuándo es**. Un
+agente que inventa una posición genera una promesa; un agente que devuelve un registro con hora
+genera una respuesta defendible. La Resolución 753 da **cuatro puntos de custodia** y **no obliga
+ninguna tecnología**, así que el dato siempre es *"último escaneo, en tal punto, a tal hora"* —
+nunca *"está en Madrid"*.
+
+**Las piezas, todas verificadas el 2026-11-23 con licencia leída del archivo:**
+
+- [`adamf/jetway`](https://github.com/adamf/jetway) — **MIT** (1070B), 17★, 5 forks, push
+  2026-11-23. `pkg/baggage`: `Parse()`, `Build()`, `IsBaggage()`, `KindBSM`/`KindBPM`/`KindBUM`,
+  `Tag{Number,Count}`, `FlightLeg{Outbound,Onward,Inbound}`. `pkg/dcs`: `Station.BSMFor()` y
+  `Station.ApplyBagReport()`. `pkg/baggage/tracing.go`: `KindAHL`/`KindOHD`/`KindFWD`.
+- [`adamf/wholesky`](https://github.com/adamf/wholesky) — **MIT** (1070B), 4★ — el banco de
+  pruebas: un día-Tierra de tráfico simulado.
+- Un servidor MCP propio. **`jetway` no trae superficie agentic**: `grep -ril 'mcp|agentic|tool_call'`
+  sobre todo el árbol devuelve **cero**. Esta es la parte que se construye.
+
+**El cableado.**
+
+1. `jetway` termina el enlace del carrier y decodifica lo que llega. Cuando el mensaje es de
+   equipaje, `pkg/gateway/decode.go` lo marca (`d.Baggage`) y lo aplica al vuelo con
+   `Station.ApplyBagReport()`.
+2. **Persistir cada evento con su hora de llegada y su punto de custodia**, no solo el último
+   estado. El estado actual es derivable; el historial no se reconstruye.
+3. Exponer **una sola tool MCP**, `bag_status(tag_number)`, que devuelve **tres estados y nunca
+   una posición inferida**:
+
+   - `registrado` → hay evento, con `punto_custodia`, `hora_evento`, `vuelo`, `edad_del_dato`.
+   - `no_registrado` → la etiqueta existe en el BSM y **no hay ningún evento posterior**. Es
+     distinto de "no sé": significa que la pieza fue declarada y nunca escaneada.
+   - `registro_vencido` → hay evento pero su antigüedad supera el umbral del tramo. El agente
+     **debe** decir la antigüedad, no solo el último punto.
+
+4. Si existe un expediente AHL abierto para esa etiqueta, devolver su `Reference` y su `Matches`.
+   Es el dato que el pasajero puede usar con la aerolínea, y el único que cierra la conversación.
+
+**Lo que esta receta NO promete.** No dice dónde está la maleta. No crea el expediente en el
+sistema del proveedor: `tracing.go` implementa **el perfil del paquete** y su propio autor declara
+que *"the vendor's own record formats were not available"*. Para escribir en WorldTracer hace falta
+el contrato del proveedor. **Decirlo en la primera reunión, no en la tercera.**
+
+Es la misma forma de tres estados que la Receta 20 (ficha de accesibilidad física) y por la misma
+razón: cuando el dato de abajo es un registro con fecha, el único diseño honesto es exponer la
+fecha.
+
+## Receta 26 — Motor de reembolso de la tasa de equipaje con reloj auditable (la receta de North America)
+
+**El problema.** El reglamento de reembolsos automáticos del DOT obliga a devolver **la tasa de
+equipaje facturado** si la pieza no se entrega dentro de **12 horas** (doméstico) o **15 a 30
+horas** (internacional, según duración) desde la llegada del vuelo a la puerta, **una vez que el
+pasajero presenta un Mishandled Baggage Report**. Es la obligación de esta familia que
+**sobrevivió** al año de desregulación de 2026 — mientras el Quinto Circuito anulaba la
+divulgación de tarifas (3-feb-2026, motivos procesales) y el DOT rescindía la compensación en
+efectivo por demoras controlables (sep-2025). Sobrevivió porque **depende de una hora registrada,
+no de un juicio sobre si la demora era controlable**. Un reloj es defendible; un juicio no.
+
+**Las piezas.** `jetway` (MIT) y nada más del lado del dato: el BSM declara las piezas de un
+pasajero y los eventos traen hora; el expediente AHL abre con marca temporal. El reloj necesita
+exactamente **tres hechos** y los tres están en el modelo.
+
+**El cableado.**
+
+1. **`t0` = llegada del vuelo a la puerta.** De `pkg/dcs`, no de la hora programada. Si se usa la
+   programada, el reembolso se calcula sobre un hecho que no ocurrió.
+2. **`t1` = entrega de la pieza al pasajero.** Es el cuarto punto de custodia de la Resolución
+   753. Si no hay evento de entrega, `t1` está abierto y el reloj **sigue corriendo** — el caso
+   por defecto debe ser "se debe", no "no se debe".
+3. **`mbr` = presentación del Mishandled Baggage Report**, con su hora. El DOT describe que puede
+   presentarse **en cualquier momento** tras la no llegada, así que el MBR **no** es el inicio del
+   reloj: es la condición que lo vuelve exigible. Modelarlo como inicio subestima el plazo.
+4. Umbral por tipo de itinerario: 12 h doméstico, 15-30 h internacional según duración. **Hacerlo
+   configurable y versionado por fecha de vigencia**, no constante en el código.
+5. Emitir un registro por caso con los tres sellos, el umbral aplicado y la versión de la regla.
+   Eso es lo que se audita.
+
+**La aserción de tres líneas que vale la pena poner en CI:**
+
+```
+para todo caso de reembolso:
+  assert t0 proviene de un evento de llegada real, no de un horario programado
+  assert si no existe evento de entrega, el caso está ABIERTO y no CERRADO
+  assert el umbral aplicado cita la versión de regla vigente en la fecha de t0
+```
+
+> ⚠️ **Lo que hay que verificar antes de facturar esta receta.** `transportation.gov` y
+> `federalregister.gov` **no resuelven desde la red de esta sesión**, así que los umbrales de
+> arriba son **secundarios coincidentes** (cinco fuentes, más la guía de cumplimiento del DOT
+> citada por ellas). **Una fuente afirma un umbral único de 6 horas** y contradice a las otras
+> cinco: antes de implementar, **leer el texto vigente en el Federal Register**. Además, el aviso
+> del 5-dic-2025 que pausó la aplicación para renumeración de vuelo vencía el 30-jun-2026 y **no
+> se pudo determinar si se extendió**. La receta es correcta en su forma; **los números se
+> confirman contra el primario**.
+
+**El caso de negocio no hay que estimarlo:** SITA publica **USD 260 por pieza mal manejada** y
+**USD 6.300 millones al año** de industria.
+
+## Receta 27 — Un modelo de evento de custodia, cuatro obligaciones regionales (la receta transversal del plano)
+
+**El problema, y es el hallazgo de arquitectura de esta pasada.** En los ocho planos anteriores
+de esta KB las tres regiones empujaban hacia **el mismo** artefacto. En el equipaje **no**: cada
+región exige algo distinto.
+
+| Región | Obligación | Lo que consume del evento |
+|--------|-----------|---------------------------|
+| North America | Reembolso de la tasa a las 12 h | **Dos sellos de tiempo** (`t0` llegada, `t1` entrega) + MBR |
+| EMEA | 1.519 DEG por **pasajero** desde 28-dic-2024, prevaleciendo sobre las condiciones de transporte | **La agregación por pasajero**, la moneda y la fecha del hecho |
+| APAC | Mandato RFID de la CAAC, *whole-process tracking* | **Los cuatro puntos de custodia completos**, sin huecos |
+| LATAM | Franquía mínima de 10 kg (art. 14, Res. 400/2016) | **El peso y la clase de tarifa** en el momento de la aceptación |
+
+**Cuatro consumidores, ningún build común — salvo el modelo.** La tentación es construir cuatro
+integraciones. El diseño correcto es **modelar el evento de custodia una vez y derivar las cuatro
+obligaciones de él**.
+
+**El modelo mínimo que satisface a las cuatro** (todos los campos existen ya en `pkg/baggage` y
+`pkg/dcs` de `jetway`, MIT):
+
+```
+EventoCustodia {
+  etiqueta        // Tag.Number — la pieza física
+  pasajero        // para la agregación de EMEA: por pasajero, NO por reserva
+  punto           // cuál de los cuatro puntos de la Res. 753
+  hora            // el sello; sin esto no hay reloj ni hay proceso completo
+  vuelo, fecha    // FlightLeg: Outbound / Onward / Inbound
+  peso, tarifa    // para la franquía de LATAM
+  fuente          // barcode | escaneo manual | OCR | RFID — la 753 no obliga tecnología
+}
+```
+
+**Las tres trampas de implementación, cada una medida en una región distinta:**
+
+1. **Agregar por reserva en lugar de por pasajero** (EMEA). El límite de Montreal es **por
+   pasajero**: dos viajeros con una maleta cada uno tienen **cada uno** 1.519 DEG; una familia de
+   cuatro con una maleta perdida **no** tiene cuatro límites. Agregar por el objeto equivocado
+   paga de más o de menos, y las dos cosas son hallazgo de auditoría.
+2. **Usar la hora programada como `t0`** (North America). El reloj del DOT corre desde la llegada
+   **real** a la puerta.
+3. **Tratar un hueco de custodia como "sin novedad"** (APAC). *Whole-process tracking* significa
+   que la **ausencia** de un punto es el dato. Un modelo que solo guarda el último estado no puede
+   responder qué punto falta, y es justo lo que el mandato exige.
+
+**La aserción de CI que cubre las cuatro de una vez:**
+
+```
+para todo EventoCustodia:
+  assert hora != null y fuente != null        # sin sello ni origen no sirve a ninguna región
+  assert pasajero != null                     # la agregación de EMEA no se puede derivar después
+para toda pieza con BSM emitido:
+  assert existe evento en cada punto esperado del itinerario O un hueco EXPLÍCITO
+```
+
+**Por qué esto es vendible.** Es un argumento de arquitectura con cuatro regulaciones citadas y
+fechadas detrás, sobre una base MIT de 72.163 líneas, en un plano donde el costo por evento está
+publicado en dólares. Y es honesto sobre su límite: **`jetway` tiene tres meses de vida, un
+mantenedor y 5 forks, y se declara pre-1.0.** La recomendación es **adoptar el modelo y
+contribuir al repo**, no apostar la operación de un cliente a un proveedor único sin plan de
+contingencia. Es la primera vez en nueve planos que esta KB recomienda **contribuir** en lugar de
+adoptar o construir.

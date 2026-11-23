@@ -944,3 +944,221 @@ dato de reseñas del propio cliente —porque corpus redistribuible no hay—. T
 - Las guías de aplicación de AGCM/Agcom para esa ley estaban **pendientes** en las fuentes
   consultadas (consulta pública con comentarios al 15-jul). No se pudo confirmar si se
   emitieron.
+
+## Plano del equipaje — el hallazgo está dentro de un repo que no dice "equipaje"
+
+Noveno plano. Medido el 2026-11-23. **El resultado invierte la conclusión con la que empecé.**
+
+### Método de verificación de esta tabla
+
+Existencia por `git ls-remote` (21/21 vivos). Métricas por `search/repositories` con
+`repo:owner/name`. **Licencia leída del archivo**, byte a byte, por `raw.githubusercontent.com`.
+Y en el caso central, **el repo se clonó y se leyó el código**: la descripción no alcanzaba.
+
+> ⚠️ **Defecto de método encontrado y corregido en esta pasada.** `gh api repos/<owner>/<name>`
+> devuelve **403** para repos fuera del scope de la sesión, mientras `gh api search/repositories`
+> funciona. Peor: mi primer script probaba `[ -n "$code" ]` sobre la salida, y el **JSON de
+> error** no está vacío — así que imprimió `FOUND` para seis archivos de licencia que **no
+> existen**. Si esta KB hubiera salido con esa tanda, habría afirmado licencias inexistentes en
+> cinco repos. **Un chequeo de existencia que no distingue "respuesta" de "respuesta afirmativa"
+> no es un chequeo.** La vía correcta: `curl -o archivo -w '%{http_code}'` y comparar con `200`.
+
+### Capa de mensajería — el hallazgo del plano
+
+| Repo | Licencia (archivo leído) | Stars | Forks | Creado | Último push | Qué es |
+|------|--------------------------|-------|-------|--------|-------------|--------|
+| [adamf/jetway](https://github.com/adamf/jetway) | **MIT** (`LICENSE`, 1070B, "Copyright (c) 2026 Adam Fletcher") | 17 | 5 | 2026-08-29 | **2026-11-23** | Gateway de mensajería de reservas de aerolínea y GDS en Go. **72.163 líneas.** v0.1.109 |
+| [adamf/wholesky](https://github.com/adamf/wholesky) | **MIT** (`LICENSE`, 1070B) | 4 | 0 | 2026-08-31 | **2026-11-23** | Un día-Tierra de aviación de pasajeros simulado sobre Jetway. Es el **plan de pruebas** del anterior |
+
+**17 estrellas, y es lo más importante que esta KB midió en nueve planos de este vertical.**
+Lo que `jetway` habla, leído de `README.md` y de `docs/protocols.md` del clon:
+
+- **Type B / AIRIMP** — el formato teletipo que llevan las redes store-and-forward de SITA y
+  ARINC (`pkg/typeb`).
+- **UN/EDIFACT / PADIS** — interchanges ISO 9735 con mensajes IATA `PAOREQ`/`PAORES`, y emite y
+  consume `CONTRL` (`pkg/padis`, con `pnrgov.go`, `ticket.go`, `divide.go`).
+- **NDC** — mensajes de orden IATA sobre HTTP, mapeados al mismo almacén de registros.
+- Y además: `pkg/dcs` (departure control: aceptación, asientos, carga), `pkg/mct` (minimum
+  connect time), `pkg/prorate`, `pkg/acars`, `pkg/ssim`, `pkg/rescode`, `pkg/avs`.
+
+#### `pkg/baggage` — lo que ninguna búsqueda por "baggage" encuentra
+
+656 líneas en cuatro archivos. **Es la capa de equipaje que esta KB iba a declarar inexistente.**
+
+| Elemento | Qué implementa | Dónde |
+|----------|----------------|-------|
+| `KindBSM` | **Baggage Source Message** — el mensaje que declara las piezas de un pasajero y su ruta | `pkg/baggage/baggage.go` |
+| `KindBPM` | **Baggage Processed Message** — el mensaje de un evento sobre una pieza ya en el sistema | `pkg/baggage/baggage.go` |
+| `KindBUM` | **Baggage Unaccompanied Message** — la pieza que viaja sin su pasajero | `pkg/baggage/baggage.go` |
+| `Tag{Number, Count}` | La **etiqueta**: el identificador de la pieza física | `pkg/baggage/baggage.go` |
+| `FlightLeg` (`Outbound`/`Onward`/`Inbound`) | Los tramos sobre los que la pieza debe viajar | `pkg/baggage/baggage.go` |
+| `Build()` / `Parse()` / `IsBaggage()` | Construir, parsear y **clasificar** un mensaje de equipaje | `pkg/baggage/baggage.go` |
+| `Station.BSMFor()` | Construye el BSM de un pasajero desde el estado real del vuelo | `pkg/dcs/dcs.go:1086` |
+| `Station.ApplyBagReport()` | Aplica un mensaje de equipaje entrante al vuelo | `pkg/dcs/dcs.go:1127` |
+| `KindAHL` / `KindOHD` / `KindFWD` | **El sistema de tracing**: expediente de pieza demorada (AHL), de pieza en mano sin dueño (OHD) y de reenvío (FWD), **emparejados por número de etiqueta** | `pkg/baggage/tracing.go` |
+| `TracingFile{ColourType, Routing, Contact, Matches, ForwardTo}` | Los elementos de emparejamiento: códigos IATA de color/tipo (`BK22` = negro, rígido vertical), ruta, contacto | `pkg/baggage/tracing.go` |
+
+Y en `pkg/gateway/decode.go:68` el gateway distingue explícitamente el caso:
+
+> *"Baggage is set when the message is a BSM or BPM: about a bag, not a [passenger]"*
+
+cuando no puede decodificar un mensaje de equipaje, **lo conserva** y emite
+`unreadable_bag_message` con severidad `warn` (`decode.go:481`) en lugar de descartarlo.
+
+#### La honestidad epistémica del repo, citada porque es el estándar de esta KB encontrado en el mundo
+
+El comentario de cabecera de `pkg/baggage/tracing.go` dice, sobre los formatos de los
+expedientes de rastreo:
+
+> *"This is the shape of the industry's tracing system as its published training material
+> describes it — the file kinds, the element codes NM, TN, CT, RT, FD, FL, TX — laid out here as
+> the dotted element lines the rest of the bag messages use. **The vendor's own record formats
+> were not available, so this is this package's profile, and it says so.**"*
+
+Es exactamente la regla de "lo que esta sesión NO pudo verificar, dicho en voz alta" que esta KB
+aplica a sí misma, escrita por el autor de la librería dentro del código. **Tratar ese perfil
+como el formato del proveedor sería el error; el repo ya avisa que no lo es.**
+
+#### Lo que esto cambia para un engagement
+
+Antes de esta medición, la respuesta a *"¿se puede construir la cadena de custodia de una maleta
+con software permisivo?"* era **no**. Ahora es: **sí, desde un repo MIT de 72k líneas con 5 forks
+y push del mismo día** — con tres salvedades que hay que decir en la primera reunión:
+
+1. **Es pre-1.0 y lo dice.** Su `CHANGELOG.md` abre con *"Jetway is pre-1.0: the API moves when
+   the evidence says it should"*. 17★ y 5 forks: **no hay comunidad todavía**. Riesgo de un solo
+   mantenedor, explícito.
+2. **El perfil de tracing es del paquete, no del proveedor** (ver cita arriba).
+3. **No tiene superficie agentic.** `grep -ril 'mcp|agentic|tool_call'` sobre todo el árbol
+   devuelve **cero**. El agente se compone encima; no viene incluido. Es la Receta 25.
+
+### Capa EDIFACT genérica — permisiva, viva y la que no hay que reimplementar
+
+PADIS es EDIFACT. La capa de parseo genérica está **sana**, al contrario que la capa
+aeronáutica específica, y eso parte el trabajo en dos: el sobre es commodity, el mensaje no.
+
+| Repo | Licencia (archivo leído) | Stars | Forks | Último push | Para qué |
+|------|--------------------------|-------|-------|-------------|----------|
+| [jf-tech/omniparser](https://github.com/jf-tech/omniparser) | **MIT** (1070B) | 1085 | 82 | 2026-10-11 | Parser/transformador ETL en streaming, Go. EDI/EDIFACT/X12 entre sus formatos. El más estrellado de la capa |
+| [indice-co/EDI.Net](https://github.com/indice-co/EDI.Net) | **MIT** (1074B) | 491 | 172 | 2025-12-01 | Serializador/deserializador .NET de EDIFACT, X12 y TRADACOMS. **172 forks**: la más integrada |
+| [michaelachrisco/Electronic-Interchange-Github-Resources](https://github.com/michaelachrisco/Electronic-Interchange-Github-Resources) | **MIT** (1072B) | 353 | 58 | 2026-11-19 | Índice curado de recursos EDI. Punto de partida para buscar un dialecto concreto |
+| [nerdocs/pydifact](https://github.com/nerdocs/pydifact) | **MIT** (1081B) | 191 | 54 | **2026-11-23** | Librería EDIFACT en Python. **Push el día de este ciclo.** La vía corta si el stack es Python |
+| [php-edifact/edifact](https://github.com/php-edifact/edifact) | **LGPL-3.0** (7632B) | 289 | 89 | 2025-10-30 | Procesamiento EDIFACT en PHP. **Copyleft débil**: se enlaza, no se embebe modificado sin publicar |
+
+> ⚠️ **Medición que tuve que descartar, dicha porque casi entró a esta tabla.** La consulta
+> `pyedifact OR edifact parser stars:>=20` devolvió **13.494 resultados** encabezados por
+> `Graphify-Labs/graphify` (152k★), `moment/moment` (47k★) y `markedjs/marked` — ninguno tiene
+> nada que ver con EDI. **La búsqueda de GitHub no trata `OR` como un operador ahí**: degradó la
+> consulta a "parser". La medición válida es `edifact stars:>=30` → **25 repos**. Un total de
+> cinco cifras en un plano estrecho es síntoma de consulta rota, no de abundancia.
+
+### Capa de decodificación de mensajería operativa
+
+| Repo | Licencia (archivo leído) | Stars | Forks | Último push | Para qué |
+|------|--------------------------|-------|-------|-------------|----------|
+| [szpajder/libacars](https://github.com/szpajder/libacars) | **MIT** (`LICENSE.md`, 1076B) | 156 | 33 | 2026-11-22 | Decodifica payloads ACARS. Entra por primera vez: complementa el plano de vuelo en curso con el **canal** por el que esos mensajes llegan |
+| [szpajder/dumpvdl2](https://github.com/szpajder/dumpvdl2) | **GPL-3.0** | 263 | 36 | 2026-10-20 | Decodificador VDL Mode 2 del mismo autor. **Copyleft fuerte**: herramienta, no componente de producto |
+
+### Capa de norma y de prueba formal — viva, y sin licencia
+
+| Repo | Licencia | Stars | Creado | Último push | Qué es y por qué no se puede usar |
+|------|----------|-------|--------|-------------|-----------------------------------|
+| [Lex-van-Os/Beltline](https://github.com/Lex-van-Os/Beltline) | **NO HAY ARCHIVO** en `LICENSE`/`.md`/`.txt`/`COPYING`/`LICENCE` | 0 | 2026-10-21 | 2026-11-18 | Simulación de rastreo de equipaje dirigida por eventos en .NET 10, **explícitamente basada en la Resolución 753 de IATA**. **El único repo en todo GitHub que nombra la norma** — y sin licencia es inusable en un entregable |
+| [samdengler/verified-air](https://github.com/samdengler/verified-air) | **NO HAY ARCHIVO** | 1 | 2026-10-24 | 2026-11-10 | Prueba de concepto de reglas de oferta y orden de aerolínea **en Lean, con demostraciones**. Intelectualmente el repo más interesante del plano; contractualmente inservible |
+| [OpenTravel/OTM-DE](https://github.com/OpenTravel/OTM-DE) | **NO HAY ARCHIVO** | 22 | 2014-06-10 | **2020-11-23** | Entorno de desarrollo de modelos OpenTravel. Su propia descripción dice *"Maintenance Release ONLY"*. **Seis años sin push**: histórico, no base |
+
+**Tres repos vivos y relevantes, tres sin archivo de licencia.** Es el cuarto plano de esta KB
+donde la pieza más cercana al problema es la que no se puede usar. La regla de esta KB se
+sostiene sin excepción: **la licencia es el archivo y solo el archivo.**
+
+### Capa de rastreo del lado del pasajero — abundante, y del lado equivocado
+
+| Repo | Licencia (archivo leído) | Stars | Forks | Último push | Qué es |
+|------|--------------------------|-------|-------|-------------|--------|
+| [seemoo-lab/openhaystack](https://github.com/seemoo-lab/openhaystack) | **AGPL-3.0** (32387B) | 14264 | 719 | 2026-08-17 | Framework para construir "AirTags" propios y rastrear dispositivos Bluetooth por la red Find My de Apple |
+| [hybridgroup/go-haystack](https://github.com/hybridgroup/go-haystack) | **MIT** (1071B) | 1546 | 50 | 2026-10-13 | Rastreo por Find My en Go, sobre OpenHaystack. **MIT: es el único de la capa que se puede embeber** |
+| [AxelUser/carry-fit](https://github.com/AxelUser/carry-fit) | **MIT** (1072B) | 58 | 5 | 2026-05-29 | Verificador de cumplimiento de medidas de equipaje de mano por aerolínea |
+
+#### La ley estructural, medida ahora en dos verticales independientes
+
+El ciclo 9 de **retail** midió que los únicos rastreadores de paquetes con ≥100★ son
+**aplicaciones de consumidor** (`itsvic-dev/deliveries` 258★ GPL-3, `proninyaroslav/libretrack`
+371★ GPL-3) y que del lado del comerciante no hay nada: *el rastreo que existe es para la persona
+que espera el objeto, no para el operador que responde dónde está*.
+
+**En travel la misma ley se vuelve a medir, con cifras propias y sin reutilizar ninguna fuente:**
+
+| Lado | Lo que existe | Estrellas |
+|------|---------------|-----------|
+| El pasajero que espera su maleta | `openhaystack` + `go-haystack` | **15.810★ combinadas** |
+| El operador que debe responder dónde está | `baggage tracking stars:>=5` → 2 repos muertos sin licencia | **11★ combinadas, cero mantenidas** |
+
+**Tres órdenes de magnitud de diferencia.** Y la asimetría no es de interés: es de **incentivo**.
+El rastreo de consumidor resuelve *mi* objeto y lo paga quien lo pierde. La custodia de operador
+resuelve *la obligación de un tercero* y **genera responsabilidad legal** (ver el límite de
+Montreal en `intel/market.md`). Igual que en retail *"el ruteo es un problema y la promesa es un
+compromiso"*: **el rastreo es una comodidad y la custodia es un pasivo**, y el open source
+produce comodidades, no pasivos. `jetway` es la excepción que confirma la regla — un solo repo,
+un solo mantenedor, pre-1.0.
+
+### Capa descartada — medida, no asumida
+
+| Repo | Estrellas | Por qué se descarta |
+|------|-----------|---------------------|
+| [w3c/baggage](https://github.com/w3c/baggage) | 62 | **No es de viajes.** Especificación W3C de propagación de contexto en *distributed tracing*. Ver `agents/top.md` → la cuarta colisión |
+| [bchhaglani/Baggage-tracking](https://github.com/bchhaglani/Baggage-tracking) | 6 | Sin licencia. Último push **2019-03-21**. Proyecto académico de RFID/IoT |
+| [ParameswarKanuparthi/Baggage-Tracking-using-IoT](https://github.com/ParameswarKanuparthi/Baggage-Tracking-using-IoT) | 5 | Sin licencia. Último push **2020-05-31** |
+
+#### ⚠️ `w3c/baggage`: séptimo caso de dual licensing que la API no muestra — y el primero partido por tipo de artefacto
+
+La API de GitHub devuelve `NOASSERTION`. El archivo `LICENSE.md` (341B) dice, textual:
+
+> *"All Reports in this Repository are licensed by contributors under the **W3C Software and
+> Document License**. All tests in this Repository are licensed by contributors to be distributed
+> under the **W3C 3-clause BSD License**."*
+
+**Dos licencias en un repo, y el límite entre ellas no es por directorio: es por qué tipo de cosa
+es el archivo.** Los casos 4, 5 y 6 de esta KB (`c2pa-rs`, `c2pa-swift`, `c2pa-cpp`) eran
+*MIT **o** Apache-2.0* a elección del usuario. Este es distinto: **no hay elección**, hay
+clasificación — el texto normativo va por una licencia y los tests por otra. Y suma al eje que el
+ciclo 9 de retail abrió: **la licencia de una especificación es una licencia de documentación**
+(allí `beckn/protocol-specifications` CC BY-NC-SA, `ONDC-Protocol-Specs` CC BY-ND). Aquí el
+documento del W3C y sus tests **no comparten licencia**. Un `pip`/`go get` que copie el repo
+entero a un entregable mezcla dos regímenes en un mismo árbol.
+
+### Brechas del plano del equipaje, medidas el 2026-11-23
+
+- **No hay implementación abierta de la etiqueta de equipaje** (`bag tag IATA` → 0 repos). El
+  documento que identifica la pieza física no tiene una sola librería.
+- **No hay cliente abierto de WorldTracer** — el sistema que la industria usa de hecho para
+  emparejar expedientes de equipaje extraviado entre aerolíneas. Los 4 repos que lo nombran suman
+  0★. `jetway/pkg/baggage/tracing.go` implementa **el perfil del paquete**, no el del proveedor,
+  y lo declara.
+- **No hay software abierto de operación aeroportuaria** (`airport operations stars:>=20` → 0):
+  ni AODB, ni A-CDM, ni gestión de cinta.
+- **No hay capa abierta de RFID** (`rfid asset tracking stars:>=50` → 0) **contra una obligación
+  regulatoria vigente en China** (ver APAC en `intel/market.md`). Es la contradicción más fuerte
+  del plano: hay mandato y no hay código.
+- **No hay un solo agente de operación aérea con ≥10★** (`airline operations agent` → 0). Toda la
+  capa agentic medida en este vertical está del lado de **buscar y reservar**, ninguna del lado de
+  **operar y responder**.
+- **Fuera de `jetway`, no hay segunda implementación de BSM/BPM.** Un solo repo, un mantenedor,
+  pre-1.0, 5 forks. Es una dependencia de proveedor único con forma de open source.
+
+### ⚠️ Lo que esta sesión NO pudo verificar, dicho en voz alta
+
+- **`transportation.gov` no resuelve desde esta red**, ni `www.federalregister.gov`, ni
+  `media.asianaviation.com`. Por eso **las cifras del reglamento de reembolso del DOT y del
+  informe SITA 2026 van marcadas como secundarias coincidentes** en `intel/market.md`, nunca como
+  leídas del primario. Hay una fuente que afirma un umbral de **6 horas** contra las 12 que dicen
+  todas las demás: **se registran las dos y no se afirma ninguna**.
+- **No se leyó el texto de la Resolución 753** (es documento de pago de IATA). Los cuatro puntos
+  de custodia y el hecho de que **no obliga tecnología** vienen de material secundario
+  concordante, incluido el `docs/` de `jetway`.
+- **El PDF del informe SITA 2026 no se pudo abrir.** Una fuente describe una cifra de 3,4 por mil
+  con alza del 9% que no concuerda con el 4,9 y la baja del 23% de las demás; **lo más probable es
+  que sea la cifra de APAC (3,41) leída como global**, pero no se pudo confirmar y queda anotado
+  como discrepancia abierta.
+- **No examinado en esta pasada, y se dice:** carga aérea (distinta del equipaje), equipaje
+  ferroviario, África más allá de la cifra de SITA, y los sistemas de los aeropuertos de Japón y
+  Singapur más allá de material secundario.

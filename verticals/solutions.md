@@ -321,3 +321,41 @@ el mismo mecanismo ZK que la séptima pasada registró para el pasaporte:
 dispositivo del huésped (`c2pa-swift`, MIT *o* Apache-2.0). Es lo único de este plano que
 puede construirse **hoy, con licencias limpias, sin pedirle a nadie que detecte un fraude**.
 Es la Receta 22.
+
+## Plano del equipaje — qué se puede personalizar y qué hay que comprar (2026-11-23)
+
+El patrón de este archivo es *plataforma real que se puede customizar con IA encima*. En el plano
+del equipaje el reparto es inusualmente nítido, y conviene llevarlo así a una primera reunión.
+
+### Lo que existe como plataforma abierta y se puede customizar
+
+| Sistema | Licencia (archivo leído) | Qué cubre del plano | Qué se le puede poner encima |
+|---------|--------------------------|---------------------|------------------------------|
+| [adamf/jetway](https://github.com/adamf/jetway) | **MIT** (1070B) | **Mensajería y custodia**: Type B/AIRIMP, EDIFACT/PADIS, NDC, `pkg/dcs` de control de salida, y `pkg/baggage` con BSM/BPM/BUM + expedientes AHL/OHD/FWD | La superficie agentic **no viene incluida** (`grep` de `mcp`/`agentic` → cero). Es exactamente el hueco donde se construye: Recetas 25, 26 y 27 |
+| [adamf/wholesky](https://github.com/adamf/wholesky) | **MIT** (1070B) | Un día-Tierra de aviación simulado sobre Jetway | El banco de pruebas: se ejercita la integración contra tráfico global sintético **antes** de pedir un enlace a un carrier |
+| [AxelUser/carry-fit](https://github.com/AxelUser/carry-fit) | **MIT** (1072B) | Medidas de equipaje de mano por aerolínea | La verificación de franquía de la Receta de LATAM y la transparencia de precio que la reforma EMEA exige |
+
+**`jetway` es, en el sentido de este archivo, el "Odoo" de la mensajería aérea**: una base
+permisiva, grande y completa sobre la que se customiza, en un plano donde la alternativa es un
+proveedor cerrado. Con una diferencia que hay que decir: **Odoo tiene veinte años y miles de
+integradores; `jetway` tiene tres meses, un mantenedor y 5 forks.** Se propone como base, no como
+garantía.
+
+### Lo que hay que comprar, porque no existe abierto
+
+| Pieza | Estado abierto medido | Consecuencia |
+|-------|----------------------|--------------|
+| **WorldTracer** (emparejamiento de expedientes entre aerolíneas) | 4 repos lo nombran, **ninguno pasa de 0★** | Se integra al proveedor. `jetway/pkg/baggage/tracing.go` implementa **el perfil del paquete** y declara que **no** es el formato del proveedor |
+| **AODB / A-CDM / gestión de cinta** | `airport operations stars:>=20` → **0** | No hay base abierta de operación aeroportuaria. Se compra |
+| **Lectura RFID** | `rfid asset tracking stars:>=50` → **0** | Aun con el mandato de la CAAC vigente (ver APAC en `intel/market.md`), la capa física se compra |
+| **Etiqueta de equipaje** | `bag tag IATA` → **0** | El documento que identifica la pieza no tiene implementación abierta |
+| **Resolución 753** (el texto) | Documento de pago de IATA | Se licencia. [`Lex-van-Os/Beltline`](https://github.com/Lex-van-Os/Beltline) es el único repo que la nombra y **no tiene licencia** |
+
+### La forma de la propuesta que se deduce de esto
+
+Un engagement de equipaje **no es un reemplazo de plataforma**: es una **capa de registro y de
+respuesta** entre sistemas comprados. El cliente ya tiene el AODB, el lector y el contrato con el
+proveedor de tracing. Lo que no tiene es **el modelo de evento de custodia que las cuatro
+obligaciones regionales consumen** (reloj en NA, liquidación por pasajero en EMEA, rastreo de
+proceso completo en APAC, franquía numérica en LATAM). Eso es construible, es MIT, y es la
+Receta 27.

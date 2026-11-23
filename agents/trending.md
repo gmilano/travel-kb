@@ -12,6 +12,36 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — novena pasada (plano del equipaje: el agente que no existe sobre la librería que sí)
+
+Noveno ciclo del mismo día. **No reemplaza nada**: las ocho pasadas anteriores quedan intactas
+debajo. Foco: **el equipaje** — la única pieza del viaje que es un objeto físico con cadena de
+custodia, y que hasta hoy no tenía una sola mención en los ocho archivos. Verificación: 21/21
+slugs vivos por `git ls-remote`, métricas por `search/repositories`, **licencias leídas del
+archivo**, y en el caso central **el repo se clonó y se leyó el código**.
+
+**El titular del lado agentic es una ausencia medida:** `airline operations agent stars:>=10`
+devuelve **0 repos en todo GitHub**. Toda la superficie agentic de este vertical está del lado de
+*buscar y reservar*; ninguna del lado de *operar y responder*. Los agentes que entran abajo no
+tocan el equipaje — entran porque son la superficie realmente disponible, y porque la Receta 25
+los compone con la capa de mensajería que sí lo toca.
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Qué cambió |
+|--------|------|--------------------------|-------|-------------|------------|
+| Award Travel Finder MCP | [AwardTravelFinder/mcp](https://github.com/AwardTravelFinder/mcp) | MIT (1076B) | 17 | 2026-11-20 | Entra por primera vez. MCP de disponibilidad con millas: el primer servidor MCP de *redención*, no de compra, que esta KB mide |
+| disruption-rebooking-copilot | [robsarran65/disruption-rebooking-copilot](https://github.com/robsarran65/disruption-rebooking-copilot) | MIT (1075B) | 0 | 2026-08-10 | Entra por primera vez **con 0★ y se dice**: es el **único repo de IROPS agentic con licencia permisiva que existe**. Escasez, no tracción |
+| flightradar-mcp-server | [Cyreslab-AI/flightradar-mcp-server](https://github.com/Cyreslab-AI/flightradar-mcp-server) | MIT (1056B) | 7 | 2026-09-20 | Entra por primera vez. MCP sobre AviationStack. **Llave ajena**: el patrón de dependencia que esta KB ya anotó en el plano de emisiones |
+| aviasales-mcp | [stufently/aviasales-mcp](https://github.com/stufently/aviasales-mcp) | **GPL-3.0** (35149B) | 9 | 2026-11-09 | Entra por primera vez **y a la tabla de cautelas**: copyleft fuerte sobre un MCP. Se corre como servicio, no se embebe en producto de cliente |
+| mcp-delta | [markswendsen-code/mcp-delta](https://github.com/markswendsen-code/mcp-delta) | **NO HAY ARCHIVO** en ninguna ruta estándar | 6 | 2026-03-11 | Entra **solo como descarte**: sin licencia y automatiza el sitio de una aerolínea nombrada. Doble bloqueo |
+| LetsFG | [LetsFG/LetsFG](https://github.com/LetsFG/LetsFG) | MIT real (2173B leídos) + addendum comercial del 1% | 2297 | 2026-11-15 | **Re-medición anti-fabricación: 2296 → 2297 en un día, +1.** Registrar un delta plano es la evidencia de que esta pasada no inventó una curva. Lo que la KB ya tenía escrito es correcto y no se cambia |
+
+**La cuarta colisión de palabra de industria, y la peor de las cuatro:** `baggage stars:>=10`
+está encabezado por [`w3c/baggage`](https://github.com/w3c/baggage) (62★), que es la
+**especificación del W3C de propagación de contexto en distributed tracing**. Las tres anteriores
+(hoppers de Minecraft, `return`, webhooks de Dialogflow) eran ruido; esta es un **estándar del
+W3C con repo en la organización `w3c`**, así que un compilador que ordene por estrellas la
+compila como infraestructura de equipaje. Detalle completo en `agents/top.md`.
+
 ## 2026-11-23 — octava pasada (plano de la reseña: la obligación llegó y la herramienta no)
 
 Octavo ciclo del mismo día. **No reemplaza nada**: las siete pasadas anteriores quedan intactas

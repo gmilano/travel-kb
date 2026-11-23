@@ -79,6 +79,30 @@ Doors / Harris (~50.000 M USD/año, sólo EE.UU., sólo viajeros con
 discapacidad)** y decir el alcance. La cifra de 17.300 M que todavía circula es
 de 2015.
 
+
+### El costo del equipaje, la cifra que ordena el noveno plano (2026-11-23)
+
+Informe **SITA Baggage IT Insights 2026** (datos de 2025). ⚠️ **El PDF del primario no se pudo
+abrir desde esta red** (`media.asianaviation.com` no resuelve): todas estas cifras son
+**secundarias coincidentes** entre varias fuentes, no leídas del informe.
+
+| Métrica | Valor 2025 | Nota |
+|---------|-----------|------|
+| Tasa global de equipaje mal manejado | **4,9 por 1.000 pasajeros** | **Baja del 23%** interanual, por debajo de prepandemia |
+| Volumen total | **24 millones de piezas** | Baja del 19%, sobre un récord de ~5.000 millones de pasajeros |
+| Costo promedio por pieza | **USD 260** | Nuevo *benchmark* de SITA |
+| Costo anual de la industria | **USD 6.300 millones** | SITA: *cinco piezas mal manejadas borran la ganancia de un vuelo entero* |
+| Doméstico vs internacional | **1,65** vs **9,12** por mil | El riesgo se multiplica por 5,5 al cruzar una frontera — el tramo con transferencia |
+| Perdida vs demorada | Una perdida cuesta **2,6×** una demorada | Pero la demorada es la frecuente |
+
+> ⚠️ **Discrepancia abierta, registrada y no resuelta.** Una fuente describe una tasa de **3,4 por
+> mil con un alza del 9%**, que contradice el 4,9 con baja del 23% de todas las demás. Lo más
+> probable es que sea **la cifra de APAC (3,41) leída como global**, pero no se pudo confirmar.
+> **Se registran las dos y no se afirma ninguna.**
+
+**Por qué esta cifra ordena el plano:** USD 260 por pieza es lo que un operador paga por **no
+tener el registro**. Es el único plano de esta KB donde el valor de la custodia está publicado en
+dólares por evento, y por eso es el plano donde un caso de negocio no necesita estimarse.
 ## Opportunities by region
 
 ### North America
@@ -312,6 +336,59 @@ expediente**. Si la responsabilidad se activa por "debiera haber sabido", el ent
 **traza**: qué reseñas entraron al resumen, de qué ventana temporal, con qué volumen, y qué se
 dejó afuera y por qué. `ScalaConsultants/ABSA` (Apache-2.0) sirve justamente porque **expone
 pesos de atención por aspecto** — es decir, es auditable, no una caja negra. Receta 23.
+
+#### Plano del equipaje — North America (2026-11-23)
+
+**El artefacto que la regulación de esta región vuelve obligatorio: un reloj.** El reglamento de
+reembolsos automáticos del DOT exige devolver **la tasa de equipaje facturado** si la pieza no se
+entrega dentro de un plazo, contado desde la llegada del vuelo a la puerta, **una vez que el
+pasajero presenta un Mishandled Baggage Report (MBR)**.
+
+| Elemento | Valor | Confianza |
+|----------|-------|-----------|
+| Umbral doméstico | **12 horas** desde la llegada a la puerta | Coincidente en la guía de cumplimiento para pequeñas empresas del DOT y en cuatro fuentes secundarias |
+| Umbral internacional | **15 a 30 horas** según la duración del vuelo | Igual |
+| Disparador | El pasajero **presenta un MBR**; el reembolso es automático después | El propio DOT describe que el MBR puede presentarse en cualquier momento tras la no llegada |
+| Alcance | **La tasa pagada por facturar**, no el contenido de la maleta | Coincidente |
+| Cifra en disputa | Una fuente afirma un **umbral único de 6 horas** | **Atípica contra cinco fuentes. Se registra y no se afirma** |
+
+> ⚠️ **`transportation.gov` y `www.federalregister.gov` no resuelven desde esta red.** Para
+> confirmar el estado vigente del reglamento hay que habilitar esos dominios en la configuración
+> de red de la sesión. Todo lo de arriba es **secundario coincidente**.
+
+**El contexto regulatorio se movió en contra en 2026, y hay que decirlo completo:**
+
+- El **Quinto Circuito anuló** el reglamento de divulgación de tarifas de 2024 el **3-feb-2026**,
+  por motivos **procesales** — no porque la divulgación sea ilegal. El DOT volvió al estándar de
+  2011 el **2-jul-2026**. Una futura reglamentación puede reabrirlo.
+- El DOT **rescindió** la regla de compensación en efectivo por demoras y cancelaciones
+  controlables en **sep-2025**. Es una norma **distinta** del reembolso de la tasa de equipaje y
+  no parece afectarlo.
+- *"Airline Refunds and Other Consumer Protections III"* está en etapa de propuesta y una fuente
+  lo describe explícitamente como **reducción de carga regulatoria**. Sin resultado final.
+- Un aviso del **5-dic-2025** pausó la aplicación de la regla de reembolso por cancelación para
+  **renumeración de vuelo** hasta el **30-jun-2026**. Esa fecha ya pasó y **no se pudo determinar
+  si se extendió o caducó**.
+
+**Lectura para un engagement:** el reembolso de la tasa de equipaje es el elemento de esta familia
+que **sobrevivió** a un año de desregulación, y es el único que depende de **una hora registrada**
+en lugar de un juicio sobre si la demora era controlable. Un reloj es defendible; un juicio no.
+Por eso es el que conviene construir.
+
+**Adopción y players (2026):** Deloitte mide **25%** de viajeros estadounidenses usando IA
+generativa para planificar, contra 15% en 2025 (encuesta de 4.003 personas). Phocuswright mide
+**33%** usando plataformas tipo ChatGPT para investigar un viaje, **quintuplicado desde 2024**, y
+**64%** de los usuarios de IA usan herramientas autónomas antes que las del proveedor. En la
+conferencia Phocuswright 2026 expusieron United, Hilton, Airbnb, Priceline, Spotnana y Booking
+Holdings; Google puso en prueba en vivo la reserva agentic de hotel en EE.UU. en **ago-2026**. La
+Casa Blanca publicó en **mar-2026** recomendaciones legislativas para un marco federal único de IA.
+
+**Oportunidad Globant en North America, este plano:** un **motor de reembolso de tasa de equipaje
+con reloj auditable** — la Receta 26. Los insumos existen y son MIT: `jetway` emite y parsea el
+BSM y abre el expediente AHL con marca temporal, y el reloj del DOT necesita exactamente dos
+sellos de tiempo (llegada a puerta, entrega de la pieza) más el MBR. Es el mismo patrón que la
+Receta 10 (motor de derechos del pasajero con reloj) aplicado al objeto físico, y se vende solo
+con la cifra de SITA: **USD 260 por pieza**.
 
 ### EMEA
 
@@ -650,6 +727,69 @@ peor para quien vende resúmenes y mejor para quien los audita.
    origen con C2PA (`c2pa-swift`/`c2pa-js`, MIT *o* Apache-2.0) y verificarla en la ficha.
    Receta 24.
 
+#### Plano del equipaje — EMEA (2026-11-23)
+
+**La región con el equipaje más caro del mundo y con la reforma regulatoria más grande en 20 años.**
+
+**La cifra:** SITA mide en Europa el **costo promedio más alto por pieza mal manejada: USD 295**,
+contra USD 260 global y USD 210 en APAC. El mismo problema cuesta **40% más** en Europa que en
+Asia-Pacífico.
+
+**El límite de responsabilidad, que es la pieza dura y verificada de este plano:**
+
+| Elemento | Valor | Fuente |
+|----------|-------|--------|
+| Límite por **pasajero** (no por pieza) | **1.519 DEG** | Revisión quinquenal de la OACI bajo el art. 24 del Convenio de Montreal |
+| Vigente desde | **28-dic-2024** | Aviso de la Agencia de Transporte de Canadá; aplica a toda pérdida ocurrida desde esa fecha |
+| Límite anterior | 1.288 DEG | Alza de **~18%** |
+| Efecto sobre contratos | **Prevalece sobre las condiciones de transporte** del transportista que lo contradigan | Clyde & Co |
+| Valor declarado | El pasajero puede declarar un valor mayor en el check-in, que reemplaza el límite para esa pieza, normalmente con cargo | Varias fuentes de reclamos |
+
+**"Por pasajero y no por pieza" es la regla que un sistema implementa mal por defecto.** Dos
+viajeros que facturan una maleta cada uno tienen **cada uno** su límite de 1.519 DEG; una familia
+de cuatro con una sola maleta perdida no tiene cuatro límites. Un motor de liquidación que agregue
+por reserva en lugar de por pasajero paga de más o de menos, y en los dos casos es un hallazgo de
+auditoría. (El orden de implementación de la UK fue reportado como vigente el **7-feb-2025** por
+**una sola fuente**, sin verificar.)
+
+**La reforma del Reglamento 261/2004 — primera en más de 20 años, y la parte de equipaje de mano
+está en disputa entre fuentes:**
+
+- Acuerdo político en **trílogo el 15-jun-2026**. Según una guía, el Parlamento aprobó el texto
+  final el **7-jul-2026** y el Consejo el **13-jul-2026**. **No se encontró publicación en el
+  Diario Oficial**, y una fuente espera entrada en vigor en el **segundo semestre de 2027**.
+- **La disputa, registrada sin resolver:** una fuente afirma que un billete estándar dará derecho
+  a **dos piezas de equipaje de mano gratis**. Otra lo niega y sostiene que **lo gratuito es un
+  objeto personal** con límite de tamaño, y señala que **BEUC celebró la reforma pero advirtió
+  abiertamente que el equipaje de cabina no quedó gratis** como esperaban. **Se registran las dos
+  y no se afirma ninguna.**
+- Lo que sí coincide: **el precio anunciado debe incluir el equipaje de mano**, con tarifas más
+  bajas permitidas para quien viaje sin él; se **eliminan las cláusulas de no-show**; se mantiene
+  la compensación por demoras de más de 3 horas, cancelaciones dentro de 14 días y denegación de
+  embarque.
+- Contexto de las enmiendas: las de segunda lectura del Parlamento son del **21-ene-2026**, y en
+  el documento del Consejo **la Comisión rechaza la sugerencia de regular el derecho a llevar
+  equipaje de mano** — de ahí que ese punto sea el disputado.
+
+**Lectura:** el equipaje de mano en EMEA pasó de ser **precio** a ser **transparencia de precio**,
+que es un problema de *producto y de feed*, no de operación. [`AxelUser/carry-fit`](https://github.com/AxelUser/carry-fit)
+(MIT, 58★) verifica medidas por aerolínea y es el único repo permisivo que toca ese borde.
+
+**Lo demás de la región (2026):** las obligaciones de transparencia de la Ley de IA de la UE son
+**exigibles desde ago-2026**, con guías de la Comisión de **jul-2026**. Booking Holdings supera el
+**70%** de cuota OTA en Europa y está designado *gatekeeper*; **~75% de los hoteles europeos son
+independientes** y arriesgan ser invisibles en las respuestas de IA. Las startups europeas de IA
+de viajes levantaron **USD 158 M** en los tres primeros trimestres de 2026, **más del 20%** del
+venture europeo revelado del año (Crunchbase/HumanX vía Skift). El estudio de Marriott Bonvoy en
+EMEA (**22.000+** adultos) mide que **más de la mitad** ya usó IA para planificar, y el tramo de
+55-64 años pasó de 18% (2024) a **29%**.
+
+**Oportunidad Globant en EMEA, este plano:** un **motor de liquidación de responsabilidad por
+pasajero** que convierta 1.519 DEG a la moneda de la póliza en la fecha del hecho, agregue por
+**pasajero** y no por reserva, y deje el rastro para auditoría. Es el plano donde la norma ya está
+vigente (desde dic-2024), el costo por evento es el más alto del mundo (USD 295) y el riesgo de
+implementación por defecto es **agregar por el objeto equivocado**.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -894,6 +1034,62 @@ el que ningún producto occidental trae de fábrica: **etiquetar el origen y la 
 reseña y de cada resumen** (experiencia propia / incentivada / con enlace comercial). Es
 metadato, no modelo. Y el informe semestral coreano convierte la traza de la Receta 23 en un
 **entregable periódico contratable**, no en un proyecto de una vez.
+
+#### Plano del equipaje — APAC (2026-11-23)
+
+**La única región donde el rastreo de equipaje es una obligación regulatoria nacional — y no
+existe una sola capa abierta para cumplirla.** Es la contradicción más fuerte que esta KB midió
+en nueve planos de este vertical.
+
+| Elemento | Qué dice | Confianza |
+|----------|----------|-----------|
+| Mandato CAAC (China) | **RFID obligatorio** para aeropuertos con más de **10 millones de pasajeros/año**, implementación originalmente apuntada a 2021 | Fuente secundaria |
+| Expansión posterior | La política se amplió a **todas las rutas domésticas** y a aeropuertos regionales **pequeños y medianos** | Misma fuente secundaria |
+| Texto regulatorio de la CAAC | Pide *"new technologies on baggage tracking"* y **"establish a whole-process tracking mechanism for checked baggage"** | Citado del propio texto de la CAAC |
+| Capa abierta disponible | `rfid asset tracking stars:>=50` → **0 repos en todo GitHub** | Medido |
+
+**Hay mandato y no hay código.** Un operador chino obligado a rastrear por RFID no tiene ninguna
+opción open source con tracción: compra a proveedor o construye desde cero. En términos de la ley
+estructural de esta KB, es el caso más puro de *el piso open source cubre la matemática y se
+detiene en el compromiso* — solo que acá ni la matemática está cubierta.
+
+**Y la región con el equipaje mejor manejado del mundo:** SITA mide en Asia-Pacífico la **tasa más
+baja (3,41 por 1.000)** y el **costo más bajo por pieza (USD 210)**. Es el contraejemplo que
+conviene tener a mano: la región con el mandato más duro tiene también el mejor desempeño, lo que
+sostiene el caso de negocio del rastreo mucho mejor que cualquier proyección de proveedor.
+(**Ojo:** esta cifra de 3,41 es la candidata más probable a ser el "3,4 global" discrepante
+registrado arriba en *El costo del equipaje*.)
+
+**Adopción de la Resolución 753, con las dos cifras que circulan y que no son comparables:**
+
+- Un resumen basado en SITA dice que el rastreo bajo la Resolución 753 **superó el 50% de la
+  industria**, con cumplimiento total apuntado a **2027**.
+- Una cifra más antigua de una encuesta de IATA citada por un proveedor dice que **44%** de las
+  aerolíneas lo tenían plenamente implementado y **41%** en progreso.
+- Adopción de RFID específicamente: **27% general, 54% en mega aeropuertos**.
+- **Miden cosas distintas en años distintos. No se restan ni se comparan.**
+
+**India — la brecha, escrita en lugar de omitida:** se buscó una regla de la **DGCA** de 2026
+sobre rastreo de equipaje y **no existe en las fuentes consultadas**. Lo que devuelve la búsqueda
+de DGCA y equipaje son **baterías de litio** (celdas de 2 a 100 Wh en cabina con aprobación de la
+aerolínea; bajo 2 Wh prácticamente sin restricción, consistente con el marco IATA), y de fuente
+secundaria. **India tiene el crecimiento de tráfico y no tiene la norma de custodia.**
+
+**Otros datos de la región:** el aeropuerto de Bangkok introdujo **inspecciones manuales de
+equipaje desde el 16-oct-2026** (es control de seguridad, **no** rastreo — no mezclarlos).
+Booking.com mide entre **60% y 67%** de viajeros APAC usando IA para planificar según el estudio;
+Criteo señala a la región con **la mayor adopción de planificación de viaje asistida por IA de
+punta a punta**. Las OTA chinas están exportando sus ecosistemas mobile-first con IA al resto de
+Asia-Pacífico; Fliggy lanzó su *AI agent travel skill*. El regulador de mercado de China determinó
+que **Trip.com Group violó la ley antimonopolio** — no es específico de IA, pero pesa sobre el
+poder de plataforma en la región.
+
+**Oportunidad Globant en APAC, este plano:** **la capa de cumplimiento de la Resolución 753 para
+un operador con mandato CAAC.** Es el único lugar del vertical donde el comprador tiene una
+obligación legal, ningún open source con tracción para cumplirla, y un KPI publicado contra el que
+medirse. `jetway` (MIT) aporta el modelo de mensaje y de expediente; el lector RFID y el AODB no
+existen abiertos y hay que integrarlos o construirlos — **y eso hay que decirlo en la propuesta,
+no después**.
 
 ### LATAM
 
@@ -1191,6 +1387,57 @@ reseñas que no controla. Eso vuelve a la **reseña con estadía probada** (Rece
 que un ente de turismo nacional podría exigir a su oferta inscripta para poder recomendarla.
 **Es el único lugar del mundo donde este plano tiene un comprador público en lugar de un
 regulador**, y es la clase de encargo que esta región ya demostró que compra.
+
+#### Plano del equipaje — LATAM (2026-11-23)
+
+**La región donde la norma de equipaje es la más explícita del mundo en el mínimo gratuito, y
+donde el instrumento de 2026 que todos citan no es de equipaje.**
+
+| Instrumento | Estado a 2026-11-23 | Qué cubre |
+|-------------|---------------------|-----------|
+| **Resolución ANAC 400/2016, art. 14** (Brasil) | **Vigente.** Confirmada como vigente en nov-2026 por varias fuentes | **Franquía mínima de 10 kg de equipaje de mano sin costo adicional.** Las medidas las fija cada compañía (lo más citado: 55×35×25 cm) |
+| **Resolución ANAC 813/2026** | **En vigor desde el 26-oct-2026** (registro oficial de la ANAC) | **NO es equipaje.** Información, asistencia material y reembolso en demora y cancelación. Migalhas la llama *"retrocesso na proteção do passageiro aéreo"* |
+| **Resolución ANAC 819/2026** | Nueva redacción del art. 20 vigente desde el **25-nov-2026** según **una sola fuente de terceros** | Sin confirmar en fuente oficial. **Se registra como no verificado** |
+| **PL 5.041/2025** (Congreso) | **En tramitación.** Mientras no se apruebe y sancione, rige la Resolución 400 | Garantizaría expresamente **10 kg de mano + un objeto personal gratis** en vuelos domésticos e internacionales operados en Brasil |
+
+> ⚠️ **La trampa de precisión de esta región, y es fácil de pisar.** La Resolución 813/2026 es el
+> instrumento brasileño de 2026 del que habla toda la prensa de derechos del pasajero, entró en
+> vigor hace cuatro semanas, y **no toca el equipaje**. Un informe que la cite como la norma de
+> equipaje vigente está mal, aunque la fecha y el número sean correctos. **La norma de equipaje
+> sigue siendo el art. 14 de la 400/2016.** (Una fuente menciona 12 kg en lugar de los 10 kg del
+> PL 5.041/2025: divergencia registrada, no resuelta.)
+
+**Y el dato que da el caso de negocio:** el **equipaje está entre los temas más reclamados** en la
+plataforma Anac Passageiro en 2026, sobre un total reportado de **98.000 quejas** contra las
+aéreas. Es demanda medida, no proyectada.
+
+**Regulación de IA aplicada a viajes: ninguna, en ningún país de la región.** Se buscó
+explícitamente y **no se encontró norma específica** — la única referencia regulatoria que
+devuelven las búsquedas regionales es global (la Ley de IA de la UE). Es el mismo resultado que el
+plano de la reseña registró en la octava pasada, **medido de nuevo con consultas distintas y con
+el mismo resultado**. La ausencia queda escrita; no omitida.
+
+**Adopción y players (2026):** un estudio patrocinado por Booking.com mide que **LATAM lidera
+globalmente en familiaridad con IA**, con **89%** afirmando que sabe cómo funciona. Phocuswright
+advierte que **cerca de la mitad** del crecimiento récord de reservas de 2025 vino del **tipo de
+cambio, no de viajeros** — la cautela que esta KB ya tiene escrita y que se reafirma. En el sector
+público, Peru.travel opera su asistente oficial (MINCETUR + PROMPERÚ, tecnología Mindtrip, fecha
+ya corregida en la octava pasada a 14/15-abr-2026) y Chile tiene app con asistente, geolocalización
+e información personalizada. Rappi empuja su vertical de viajes combinando lealtad,
+personalización e IA (PhocusWire, ene-2026). MarketsandMarkets estima el mercado regional de IA en
+turismo en **USD 93,7 M (2024) → ~372,6 M (2029)**: **estimación de proveedor**, etiquetada.
+
+**El contraste que conviene tener a mano:** SITA mide en **África** la tasa más alta del mundo,
+**12,1 por 1.000**, contra 4,9 global. No es LATAM, pero es la referencia que ordena cualquier
+conversación sobre mercados emergentes y custodia de equipaje.
+
+**Oportunidad Globant en LATAM, este plano:** un **verificador de franquía mínima contra el
+sistema de la aerolínea** — el equivalente de equipaje a la Receta 21 (reporte del 10% de
+habitaciones accesibles contra el PMS). La 400/2016 fija un piso de 10 kg **en la norma**, cada
+compañía fija las medidas **en su tarifa**, y la brecha entre las dos es exactamente lo que se
+reclama en Anac Passageiro. Con `carry-fit` (MIT) como base de medidas y el `pkg/dcs` de `jetway`
+(MIT) como lado del operador, es construible con licencias limpias — y es el único plano de esta
+región donde la obligación es **numérica y verificable** en lugar de interpretable.
 
 ## Posicionamiento Globant
 

@@ -562,3 +562,99 @@ sí puede hacer, con lo medido arriba: (a) **citar y enlazar** la reseña en lug
 sin rastro, (b) **declarar el volumen y la ventana temporal** sobre la que resume, y (c) **no
 suprimir la cola negativa** — que es precisamente el hallazgo de Which? de julio-2026 contra
 los resúmenes AI de Tripadvisor. Receta completa en `compose/patterns.md` → Recetas 22 y 23.
+
+## Equipaje — la única pieza del viaje que es un objeto físico con cadena de custodia
+
+**Noveno plano, sin una sola mención previa en los ocho archivos de esta KB.** Los ocho planos
+anteriores (frontera, vuelo en curso, pago, visibilidad, tierra, emisiones, accesibilidad,
+reseña) tratan **información sobre el viaje**. El equipaje es distinto: es **una cosa**, viaja
+**separada del pasajero**, y cuando no llega, alguien tiene que responder *dónde está* con un
+registro, no con una estimación. Medido el 2026-11-23.
+
+### La corrección que ordena todo este plano, y que yo mismo tuve que hacer a mitad de camino
+
+Empecé midiendo con la palabra de la industria y concluí que el plano estaba **vacío**:
+
+| Búsqueda | Resultado | Lo que yo concluí | Lo que era verdad |
+|----------|-----------|-------------------|-------------------|
+| `BSM baggage source message` | **0 repos en todo GitHub** | "el mensaje que mueve el equipaje no tiene implementación abierta" | **Falso.** La implementación existe, en `pkg/baggage` de un repo cuya descripción nunca dice *baggage* |
+| `bag tag IATA` | **0 repos en todo GitHub** | "no hay nada sobre etiquetas de equipaje" | Cierto como medición del índice; falso como medición del mundo |
+| `IATA Resolution 753` | **1 repo**, 0★, sin licencia | "un solo repo nombra la norma" | Cierto, y sigue siendo cierto — pero **no** es el único que la implementa |
+
+**La ley de método, generalizable a los doce verticales:** una búsqueda que devuelve cero es
+evidencia sobre **el índice**, no sobre **el mundo**. GitHub indexa descripciones y READMEs, no
+árboles de directorios. Encontré `pkg/baggage` **clonando** un repo que había aparecido bajo otra
+consulta (`edifact iata type b message`) y haciendo `grep` del árbol. Es la versión fuerte de la
+ley que el ciclo de retail dejó escrita como *"un directorio ausente es evidencia sobre tu
+conjetura, no sobre el repo"*: aquí era un **resultado cero** el que hablaba de mi conjetura.
+
+### La cuarta colisión de palabra de industria — y la más peligrosa de las cuatro
+
+| Consulta | Total | Resultado #1 por estrellas | Qué es en realidad |
+|----------|-------|---------------------------|--------------------|
+| `baggage stars:>=10` | 25 repos | [`w3c/baggage`](https://github.com/w3c/baggage) 62★ | **Una especificación del W3C de *distributed tracing*.** `baggage` es el nombre del formato de cabecera HTTP que propaga contexto entre servicios. Nada que ver con aviación |
+| `luggage stars:>=10` | 16 repos | [`bevacqua/local-storage`](https://github.com/bevacqua/local-storage) 523★ MIT | Un wrapper de `localStorage`. Entra por el emoji `:left_luggage:` en su descripción |
+| `luggage stars:>=10` | — | [`unixorn/luggage`](https://github.com/unixorn/luggage) 392★ | Empaquetado de `.pkg` en macOS |
+| `luggage stars:>=10` | — | [`danderfer/Comp_Sci_Sem_2`](https://github.com/danderfer/Comp_Sci_Sem_2) 229★ | El guion de *Bee Movie* ("According to all known laws of aviation…"). Entra por la palabra *aviation* |
+
+Las tres colisiones anteriores de esta KB (hoppers de Minecraft = inventario; *returns* =
+sentencias `return`; *fulfillment* = webhooks de Dialogflow) eran ruido. **Esta es peor: la
+colisión es ella misma un estándar del W3C**, con repo en la organización `w3c`, 15 forks y
+especificación publicada. Un compilador que ordene por estrellas y confíe en la palabra mete
+**el formato de propagación de contexto distribuido del W3C** en una KB de viajes como si fuera
+infraestructura de equipaje. Queda registrado como descarte explícito, no como ausencia.
+
+**Regla:** consultar el **objeto físico y su documento** (`bag tag`, `BSM`, `AHL`, `WorldTracer`,
+`Resolution 753`), nunca el sustantivo común. Y cuando el sustantivo común devuelva repos con
+muchas estrellas, **leer la descripción antes que la cifra**.
+
+### Capa de agentes de este plano — lo que existe, medido
+
+Ninguno de estos agentes toca el equipaje. Se listan porque son **la superficie agentic
+realmente disponible sobre el viaje aéreo**, y porque la Receta 25 los compone con la capa de
+mensajería que sí lo toca.
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Qué hace |
+|--------|------|--------------------------|-------|-------------|----------|
+| Award Travel Finder MCP | [AwardTravelFinder/mcp](https://github.com/AwardTravelFinder/mcp) | MIT (1076B) | 17 | 2026-11-20 | Servidor MCP de disponibilidad de vuelos con millas. Entra por primera vez |
+| flightradar-mcp-server | [Cyreslab-AI/flightradar-mcp-server](https://github.com/Cyreslab-AI/flightradar-mcp-server) | MIT (1056B) | 7 | 2026-09-20 | MCP sobre AviationStack: estado de vuelo y horarios. **Llave ajena** |
+| aviasales-mcp | [stufently/aviasales-mcp](https://github.com/stufently/aviasales-mcp) | **GPL-3.0** (35149B) | 9 | 2026-11-09 | MCP de precios vía Travelpayouts. Copyleft fuerte: se corre como servicio, no se embebe |
+| disruption-rebooking-copilot | [robsarran65/disruption-rebooking-copilot](https://github.com/robsarran65/disruption-rebooking-copilot) | MIT (1075B) | 0 | 2026-08-10 | Copiloto agentic de IROPS (irregular operations) con reruteo explicable. **0★ pero es el único repo de IROPS agentic con licencia permisiva** |
+| mcp-delta | [markswendsen-code/mcp-delta](https://github.com/markswendsen-code/mcp-delta) | **NO HAY ARCHIVO** en ninguna ruta estándar | 6 | 2026-03-11 | MCP de Delta Airlines. **Inusable**: sin licencia y automatiza el sitio de una aerolínea nombrada |
+
+### Las búsquedas de este plano que devolvieron cero o casi, escritas
+
+| Consulta | Total | Lectura |
+|----------|-------|---------|
+| `bag tag IATA` | **0** | La etiqueta — el documento que identifica la pieza — no tiene una sola implementación nombrada |
+| `BSM baggage source message` | **0** | Ver la corrección de arriba: cero en el índice, **no** cero en el mundo |
+| `chain of custody tracking stars:>=50` | **0** | El concepto central del plano no tiene ninguna librería genérica con tracción |
+| `airport operations stars:>=20` | **0** | No existe software de operación aeroportuaria abierto con tracción |
+| `rfid asset tracking stars:>=50` | **0** | La tecnología que la CAAC **obliga** en China (ver `intel/market.md` → APAC) no tiene capa abierta |
+| `airline operations agent stars:>=10` | **0** | **No hay un solo agente de operación aérea con ≥10★.** El plano agentic de operaciones está sin abrir |
+| `baggage tracking stars:>=5` | **2** | `bchhaglani/Baggage-tracking` (6★, sin licencia, último push 2019-03-21) y `ParameswarKanuparthi/...` (5★, sin licencia, 2020-05-31). **Los dos muertos y los dos sin licencia** |
+| `WorldTracer` | **4** | Ninguno pasa de 0★. El sistema que la industria usa de hecho para rastrear equipaje perdido no tiene eco abierto |
+
+### Re-medición 2026-11-23 — control anti-fabricación
+
+Los ciclos 5, 6 y 8 de esta KB inventaron curvas de estrellas, y el ciclo 9 lo corrigió. El
+control se mantiene: se re-mide lo ya escrito y **se registra el delta aunque sea aburrido**.
+
+| Repo | Ciclo anterior | Hoy | Delta |
+|------|---------------|-----|-------|
+| LetsFG/LetsFG | 2296 (2026-11-23, octava pasada) | 2297 | +1 |
+
+Un día, +1 estrella. **Registrar un delta plano es la evidencia de que esta pasada no inventó una
+curva.** La licencia de `LetsFG` se re-verificó del archivo: `LICENSE` de 2173B que dice
+`MIT License / Copyright (c) 2026 LetsFG (MENTAL BALANCE sp. z o.o.)`, mientras la API de GitHub
+sigue devolviendo `NOASSERTION` — **lo que esta KB ya tenía escrito es correcto** (MIT real más
+el addendum comercial del 1%), y no se cambia.
+
+### Regla de diseño de este plano
+
+Un agente **no puede decir dónde está una maleta**. Puede decir **qué registro existe sobre ella
+y de cuándo es** — que es exactamente la forma de tres estados que esta KB ya adoptó para la
+ficha de accesibilidad física (Receta 20): `registrado / no registrado / registro vencido`.
+La Resolución 753 de IATA da los cuatro puntos de custodia y **no obliga ninguna tecnología**:
+código de barras, escaneo manual u OCR son válidos. Por eso el dato siempre tiene una **hora de
+último escaneo**, y un agente honesto la devuelve junto con la posición. Receta 25.

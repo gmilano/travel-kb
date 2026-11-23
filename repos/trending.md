@@ -11,6 +11,43 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — novena pasada (plano del equipaje: 72.163 líneas MIT que ninguna búsqueda encuentra)
+
+Noveno ciclo del mismo día, lado infraestructura. **Append-only**: las ocho pasadas anteriores
+quedan intactas debajo. Los agentes de esta misma pasada están en `agents/trending.md`.
+Verificación: existencia por `git ls-remote` (21/21 vivos), métricas por `search/repositories`,
+**licencia leída del archivo byte a byte**, y el repo central **clonado y leído**.
+
+**El titular: empecé esta pasada concluyendo que el plano del equipaje estaba vacío y era falso.**
+`BSM baggage source message` devuelve **0 repos en todo GitHub**; `bag tag IATA` devuelve **0**.
+La implementación existe de todos modos — en `pkg/baggage` de un repo cuya descripción nunca dice
+*baggage*, encontrado clonando un resultado de otra consulta y haciendo `grep` del árbol.
+**Una búsqueda que devuelve cero es evidencia sobre el índice, no sobre el mundo.**
+
+| Repo | Licencia (archivo leído) | Stars | Forks | Último push | Por qué entra |
+|------|--------------------------|-------|-------|-------------|---------------|
+| [adamf/jetway](https://github.com/adamf/jetway) | **MIT** (`LICENSE` 1070B) | 17 | 5 | **2026-11-23** | **El hallazgo de la pasada.** Gateway de mensajería de reservas aerolínea/GDS en Go, 72.163 líneas, creado 2026-08-29. Habla Type B/AIRIMP, EDIFACT/PADIS y NDC. `pkg/baggage` implementa **BSM, BPM, BUM** y `tracing.go` los expedientes **AHL/OHD/FWD** emparejados por etiqueta. Push el día del ciclo |
+| [adamf/wholesky](https://github.com/adamf/wholesky) | **MIT** (`LICENSE` 1070B) | 4 | 0 | **2026-11-23** | Un día-Tierra de aviación simulado sobre Jetway. Es el **plan de pruebas** del anterior: permite ejercitar una integración de equipaje contra tráfico global sintético antes de tocar un carrier |
+| [jf-tech/omniparser](https://github.com/jf-tech/omniparser) | **MIT** (1070B) | 1085 | 82 | 2026-10-11 | Entra por primera vez. PADIS es EDIFACT: el sobre es commodity y permisivo aunque el mensaje aeronáutico no lo sea |
+| [indice-co/EDI.Net](https://github.com/indice-co/EDI.Net) | **MIT** (1074B) | 491 | **172** | 2025-12-01 | Entra por primera vez. EDIFACT/X12/TRADACOMS en .NET. 172 forks: la capa más integrada del plano |
+| [michaelachrisco/Electronic-Interchange-Github-Resources](https://github.com/michaelachrisco/Electronic-Interchange-Github-Resources) | **MIT** (1072B) | 353 | 58 | 2026-11-19 | Entra por primera vez. Índice curado de EDI: el atajo para encontrar un dialecto concreto sin re-medir |
+| [nerdocs/pydifact](https://github.com/nerdocs/pydifact) | **MIT** (1081B) | 191 | 54 | **2026-11-23** | Entra por primera vez **con push del día del ciclo**. EDIFACT en Python |
+| [szpajder/libacars](https://github.com/szpajder/libacars) | **MIT** (`LICENSE.md` 1076B) | 156 | 33 | 2026-11-22 | Entra por primera vez. Decodifica payloads ACARS: complementa el plano de vuelo en curso con el **canal** por el que esos mensajes llegan |
+| [php-edifact/edifact](https://github.com/php-edifact/edifact) | **LGPL-3.0** (7632B) | 289 | 89 | 2025-10-30 | Entra **con cautela de licencia**: copyleft débil. Se enlaza; no se embebe modificado sin publicar |
+| [seemoo-lab/openhaystack](https://github.com/seemoo-lab/openhaystack) | **AGPL-3.0** (32387B) | 14264 | 719 | 2026-08-17 | Entra como **medición de la asimetría**, no como componente: 14.264★ del lado del pasajero que espera su maleta. AGPL: inembebible |
+| [hybridgroup/go-haystack](https://github.com/hybridgroup/go-haystack) | **MIT** (1071B) | 1546 | 50 | 2026-10-13 | Entra por primera vez. Rastreo Find My en Go. **El único de esa capa que es permisivo** |
+| [Lex-van-Os/Beltline](https://github.com/Lex-van-Os/Beltline) | **NO HAY ARCHIVO** | 0 | 0 | 2026-11-18 | Entra **solo como descarte documentado**: el **único repo en todo GitHub que nombra la Resolución 753 de IATA**, simulación .NET 10 dirigida por eventos, creado hace un mes — y sin licencia es inusable |
+| [samdengler/verified-air](https://github.com/samdengler/verified-air) | **NO HAY ARCHIVO** | 1 | 0 | 2026-11-10 | Entra como descarte: reglas de oferta y orden de aerolínea **en Lean, con demostraciones formales**. Lo más interesante del plano y contractualmente inservible |
+| [w3c/baggage](https://github.com/w3c/baggage) | **W3C Software and Document License** (reports) ***y*** **W3C 3-clause BSD** (tests) — GitHub dice `NOASSERTION` | 62 | 15 | 2026-06-30 | Entra **como colisión y como caso de licencia**: no es de viajes, es *distributed tracing*. Y es el **séptimo dual licensing invisible a la API** de esta KB — el primero partido **por tipo de artefacto** y no por elección del usuario |
+| [OpenTravel/OTM-DE](https://github.com/OpenTravel/OTM-DE) | **NO HAY ARCHIVO** | 22 | 11 | **2020-11-23** | Entra como descarte: su propia descripción dice *"Maintenance Release ONLY"*. **Seis años exactos sin push** el día de esta medición |
+
+**Ley estructural re-medida en un segundo vertical, con cifras propias:** el ciclo 9 de retail
+encontró que el rastreo de paquetes que existe es de **consumidor** (GPL-3) y del lado del
+comerciante no hay nada. En travel: **15.810★ combinadas** del lado del pasajero que espera su
+maleta (`openhaystack` + `go-haystack`) contra **11★ y cero mantenidas** del lado del operador
+que debe responder dónde está. Tres órdenes de magnitud. **El rastreo es una comodidad y la
+custodia es un pasivo**, y el open source produce comodidades.
+
 ## 2026-11-23 — octava pasada (plano de la reseña: la cohorte de 4535★ con un solo push en 2026)
 
 Octavo ciclo del mismo día, lado infraestructura. **Append-only**: las siete pasadas anteriores

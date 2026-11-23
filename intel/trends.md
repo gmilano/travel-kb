@@ -713,3 +713,56 @@ mismo corpus y uno advirtió: no es un límite del método, es una decisión de
 diseño. Y para quien construye, es la regla operativa más clara del plano:
 **la minoría grave no se promedia, se eleva** — con volumen y ventana temporal
 declarados. Receta 23.
+
+## El equipaje — la tendencia que mejora mientras su software no existe (2026-11-23)
+
+Noveno plano de esta KB. La tendencia tiene una forma que no se repite en ningún otro plano del
+vertical: **el indicador mejora con fuerza, el costo unitario está publicado, la obligación está
+vigente en tres continentes, y la capa de software abierta es un repo de 17 estrellas.**
+
+**Lo que mejora.** SITA mide la tasa global de equipaje mal manejado en **4,9 por 1.000 pasajeros**
+en 2025, **una baja del 23%** interanual, con el volumen total cayendo 19% a **24 millones de
+piezas** — las dos cifras **por debajo de prepandemia**, y sobre un récord de ~5.000 millones de
+pasajeros. Es la mejora operativa más grande que esta KB registró en cualquier plano de cualquier
+industria, y se atribuye a digitalización y rastreo. (⚠️ Primario no leído: el PDF del informe no
+resuelve desde esta red. Hay una cifra discrepante de 3,4 con alza del 9%, probablemente la de
+APAC leída como global; **se registran las dos**.)
+
+**Lo que no cambia.** Siguen siendo **USD 6.300 millones al año** y **USD 260 por pieza** — y SITA
+lo traduce a la frase que vende el plano: **cinco piezas mal manejadas borran la ganancia de un
+vuelo entero**. El riesgo no está distribuido: pasa de **1,65 por mil en doméstico a 9,12 en
+internacional**, un factor de 5,5 que se concentra en **la transferencia**, que es exactamente el
+tercero de los cuatro puntos de custodia de la Resolución 753.
+
+**La tendencia regulatoria va en tres direcciones a la vez, y es la primera vez que esta KB mide
+eso.** En los ocho planos anteriores la regulación empujaba hacia el mismo artefacto en las tres
+regiones (un registro replayable de por qué un sistema automatizado decidió algo). Acá no:
+
+| Región | Hacia dónde empuja | Artefacto que exige |
+|--------|-------------------|---------------------|
+| North America | **Un reloj.** Reembolso de la tasa si la pieza no llega en 12 h (doméstico) | Dos sellos de tiempo y un MBR |
+| EMEA | **Un límite por pasajero.** 1.519 DEG vigentes desde dic-2024, que prevalecen sobre las condiciones de transporte | Un motor de liquidación que agregue por **pasajero**, no por reserva |
+| APAC | **Una tecnología.** Mandato RFID de la CAAC, *whole-process tracking* | Infraestructura física de lectura |
+| LATAM | **Un número.** Franquía mínima de 10 kg del art. 14 de la Resolución 400 | Verificación de tarifa contra norma |
+
+**Cuatro obligaciones, cuatro artefactos distintos, ninguna convergencia.** Para una práctica
+global eso significa lo contrario de lo que significaba en los planos anteriores: no hay un solo
+build que sirva en las cuatro jurisdicciones. Hay **un modelo de datos común** — la pieza, la
+etiqueta, el evento con hora — y **cuatro consumidores distintos** de ese modelo. Es un argumento
+de arquitectura, no de cumplimiento: modelar el evento de custodia una vez y derivar las cuatro
+obligaciones, en lugar de construir cuatro integraciones.
+
+**La tendencia de software, medida y contraintuitiva.** La capa existe y **apareció este año**:
+[`adamf/jetway`](https://github.com/adamf/jetway) fue creado el **29-ago-2026**, tiene 72.163
+líneas de Go bajo MIT, y tuvo push **el día de esta medición**. Tres meses de existencia para la
+primera implementación abierta de BSM/BPM/BUM y de los expedientes AHL/OHD/FWD. **Es demasiado
+nuevo para llamarlo tendencia y demasiado grande para ignorarlo**: 5 forks, un mantenedor,
+pre-1.0 por declaración propia. La lectura honesta es que el plano pasó de *imposible* a
+*posible con riesgo de proveedor único* en un trimestre.
+
+**Y la tendencia que no se movió.** `airline operations agent stars:>=10` devuelve **0 repos en
+todo GitHub**. Mientras la planificación de viaje tiene adopción de consumidor del 25% al 67%
+según la región, **la operación aérea no tiene un solo agente con diez estrellas**. Toda la ola
+agentic de 2026 que esta KB viene registrando está del lado de **buscar y reservar**; ninguna del
+lado de **operar y responder**. Es la brecha más grande y más estable del vertical, y es donde un
+estudio con acceso a sistemas de operador tiene ventaja sobre un laboratorio de IA.
