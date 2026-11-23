@@ -62,6 +62,29 @@ huésped, parsear la MRZ desde una foto, y probar un atributo sin guardar el doc
 habilita decidir si ese viajero puede entrar: esa regla no existe en open source (ver
 `repos/foundations.md` → brechas medidas).
 
+## Vuelo en curso — lo que un agente puede llamar sobre el estado real del avión
+
+Agregada en la **segunda pasada del 2026-11-23**. Todas las recetas de disrupción de esta KB
+decían "el agente detecta el retraso" sin decir **con qué**. Estas son las piezas con licencia
+permisiva verificada que cierran esa frase. La capa completa —incluido el músculo copyleft,
+que es la mayor parte— está en `repos/foundations.md` → *Datos operativos de vuelo*.
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Descripción |
+|--------|------|--------------------------|-------|-------------|-------------|
+| traffic | [xoolive/traffic](https://github.com/xoolive/traffic) | MIT (`license.md`, 1069B) | 525 | 2026-11-11 | Procesamiento y análisis de tráfico aéreo: trayectorias, fases de vuelo, limpieza y remuestreo. La pieza que convierte posiciones crudas en algo sobre lo que un agente puede razonar. |
+| FlightRadarAPI | [JeanExtreme002/FlightRadarAPI](https://github.com/JeanExtreme002/FlightRadarAPI) | MIT (1089B) | 442 | 2026-11-20 | SDK **no oficial** de FlightRadar24 (Python, NodeJS, Go). Vivo y mantenido. **Ver advertencia abajo: el riesgo es de ToS, no de licencia.** |
+| flighty-mcp-server | [CPLX/flighty-mcp-server](https://github.com/CPLX/flighty-mcp-server) | MIT (1079B) | 35 | 2026-08-31 | MCP server de seguimiento de vuelos, 12 tools. **El único MCP de estado de vuelo del ecosistema por encima de 10★** — y está en 35★ y sin push desde agosto. |
+| Travel Impact Model | [google/travel-impact-model](https://github.com/google/travel-impact-model) | CC-BY-4.0 (18658B) | 195 | 2026-11-04 | El modelo de emisiones de vuelo que usa Google Flights. Referencia pública de facto para el CO₂e de un itinerario. **CC-BY-4.0 es licencia de contenido, no de software.** |
+| adsb_deku | [rsadsb/adsb_deku](https://github.com/rsadsb/adsb_deku) | MIT (1071B) | 732 | 2026-01-04 | Decodificador ADS-B en Rust, el permisivo más estrellado del plano. **~10 meses sin push.** |
+| ourairports-data | [davidmegginson/ourairports-data](https://github.com/davidmegginson/ourairports-data) | **Unlicense — dominio público** (1211B) | 534 | 2026-11-23 | Aeropuertos, pistas y frecuencias del mundo en CSV, sin condiciones de uso. Push el mismo día de este ciclo. |
+| airportsdata | [mborsetti/airportsdata](https://github.com/mborsetti/airportsdata) | MIT (1191B) | 172 | 2026-11-21 | Aeropuertos **con huso horario**. GitHub lo marca `NOASSERTION`; el archivo es MIT. Sin huso horario no se computa un umbral de "3 horas de retraso". |
+
+**Lo que esto habilita y lo que no.** Habilita saber dónde está el avión, qué trayectoria
+describió, en qué aeropuerto aterriza y cuánto CO₂e emitió. **No** habilita saber qué se le
+debe al pasajero por ese retraso: esa regla no existe en open source en ninguna jurisdicción
+(ver `repos/foundations.md` → brechas del plano operativo). Es la **misma forma** que el plano
+de frontera: se lee el hecho, no se conoce la regla.
+
 ## Re-medición 2026-11-23 — control anti-fabricación
 
 Dos días después del ciclo anterior, las mismas consultas sobre los mismos slugs:
@@ -97,6 +120,12 @@ de agosto (ver *Corrección del historial* al final). Las cifras de arriba son l
 | [Arg0s1080/mrz](https://github.com/Arg0s1080/mrz) | Generador y validador de MRZ, 395★, aparece primero en toda búsqueda de MRZ | **GPL-3.0** (`LICENSE`, 35147B leídos). Funciona perfecto como herramienta separada; embebido en un producto de cliente, contamina. Las alternativas permisivas son `PassportEye` (MIT) y `fastmrz` (Apache-2.0). |
 | [evermeer/PassportScanner](https://github.com/evermeer/PassportScanner) | BSD-3-Clause real (1482B leídos), 473★ | **Sin push desde el 2019-12-19 — casi siete años.** Licencia impecable, proyecto muerto. |
 | microblink/blinkid-android (468★) y blinkid-ios (400★) | Aparecen entre los primeros resultados de "MRZ" y "ID scanning" | SDK **comercial**: `NOASSERTION` y `NONE` respectivamente. Son producto de pago con código visible, no open source utilizable. |
+| [Jxck-S/plane-notify](https://github.com/Jxck-S/plane-notify) | **2554★**, el segundo repo más estrellado del tema `adsb`; aparece en toda búsqueda de seguimiento de aeronaves y GitHub lo muestra como `NOASSERTION` | **"Plane Notify Source-Available License 1.0"** (12453B, leído el 2026-11-23): licencia a medida, adaptada de **PolyForm Shield 1.0.0 y Elastic License 2.0**. **No es open source.** Es la trampa de mayor tamaño del plano de datos de vuelo, y la segunda de todo el vertical después de `JourniOne-Planning-Skills`. |
+| [JeanExtreme002/FlightRadarAPI](https://github.com/JeanExtreme002/FlightRadarAPI) | MIT real (1089B leídos), 442★, mantenido | La licencia cubre **el SDK**, no el dato. Es un cliente **no oficial** de FlightRadar24: **riesgo de términos de servicio, no de licencia** — el mismo patrón que los conectores de LetsFG. Piloto interno sí; entregable a cliente, con contrato de datos. |
+| [openskynetwork/opensky-api](https://github.com/openskynetwork/opensky-api) | Bindings GPL-3.0 de una red de datos abierta y académica: parece el acceso gratuito por defecto a posiciones de vuelo | **El código es el problema menor.** Las fuentes consultadas coinciden en que la licencia **de datos** de OpenSky cubre investigación y educación sin fines de lucro, evaluación interna y fines gubernamentales — **uso comercial no licenciado**. Se puede cumplir la GPL perfectamente y seguir sin derecho al dato. ⚠️ No verificado en la fuente primaria: `opensky-network.org` no resuelve DNS desde este entorno. |
+| [wiedehopf/readsb](https://github.com/wiedehopf/readsb) (707★) y [wiedehopf/tar1090](https://github.com/wiedehopf/tar1090) (1979★) | Ambos `NOASSERTION` en GitHub, como `valhalla` y como `airportsdata` — donde esa marca escondía licencias permisivas reales | Aquí `NOASSERTION` esconde lo contrario: **GPL-3.0-or-later** y **GPL-2.0-or-later** respectivamente, leídos del archivo. **Tercera confirmación de la misma regla: `NOASSERTION` no es un veredicto en ninguna dirección — hay que abrir el archivo.** En el mismo barrido, `airportsdata` resultó MIT y estos dos resultaron GPL. |
+| [google/travel-impact-model](https://github.com/google/travel-impact-model) | Repo de Google, 195★, vivo: se lee como una librería de emisiones lista para integrar | Es **CC-BY-4.0**, licencia de **contenido**. Permite uso comercial con atribución —lo cual es bueno— pero Creative Commons desaconseja expresamente sus licencias para software. Para el modelo y sus tablas encaja; para copiar código, consultar con legales. |
+| [rsadsb/adsb_deku](https://github.com/rsadsb/adsb_deku) | MIT (1071B leídos), 732★ — el decodificador permisivo más estrellado | **Sin push desde el 2026-01-04 (~10 meses).** Licencia ideal, mantenimiento incierto. El músculo mantenido del segmento (`readsb`, `tar1090`, `ultrafeeder`) es todo GPL. |
 
 ## Corrección del historial de esta KB
 

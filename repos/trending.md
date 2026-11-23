@@ -11,6 +11,50 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — segunda pasada (plano operativo de vuelo)
+
+Segundo ciclo del mismo día; la sección de la mañana queda intacta debajo. **El hallazgo de
+esta pasada no es un repo ni un cambio de licencia: es una licencia que no está en el repo.**
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué cambió |
+|------|--------------------------|-------|-------------|------------|
+| [wiedehopf/tar1090](https://github.com/wiedehopf/tar1090) | **GPL-2.0-or-later** (18339B) — GitHub dice `NOASSERTION` | 1979 | 2026-11-21 | Entra por primera vez. El repo más estrellado del plano de datos de vuelo. |
+| [jpatokal/openflights](https://github.com/jpatokal/openflights) | AGPL-3.0 (34523B) | 1686 | 2026-11-22 | Entra por primera vez. El dataset de rutas y aerolíneas más citado del mundo, bajo copyleft de red. |
+| [wiedehopf/readsb](https://github.com/wiedehopf/readsb) | **GPL-3.0-or-later** (2155B → `COPYING`) — GitHub dice `NOASSERTION` | 707 | 2026-11-11 | Entra por primera vez. El decodificador ADS-B de producción. |
+| [junzis/pyModeS](https://github.com/junzis/pyModeS) | GPL-3.0 (35140B) | 674 | 2026-11-11 | Entra por primera vez. El puente hacia un stack de datos de vuelo en Python. |
+| [sdr-enthusiasts/docker-adsb-ultrafeeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) | GPL-3.0 (35149B) | 608 | 2026-11-22 | Entra por primera vez. Contenedor todo-en-uno para levantar un receptor propio. |
+| [openskynetwork/opensky-api](https://github.com/openskynetwork/opensky-api) | GPL-3.0 (35147B) **+ términos de dato no comerciales** | 476 | 2026-11-05 | Entra por primera vez, **y es el caso que da nombre a esta pasada**. Ver abajo. |
+| [dirkhh/adsb-feeder-image](https://github.com/dirkhh/adsb-feeder-image) | GPL-3.0 (35149B) | 407 | 2026-11-22 | Entra por primera vez. Imagen de sistema lista para alimentar redes ADS-B. |
+| [rsadsb/adsb_deku](https://github.com/rsadsb/adsb_deku) | MIT (1071B) | 732 | 2026-01-04 | Entra por primera vez. El decodificador permisivo más estrellado — y **~10 meses sin push**. |
+
+### La licencia que no está en el repo
+
+Todo el método de verificación que esta KB construyó en noviembre —no confiar en el badge de
+GitHub, abrir el archivo de licencia, anotar su tamaño y la fecha en que se leyó— **da el
+resultado correcto y aun así insuficiente** en este plano.
+
+`openskynetwork/opensky-api` es GPL-3.0: el archivo está donde debe, dice lo que dice, y
+cumplirlo es cuestión de correr el binding como proceso separado. Pero **OpenSky Network es
+una asociación suiza sin fines de lucro**, y sus **términos de dato** —según las fuentes
+secundarias consultadas— conceden el uso para investigación y educación sin fines de lucro,
+evaluación interna no comercial y fines gubernamentales, **sin licenciar el uso comercial**.
+El archivo de licencia del repositorio **no dice nada de eso**, porque no es su trabajo
+decirlo.
+
+**Regla nueva para esta KB, que vale para todas las industrias de la red:** cuando un repo es
+un **cliente de un servicio de datos** —y no una librería autocontenida— hay **dos**
+documentos que leer, y el segundo no vive en GitHub. Los repos de esta tabla que son
+decodificadores (`readsb`, `pyModeS`, `adsb_deku`, `tar1090`) operan sobre señal que uno mismo
+recibe: ahí la licencia del código es toda la historia. Los que son **clientes de red**
+(`opensky-api`, y `FlightRadarAPI` en `agents/top.md`) traen una segunda condición que el
+badge de GitHub, el archivo de licencia y esta KB **no pueden verificar solos**.
+
+⚠️ **Límite declarado:** `opensky-network.org` y `zenodo.org` no resuelven DNS desde el
+entorno de ingesta, igual que los dominios de la UE registrados en la pasada de la mañana. Lo
+anterior está corroborado por fuentes secundarias concordantes pero **no leído en la fuente
+oficial**, y así debe presentarse a cualquier cliente hasta que se verifique desde una red sin
+esta restricción.
+
 ## 2026-11-23
 
 **El hallazgo del ciclo es un cambio de licencia, no un repo nuevo.**

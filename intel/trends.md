@@ -183,9 +183,115 @@ es un hecho permanente: es una medición con fecha.** Desde este ciclo, toda lic
 esta KB lleva la fecha de lectura del archivo.
 
 ---
+## 14. Dos planos adyacentes, licencias invertidas: la licencia se distribuye por capa
+
+El 2026-11-23 esta KB midió, con siete horas de diferencia y el mismo método, dos planos
+vecinos del mismo vertical. El resultado se invierte:
+
+| | Plano de frontera e identidad | Plano operativo de vuelo |
+|---|---|---|
+| Piezas más grandes | `NFCPassportReader` **MIT** 867★, `PassportEye` **MIT** 471★, `fastmrz` **Apache-2.0** 174★ | `tar1090` **GPL-2.0+** 1979★, `openflights` **AGPL-3.0** 1686★, `readsb` **GPL-3.0+** 707★, `pyModeS` **GPL-3.0** 674★ |
+| Dónde está lo permisivo | **En el núcleo**: leer el chip y la MRZ | **En la periferia**: datasets de referencia (`ourairports-data` Unlicense, `airportsdata` MIT) y una caja de herramientas (`traffic` MIT) |
+| Dónde está el copyleft | En los accesorios (`Arg0s1080/mrz` GPL-3.0) | **En todo el músculo mantenido** |
+| Lo mejor mantenido | Permisivo | Copyleft |
+
+No es casualidad, y la explicación es quién escribe cada capa. El plano de identidad lo
+escriben **fabricantes de app y reguladores** que necesitan que otros integren: la licencia
+permisiva es el vehículo de adopción, y la Comisión Europea publicando sus librerías bajo
+Apache-2.0 es el caso extremo. El plano de vuelo lo escribe una **comunidad de
+radioaficionados y académicos** cuyo valor es la red de receptores, no el binario: la GPL
+protege el bien común que construyeron con su propio hardware.
+
+**La consecuencia operativa para un engagement:** no existe una respuesta de licencia "para
+travel". `intel/market.md` ya dice que *la licencia es arquitectura*; este ciclo agrega la
+precisión que faltaba: **la licencia es arquitectura por capa, y hay que medirla capa por
+capa, en el ciclo en que se va a usar.** Un arquitecto que generalice desde el plano que miró
+primero se equivocará en el segundo, en la dirección que sea.
+
+## 15. La licencia del código deja de alcanzar cuando el repo es cliente de una red
+
+Es el hallazgo metodológico de la segunda pasada del 2026-11-23, y corrige por arriba el
+propio método de esta KB.
+
+Durante noviembre esta KB construyó una disciplina que funciona: no confiar en el badge SPDX
+de GitHub, abrir el archivo de licencia, anotar su tamaño y la fecha de lectura. Encontró así
+que `valhalla` y `airportsdata` eran MIT pese a figurar como `NOASSERTION`, que `readsb` y
+`tar1090` eran GPL por la misma marca, que `Ctrip-Style` y `JourniOne-Planning-Skills` no
+tienen licencia, y que Kamra PMS cambió de AGPL-3.0 a Apache-2.0 en 48 horas.
+
+`openskynetwork/opensky-api` **pasa esa prueba y sigue sin ser utilizable comercialmente.** Su
+`LICENSE.txt` es GPL-3.0 íntegro y correcto. Pero el repo es un **cliente** de la red OpenSky,
+una asociación suiza sin fines de lucro, y las fuentes consultadas coinciden en que sus
+términos **de dato** licencian investigación y educación sin fines de lucro, evaluación
+interna no comercial y fines gubernamentales — no el uso comercial. El archivo de licencia no
+lo menciona porque no es su función.
+
+**La regla, generalizable a toda la red de KBs de industria:** hay que clasificar cada repo en
+**librería autocontenida** o **cliente de un servicio**. Para la primera, la licencia del
+código es la historia completa. Para la segunda hay **dos** documentos, y el segundo no está
+en GitHub, no tiene SPDX y no se puede verificar con `raw.githubusercontent.com`. En este
+plano, `readsb`, `pyModeS`, `adsb_deku` y `tar1090` son del primer tipo —procesan señal que
+uno mismo recibe—, mientras que `opensky-api` y `FlightRadarAPI` son del segundo.
+
+El corolario comercial es incómodo y conviene decirlo entero: **el camino barato a datos de
+vuelo (OpenSky, clientes no oficiales de FR24) es el que no se puede facturar, y el camino
+facturable (receptor propio con el stack GPL, o contrato de datos) cuesta hardware o dinero.**
+Un presupuesto que suponga lo contrario está mal hecho desde la primera línea.
+
+## 16. El regulador europeo trazó la misma línea que esta KB, y la puso en el texto
+
+La pasada de la mañana del 2026-11-23 cerró con una frase sobre el plano de frontera: el open
+source **lee el documento pero no conoce la regla**, y entre "sé quién sos" y "podés entrar"
+hay un dato que no existe en abierto (tendencia 12). La pasada de la tarde encontró que **el
+Anexo III del AI Act divide el mundo exactamente por esa línea** — y que la divide a favor del
+camino que esta KB venía recomendando.
+
+El punto 7 del Anexo III (migración, asilo y control de fronteras) **excluye expresamente la
+verificación de documentos de viaje** de su literal (d). La lectura concordante de las fuentes
+consultadas:
+
+- **Verificación 1:1 — fuera del literal (d).** El viajero confirma su identidad contra el
+  chip de su propio pasaporte. Es exactamente lo que hacen `NFCPassportReader` (MIT) y
+  `fastmrz` (Apache-2.0), y exactamente lo que proponen las Recetas 7 y 8.
+- **Identificación 1:N — dentro, y de alto riesgo.** Reconocer a una persona contra una lista
+  de vigilancia.
+- **Literal (c) — puede alcanzar igualmente** a un escáner de autenticidad documental usado
+  *dentro de una solicitud de visado*, aunque el mismo escáner quede fuera en un mostrador de
+  check-in.
+
+Y el calendario se movió: el **Reglamento (UE) 2026/1744** (*Digital Omnibus*, DOUE
+2026-07-24, en vigor 2026-07-27) difiere las obligaciones de alto riesgo del Anexo III
+autónomo **del 2026-08-02 al 2026-12-02**, y las del Anexo I al **2028-08-02**. Las
+obligaciones de transparencia del **Artículo 50 no se aplazaron**: siguen aplicando desde el
+2026-08-02.
+
+**Lo que cambia en la conversación con un cliente europeo:** el check-in biométrico de hotel y
+el embarque 1:1 **no son el caso regulado**; el matching contra listas **sí**. Son dos
+productos distintos, con dos presupuestos de cumplimiento distintos, y conviene no venderlos
+en el mismo enunciado. La prórroga a diciembre de 2027 **no es una derogación** —es tiempo, no
+permiso— y decirlo así es parte del trabajo.
+
+⚠️ **Límite de verificación declarado.** `ai-act-service-desk.ec.europa.eu`,
+`opensky-network.org` y `zenodo.org` **no resuelven DNS desde el entorno de ingesta de esta
+KB**. Lo anterior proviene de fuentes secundarias concordantes —incluido el texto citado del
+propio Service Desk de la Comisión— y **no fue leído en EUR-Lex**. Antes de comprometerlo en
+una propuesta hay que abrir el Anexo III del Reglamento (UE) 2024/1689 y el Reglamento (UE)
+2026/1744 en la fuente oficial. Se registra como hallazgo **con su límite pegado**, porque un
+hallazgo sin su límite es exactamente como se fabrican los datos que esta KB pasó noviembre
+corrigiendo.
+
+---
 *Fuentes: Phocuswright 2026, IATA Global Passenger Survey 2026, Expedia Group APAC 2026,
 Criteo, Visa 2026, Agoda, prensa especializada de travel, textos regulatorios de UE/APAC/LATAM,
 Skift Data + AI Summit Europe (oct-2026), ICAO FALP14 (abr-2026),
+Reglamento (UE) 2026/1744 (*Digital Omnibus*, DOUE 2026-07-24) y Anexo III del Reglamento (UE)
+2024/1689 vía AI Act Service Desk de la Comisión, regla de reembolso automático del US DOT
+(vigente 2024-10-28), Ley Marco de AI de Corea del Sur (2026-01-22), Ley de AI de Vietnam
+(2026-03-01), consulta pública de gobernanza de AI de Malasia (2026-07-10),
+Plano de Dados Abertos da ANAC 2026-2028,
 y medición directa sobre la API de GitHub y sobre los archivos de licencia en
 `raw.githubusercontent.com`. Las cifras de proveedor sin informe primario
-localizable están marcadas como tales en `intel/market.md`.*
+localizable están marcadas como tales en `intel/market.md`.
+Los puntos que no pudieron leerse en su fuente primaria por restricción de red del entorno de
+ingesta (`ai-act-service-desk.ec.europa.eu`, `opensky-network.org`, `zenodo.org`) llevan la
+advertencia pegada al hallazgo, no en una nota al pie.*

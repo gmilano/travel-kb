@@ -127,6 +127,29 @@ ley** — se registra así porque un ciclo anterior lo arrastró sin poder verif
    "no almacenamos el documento" es defensa legal, no marketing. Receta en
    `compose/patterns.md` → Receta 7.
 
+6. **La disrupción dejó de ser cortesía y pasó a ser obligación con reloj — y esta es la
+   región donde eso ya ocurrió.** La regla de reembolso automático del US DOT (vigente desde
+   el 2024-10-28 y en vigor durante 2026) fija umbrales operables por software: **3 h de
+   retraso en doméstico, 6 h en internacional**, reembolso en **7 días hábiles** si se pagó
+   con tarjeta y **20 días corridos** en otras formas de pago, y trata como cancelación el
+   vuelo que cambia de número. En marzo de 2026 el DOT propuso sumar los **retrasos de 120
+   minutos en pista** al mismo marco. Eso convierte la Receta 3 (servicing y disrupción) en
+   un **motor de derechos con fecha de vencimiento**, no en un chatbot de contención: la
+   pregunta del cliente deja de ser "¿qué le digo al pasajero?" y pasa a ser "¿cuánto le debo
+   y desde cuándo corre el plazo?". **Dos cautelas medidas, no omitidas:** (a) la pausa de
+   fiscalización para el caso "misma ruta, otro número de vuelo" figura con fin el
+   2026-06-30 y **no se pudo confirmar desde este entorno** si caducó, se extendió o fue
+   reemplazada — hay que verificarlo en el Federal Register antes de prometer cobertura de
+   ese supuesto; (b) la regla de transparencia de cargos accesorios **fue anulada por el
+   Quinto Circuito en pleno el 2026-02-03** y no forma parte de este marco. El cálculo se
+   apoya en datos de referencia sin costo de licencia —
+   [`davidmegginson/ourairports-data`](https://github.com/davidmegginson/ourairports-data)
+   (Unlicense, dominio público) y
+   [`mborsetti/airportsdata`](https://github.com/mborsetti/airportsdata) (MIT, husos
+   horarios incluidos, que es lo que hace computable un umbral en horas) — **no** sobre
+   OpenSky, cuyos términos de dato son no comerciales (ver `repos/foundations.md`). Receta en
+   `compose/patterns.md` → Receta 10.
+
 ### EMEA
 
 **Evidencia.** *[sin verificar]* 38% de adopción de AI en travel en Europa Occidental y 42% en
@@ -202,6 +225,39 @@ agencia vía NDC (solo su negocio de agencia).
    el requisito" — eso lo hace una página web. Está en reacomodar lo ya vendido cuando el
    requisito cambia de fecha, que es precisamente lo que ETIAS viene haciendo desde 2024.
 
+7. **El regulador europeo acaba de trazar la misma línea que esta KB trazó entre documento y
+   admisión — y eso cambia la postura de cumplimiento del plano de identidad.** Dos hechos
+   distintos, los dos de 2026:
+   - **El calendario se movió.** El *Digital Omnibus* — **Reglamento (UE) 2026/1744**,
+     publicado en el DOUE el **2026-07-24** y en vigor desde el **2026-07-27** — difiere las
+     obligaciones de alto riesgo de los sistemas autónomos del **Anexo III del 2026-08-02 al
+     2026-12-02**, y las de los sistemas embebidos en productos regulados del **Anexo I al
+     2028-08-02**. Las obligaciones de transparencia del **Artículo 50 siguen aplicando desde
+     el 2026-08-02**: avisar que se habla con una AI y etiquetar el contenido generado no se
+     aplazó. **Es una prórroga, no una derogación**, y conviene decirlo así al cliente.
+   - **El contenido se precisó, y favorece el camino que esta KB ya recomendaba.** El punto 7
+     del Anexo III (migración, asilo y control de fronteras) **excluye expresamente la
+     verificación de documentos de viaje** de su literal (d). La lectura concordante de las
+     fuentes consultadas: la verificación **1:1** — el viajero confirma su identidad contra el
+     chip de su propio pasaporte, que es exactamente lo que hacen
+     [`AndyQ/NFCPassportReader`](https://github.com/AndyQ/NFCPassportReader) (MIT) y
+     [`fastmrz`](https://github.com/sivakumar-mahalingam/fastmrz) (Apache-2.0) — **queda
+     fuera** del literal (d); la identificación **1:N** contra una lista de vigilancia **queda
+     dentro** y es de alto riesgo; y el literal (c) puede alcanzar igualmente a un escáner de
+     autenticidad documental usado **dentro de una solicitud de visado**. Traducido a
+     arquitectura: **el check-in biométrico del hotel y el embarque 1:1 no son el caso
+     regulado; el matching contra listas sí.** Son dos productos distintos y conviene no
+     venderlos en el mismo enunciado.
+
+   ⚠️ **Límite de verificación declarado.** `ai-act-service-desk.ec.europa.eu` y
+   `opensky-network.org` **no resuelven DNS desde el entorno de ingesta** de esta KB (el ciclo
+   anterior registró la misma restricción para dominios de la UE). Lo anterior está
+   corroborado por varias fuentes secundarias concordantes, **incluido el texto citado del
+   propio Service Desk de la Comisión**, pero **no fue leído en EUR-Lex**. Antes de
+   comprometerlo en una propuesta hay que abrir el Anexo III del Reglamento (UE) 2024/1689 y
+   el Reglamento (UE) 2026/1744 en la fuente oficial. Receta en `compose/patterns.md` →
+   Receta 11.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -261,6 +317,20 @@ entorno. Verificar antes de prometer.)*
    la taxonomía de [`imorte/passport-index-data`](https://github.com/imorte/passport-index-data)
    (MIT) — **usando su esquema, no sus valores**, que llevan nueve meses sin actualizar
    (ver `repos/foundations.md`). Receta en `compose/patterns.md` → Receta 9.
+
+6. **Es la primera región fuera de la UE con ley de AI vinculante, y el calendario es de
+   2026.** La **Ley Marco de AI de Corea del Sur entró en vigor el 2026-01-22**; la **Ley de
+   Inteligencia Artificial de Vietnam rige desde el 2026-03-01**; y la Oficina Nacional de AI
+   de **Malasia abrió consulta pública sobre un proyecto de ley de gobernanza de AI el
+   2026-07-10**. Al mismo tiempo es la región con mayor despliegue medido — **79% de las
+   empresas de travel de APAC ya usan AI y 97% planea usarla** (Expedia Group 2026). La
+   combinación es poco común y define el encargo: **aquí el cliente ya tiene el agente en
+   producción y lo que necesita es que sobreviva a una ley que llegó después.** Eso es
+   trabajo de trazabilidad y de obligaciones fechadas — la Receta 9 — no un piloto nuevo.
+   **Brecha medida, no silenciada:** no se encontró ningún repositorio de datos de vuelo
+   específico de APAC con tracción; el plano de datos operativos de vuelo de esta KB
+   (`repos/foundations.md`) es de origen europeo y norteamericano, y en APAC hay que asumir
+   cobertura ADS-B de terceros o acuerdo con el operador local.
 
 ### LATAM
 
@@ -331,6 +401,28 @@ español.** Eso no es una carencia de la región: es el hueco más claro del ver
    (b) **la ventana tiene fecha de cierre** — el argumento "no hay competencia en español"
    tenía 24 meses de vida en agosto y hoy tiene menos. Publicar el skill de itinerario en
    español bajo MIT **este trimestre** vale más que hacerlo el próximo.
+
+6. **El plano de datos de vuelo es la entrada más barata de la región, y conviene decir con
+   precisión qué se verificó y qué no.** Las dos piezas de referencia aeroportuaria que esta
+   KB incorporó este ciclo **cubren LATAM sin costo de licencia y sin negociación**:
+   [`davidmegginson/ourairports-data`](https://github.com/davidmegginson/ourairports-data)
+   (**Unlicense — dominio público**, push el 2026-11-23) y
+   [`mborsetti/airportsdata`](https://github.com/mborsetti/airportsdata) (**MIT**, con husos
+   horarios). Para una región donde el costo en USD de las herramientas AI es una restricción
+   real y declarada (punto 4), empezar por la capa de dato de dominio público —y no por una
+   API medida por consulta— es una decisión de arquitectura con efecto presupuestario
+   inmediato.
+
+   **Lo que se buscó y no se pudo cerrar:** el dataset **VRA (Voo Regular Ativo) de la ANAC
+   de Brasil**, que sería la fuente abierta de puntualidad y regularidad más relevante de
+   LATAM. Se confirmó que el **Plano de Dados Abertos da ANAC 2026–2028 existe** y que el
+   canal de publicación es `dados.gov.br`, pero **no se pudo confirmar desde este entorno la
+   página del conjunto, su licencia, su periodicidad ni sus campos**. No se lista como
+   hallazgo: se lista como **la verificación pendiente de mayor valor para LATAM en el
+   próximo ciclo**. Si el VRA resulta estar bajo licencia abierta, LATAM pasaría a ser la
+   única región de esta KB con dato de puntualidad abierto **y** reutilizable
+   comercialmente — algo que ni North America ni EMEA tienen hoy (ver la advertencia sobre
+   OpenSky en `repos/foundations.md`).
 
 ## Posicionamiento Globant
 

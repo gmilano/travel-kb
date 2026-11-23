@@ -12,6 +12,33 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — segunda pasada (plano operativo de vuelo)
+
+Segundo ciclo del mismo día. **No reemplaza a la pasada anterior**: la sección de la mañana
+(plano de frontera) queda intacta debajo. Foco de esta pasada: **de dónde sale el dato de
+vuelo** que todas las recetas de disrupción de esta KB venían dando por supuesto.
+Verificación: 15/15 slugs nuevos vivos por `git ls-remote`, métricas por
+`search/repositories`, licencias **leídas del archivo**.
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Qué cambió |
+|--------|------|--------------------------|-------|-------------|------------|
+| ourairports-data | [davidmegginson/ourairports-data](https://github.com/davidmegginson/ourairports-data) | **Unlicense — dominio público** (1211B) | 534 | 2026-11-23 | Push **hoy**. Entra a la KB por primera vez. Es el único activo de todo el vertical travel **sin ninguna condición de uso**: ni atribución, ni copyleft, ni contrato. |
+| traffic | [xoolive/traffic](https://github.com/xoolive/traffic) | MIT (`license.md` minúscula, 1069B) | 525 | 2026-11-11 | Entra por primera vez. La pieza permisiva central del plano de vuelo. **Segunda vez en dos días que la licencia aparece en una ruta no estándar** — después de `license.txt` en Kamra. |
+| airportsdata | [mborsetti/airportsdata](https://github.com/mborsetti/airportsdata) | **MIT** (1191B) — GitHub dice `NOASSERTION` | 172 | 2026-11-21 | Entra por primera vez. Tercer caso registrado de `NOASSERTION` escondiendo una licencia permisiva real (tras `valhalla` y `odoo`). |
+| plane-notify | [Jxck-S/plane-notify](https://github.com/Jxck-S/plane-notify) | **Source-Available 1.0 — NO open source** (12453B) | 2554 | 2026-11-13 | **El repo más estrellado que entra a esta KB este ciclo, y entra a la tabla de trampas.** Licencia propia derivada de PolyForm Shield + Elastic License 2.0. GitHub lo muestra `NOASSERTION`. |
+| flighty-mcp-server | [CPLX/flighty-mcp-server](https://github.com/CPLX/flighty-mcp-server) | MIT (1079B) | 35 | 2026-08-31 | Entra por primera vez, y como **medición de escasez**: es el **único** MCP server de estado de vuelo por encima de 10★ en todo GitHub. El dato más consultado del vertical tiene un solo servidor MCP, con 35★ y tres meses sin push. |
+| Travel Impact Model | [google/travel-impact-model](https://github.com/google/travel-impact-model) | **CC-BY-4.0** (18658B) | 195 | 2026-11-04 | Entra por primera vez. Licencia de **contenido**, no de software: el matiz que decide si se puede copiar código de ahí. |
+
+**Lo que esta pasada agrega a la tendencia, dicho como tendencia y no como lista:** el ciclo
+de la mañana encontró un plano (frontera) cuyo piso open source es **permisivo, vivo y con más
+de un proveedor por problema**. Esta pasada encontró el plano vecino —datos de vuelo— con la
+**distribución inversa**: el músculo mantenido (`tar1090` 1979★, `readsb` 707★, `pyModeS`
+674★, `ultrafeeder` 608★, `opensky-api` 476★, `openflights` 1686★) es **todo copyleft**, y lo
+permisivo es la periferia: datasets de referencia y una caja de herramientas MIT. Dos planos
+adyacentes del mismo vertical, medidos con el mismo método con 7 horas de diferencia,
+repartidos al revés. **La lectura para Globant no es "travel es copyleft" ni "travel es
+permisivo": es que la licencia se distribuye por capa, y hay que medirla por capa.**
+
 ## 2026-11-23
 
 Ciclo enfocado en el **plano de frontera e identidad del viajero**. Todas las filas

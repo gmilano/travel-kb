@@ -327,6 +327,104 @@ meses es un pasivo, no una feature.**
 
 ---
 
+## Receta 10 — Motor de derechos del pasajero con reloj (la segunda receta de North America)
+
+**Problema.** La Receta 3 resuelve el servicing conversacional: el agente explica, contiene y
+reacomoda. Pero en North America la disrupción dejó de ser cortesía: la regla de reembolso
+automático del US DOT fija **umbrales y plazos que un sistema puede computar**, y la pregunta
+del cliente ya no es "¿qué le digo al pasajero?" sino **"¿cuánto le debo y desde cuándo corre
+el plazo?"**. Ningún open source responde eso: `EU261 flight compensation stars:>=5` y
+`IROPS irregular operations airline stars:>=1` devuelven **cero** (`repos/foundations.md`).
+
+**Piezas.**
+
+- Hecho del vuelo: **receptor propio** con
+  [`sdr-enthusiasts/docker-adsb-ultrafeeder`](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder)
+  (GPL-3.0) corriendo como contenedor separado, o el feed contratado del cliente. **No
+  OpenSky** si el entregable se factura — ver la advertencia de términos de dato.
+- Trayectoria y fases de vuelo:
+  [`xoolive/traffic`](https://github.com/xoolive/traffic) (**MIT**) — se puede embeber.
+- Referencia aeroportuaria y **husos horarios**:
+  [`mborsetti/airportsdata`](https://github.com/mborsetti/airportsdata) (**MIT**) y
+  [`davidmegginson/ourairports-data`](https://github.com/davidmegginson/ourairports-data)
+  (**Unlicense**).
+- Reglas: **IP propietaria del engagement.** No existe y hay que escribirla.
+- Orquestación: el stack agentic que ya use el cliente, exponiendo el motor como tool tipada.
+
+**Cómo se arma.**
+
+1. **Modelar la regla como dato con vigencia, no como código.** Cada regla es una fila:
+   jurisdicción, disparador, umbral, plazo de pago, fecha de entrada en vigor, fecha de fin.
+   Para el DOT: retraso **≥3 h doméstico** y **≥6 h internacional** cuando el pasajero rechaza
+   la alternativa, reembolso en **7 días hábiles** (tarjeta) o **20 días corridos** (otros
+   medios), y **cambio de número de vuelo tratado como cancelación**. Las reglas cambian: el
+   DOT propuso en marzo de 2026 sumar los retrasos de **120 minutos en pista**. Si la regla
+   está en el código, cada cambio regulatorio es un release; si está en una tabla con
+   vigencia, es una fila.
+2. **Calcular el umbral en hora local del aeropuerto.** Es la razón por la que `airportsdata`
+   (MIT, con huso horario) está en la receta y no es un detalle: "3 horas de retraso" sin huso
+   horario es una cuenta mal hecha, y mal hecha en la dirección que genera reclamos.
+3. **Separar `detectar` de `determinar` de `ejecutar`.** El agente detecta el hecho y
+   **determina** el derecho; el desembolso lo dispara un humano o un flujo con control
+   explícito. Es la misma frontera que esta KB sostiene en el pago (Receta 4), por la misma
+   razón.
+4. **Emitir la determinación con su justificación citable**: regla aplicada, versión de la
+   regla, hecho observado, hora local, resultado. Si no se puede auditar, no sirve ante el
+   regulador ni ante el cliente.
+
+**Qué entrega.** Un motor que dice *"a este pasajero le corresponde X, bajo la regla Y vigente
+desde Z, y el plazo vence el W"*, con su traza. **Eso no existe en abierto en ninguna
+jurisdicción**, es defendible como IP, y —a diferencia de Timatic— **la regla está publicada y
+es citable**, así que se puede construir sin comprar el dato.
+
+⚠️ **Verificar antes de comprometer:** la pausa de fiscalización del DOT para el supuesto
+"misma ruta, otro número de vuelo" figura con fin el **2026-06-30** y no se pudo confirmar
+desde este entorno si caducó, se extendió o fue reemplazada. Hay que abrir el Federal Register
+antes de prometer cobertura de ese caso.
+
+## Receta 11 — Dato de vuelo sin pasivo de licencia (la receta transversal)
+
+**Problema.** Todas las recetas de disrupción de esta KB —3, 9 y 10— dependen de saber dónde
+está el avión, y el camino obvio para conseguirlo es el que no se puede facturar. Esta receta
+existe para que esa decisión se tome **una vez, al principio**, y no en la semana de entrega.
+
+**El árbol de decisión, en orden de costo creciente.**
+
+1. **¿Alcanza con dato de referencia estático?** (aeropuertos, pistas, husos horarios,
+   códigos) → `ourairports-data` (**Unlicense**, dominio público) y `airportsdata` (**MIT**).
+   **Costo cero, condiciones cero, uso comercial sin reservas.** Una cantidad sorprendente de
+   funcionalidad de itinerario se resuelve acá y nunca necesita una posición en vivo.
+2. **¿El cliente ya tiene un contrato de datos** (GDS, Cirium, FlightAware, su propio
+   operador)? → Usarlo. El trabajo es el adaptador, no el dato, y el adaptador es trabajo
+   facturable sin riesgo.
+3. **¿Es un prototipo interno, una evaluación o una demo que no se factura?** → OpenSky con
+   [`openskynetwork/opensky-api`](https://github.com/openskynetwork/opensky-api) (GPL-3.0)
+   **es exactamente el caso que sus términos contemplan** ("evaluación interna"). **Hay que
+   decir en el documento del proyecto que el componente es de evaluación**, para que nadie lo
+   promueva a producción por inercia.
+4. **¿Hace falta posición en vivo en un producto facturable?** → **Receptor propio.**
+   `ultrafeeder` (GPL-3.0) en un contenedor, `tar1090` (GPL-2.0+) para la vista operativa,
+   `pyModeS` (GPL-3.0) o `adsb_deku` (MIT) para decodificar, `traffic` (MIT) para analizar.
+   Cuesta hardware y cuesta cobertura —un receptor ve su horizonte, no el mundo— pero el dato
+   es del cliente y no tiene condición de uso de un tercero.
+
+**La regla de embebido, que es la única parte delicada.** GPL **no prohíbe usar**: prohíbe
+embeber en un binario propietario. `ultrafeeder`, `tar1090`, `readsb` y `pyModeS` se corren
+como **proceso o contenedor separado detrás de una API interna**, y el producto del cliente
+habla con esa API. Lo que sí se puede embeber sin pensarlo es lo MIT y lo de dominio público:
+`traffic`, `adsb_deku`, `airportsdata`, `ourairports-data`.
+
+**Emisiones, si el encargo las pide.**
+[`google/travel-impact-model`](https://github.com/google/travel-impact-model) (**CC-BY-4.0**)
+es la referencia pública del CO₂e de un vuelo. Permite uso comercial **con atribución**; es
+licencia de **contenido**, así que el modelo y sus tablas encajan, y copiar código de ahí a un
+producto se consulta con legales. El resto del segmento está muerto: las dos únicas
+calculadoras de huella de viaje con más de 30★ no reciben push desde 2021 y 2023.
+
+**Qué entrega.** Una decisión de arquitectura tomada con los dos documentos sobre la mesa —la
+licencia del código y los términos del dato— y escrita en el documento del proyecto, en vez de
+una dependencia barata que alguien tiene que arrancar tres días antes de entregar.
+
 ## Lo que NO conviene prometer
 
 | Pedido frecuente | Por qué no, hoy | Qué ofrecer en cambio |
@@ -341,6 +439,12 @@ meses es un pasivo, no una feature.**
 | "Preparamos el producto para ETIAS con fecha cierta" | A fines de nov-2026 **no hay fecha oficial anunciada**; el objetivo 4T-2026 fue retirado y se espera 2027 | Vender el *servicing* del cambio de requisito, no la fecha |
 | "Usamos el lector de pasaporte Android más popular" | [`tananaev/passport-reader`](https://github.com/tananaev/passport-reader) (458★) **no tiene archivo de licencia** | Portar desde `NFCPassportReader` (MIT) o construir sobre JMRTD |
 | "Partimos del wallet de identidad europeo" | Las **apps** de referencia son **EUPL-1.2**: forkearlas arrastra copyleft al producto del cliente | Receta 8: construir sobre las librerías y servicios **Apache-2.0** de la misma organización |
+| "Traemos datos de vuelo en vivo gratis con OpenSky" | El código es GPL-3.0 y cumplible, pero los **términos de dato** de OpenSky cubren investigación y educación sin fines de lucro, evaluación interna y fines gubernamentales: **el uso comercial no está licenciado** | Receta 11: dato de referencia de dominio público para lo estático, contrato del cliente o receptor propio para lo vivo. OpenSky solo en prototipo interno declarado |
+| "Integramos FlightRadar24 con una librería MIT" | La licencia MIT cubre **el SDK no oficial**, no el dato ni los términos de servicio de FR24 | Lo mismo que con los conectores de LetsFG: piloto interno sí, entregable a cliente con contrato de datos |
+| "Usamos el proyecto de seguimiento de aeronaves más popular" | [`Jxck-S/plane-notify`](https://github.com/Jxck-S/plane-notify) tiene 2554★ y una **licencia source-available propia** (PolyForm Shield + Elastic 2.0): **no es open source** | `tar1090`/`readsb` (GPL, como servicio separado) o `adsb_deku`/`traffic` (MIT, embebibles) |
+| "El AI Act nos obliga a tratar el check-in biométrico como alto riesgo" | El Anexo III punto 7 **excluye la verificación de documentos de viaje** de su literal (d): la verificación **1:1** contra el chip del propio pasaporte queda fuera; el matching **1:N** contra listas queda dentro | Separar los dos productos y presupuestarlos distinto — y confirmar el texto en EUR-Lex, que esta KB no pudo leer por restricción de red |
+| "Las obligaciones de alto riesgo del AI Act se aplazaron, hay tiempo" | El Reglamento (UE) 2026/1744 difiere el Anexo III autónomo al **2026-12-02**, pero el **Artículo 50 (transparencia) sigue aplicando desde el 2026-08-02** | Decirlo entero: es una prórroga parcial, no una derogación. Avisar que se habla con una AI y etiquetar lo generado ya es obligatorio |
+| "Predecimos el retraso con un modelo open source" | `flight delay prediction stars:>=50` devuelve **un** resultado y es un tutorial de AWS que usa retrasos como dataset de ejemplo. **No hay modelos reutilizables** | Vender el motor de derechos (Receta 10), que opera sobre el hecho ya ocurrido y tiene regla citable, en vez de una predicción sin base abierta |
 
 ---
 *Toda licencia citada fue verificada leyendo el archivo de licencia del repo, no el badge de

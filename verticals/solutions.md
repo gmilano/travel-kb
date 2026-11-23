@@ -21,6 +21,7 @@ updated: 2026-11-23
 | **Kamra PMS** | [Kamra-PMS/kamra-pms](https://github.com/Kamra-PMS/kamra-pms) | **Apache-2.0** (`license.txt`, minúscula, 11358B — **leído el 2026-11-23**) | 113 | TypeScript | PMS de hotel y alquiler de corto plazo que se declara "agentic-AI-ready". Push diario. **Relicenciado de AGPL-3.0 a Apache-2.0 el 2026-11-21** (commit `ce8dec8`). Es ahora **el PMS permisivo más grande del vertical** y el único diseñado desde el inicio para que un agente lo opere. **Recomendación por defecto para un piloto de PMS agentic.** |
 | **HAIP** | [TelivityAI/haip](https://github.com/TelivityAI/haip) | **Apache-2.0** (texto completo) | 60 | TypeScript, NestJS, PostgreSQL, Drizzle | PMS hotelero API-first con motor de reserva directa. Hasta el 2026-11-21 era **la única** opción de PMS permisiva; desde el relicenciamiento de Kamra ya no lo es. Sigue siendo la opción más limpia si se quiere NestJS/Drizzle, pero con 60★ frente a 113★ es la segunda. |
 | **Headway** | [headwaymaps/headway](https://github.com/headwaymaps/headway) | Apache-2.0 | 3022 | Docker, OSM | Stack de mapas self-hosted (tiles + geocoding + ruteo). No es travel per se, pero resuelve el requisito recurrente de "no podemos mandar ubicaciones de huéspedes a Google". |
+| **OpenFlights** | [jpatokal/openflights](https://github.com/jpatokal/openflights) | **AGPL-3.0** (34523B leídos el 2026-11-23) | 1686 | Perl/PHP, MySQL | Plataforma de registro y visualización de vuelos, y la fuente del dataset de aeropuertos, aerolíneas y rutas más citado del mundo. Se incorpora en la segunda pasada del 2026-11-23 como **la única plataforma del plano de vuelo**. **AGPL-3.0 = copyleft de red**: ofrecerla como servicio obliga a publicar el fuente modificado. Para el *dato* de rutas conviene además revisar los términos del dataset, que no son el archivo de licencia del repo. |
 | **SyncZen Cloud** | [Felix-au/SyncZen-Cloud](https://github.com/Felix-au/SyncZen-Cloud) | MIT | 47 | Next.js | PMS y dashboard de check-in. Chico, pero MIT y moderno: buena base para un piloto de check-in conversacional. |
 | **open-hotel-pms** | [peeraseepat-cell/open-hotel-pms](https://github.com/peeraseepat-cell/open-hotel-pms) | MIT | 6 | Next.js + Supabase | PMS operations-first para hoteles independientes. 6★: tratar como referencia de esquema, no como base de producción. |
 | **EU Digital Identity Wallet** (capa de librerías) | [eu-digital-identity-wallet](https://github.com/eu-digital-identity-wallet) | **Apache-2.0 las librerías y servicios; EUPL-1.2 las apps; CC BY 4.0 la especificación** | 66 / 64 / 47 / 43 (libs) | Kotlin, Swift, JVM | No es una plataforma de travel, es la **infraestructura de identidad del huésped en EMEA**, mantenida por la Comisión Europea. Un check-in que acepta credenciales del wallet se construye sobre `eudi-srv-verifier-endpoint` y `eudi-lib-jvm-openid4vci-kt`, **ambos Apache-2.0**. ⚠️ **No forkear las apps de referencia: son EUPL-1.2.** Ver `repos/trending.md` → *Estratificación de licencia*. |
@@ -51,7 +52,15 @@ El patrón que funciona con estas plataformas, en orden:
    (MIT) permiten probarlo sin revelarlo. En North America esto no es un lujo: es la región
    con la adopción biométrica más alta **y** la preocupación más alta por brechas de datos
    (IATA 2026), y las dos cosas son el mismo cliente.
-5. **Human-in-the-loop obligatorio en el pago.** No es una preferencia de diseño: es lo que
+5. **Leer dos licencias, no una, cuando el sistema consume una red de datos.** Para una
+   plataforma que se instala (QloApps, Odoo, Kamra, HAIP) la licencia del repo es la historia
+   completa. Para un componente que es **cliente de un servicio de datos** hay un segundo
+   documento que no vive en GitHub: `openskynetwork/opensky-api` es GPL-3.0 impecable **y sus
+   términos de dato no licencian el uso comercial**; `FlightRadarAPI` es MIT real **y es un
+   cliente no oficial** de un servicio con sus propios ToS. Antes de poner un dato de vuelo en
+   una demo de cliente hay que saber en cuál de los dos casos se está. Detalle en
+   `repos/foundations.md` → *La licencia del dato no es la licencia del código*.
+6. **Human-in-the-loop obligatorio en el pago.** No es una preferencia de diseño: es lo que
    hacen hoy las aerolíneas (United mantiene la intervención humana en la compra) y lo que
    la evidencia de confianza del consumidor exige (ver `intel/trends.md`).
 
@@ -64,6 +73,26 @@ mejor opción permisiva del vertical por una licencia que ya no estaba vigente.
 
 **Por eso cada licencia de esta tabla lleva la fecha en que se leyó el archivo, y antes de
 comprometer una licencia en una propuesta hay que volver a abrirlo.**
+
+## Lo que agregó la segunda pasada del 2026-11-23
+
+Una plataforma (**OpenFlights**, AGPL-3.0) y **una advertencia que cambia el checklist de
+diligencia** de todas las demás.
+
+Hasta hoy, la pregunta de licencia de esta KB era *"¿qué dice el archivo?"* — y esa pregunta
+resolvía todos los casos que había medido, incluidos los difíciles (`valhalla` MIT bajo
+`NOASSERTION`, Odoo LGPL-3.0 bajo `NOASSERTION`, Kamra relicenciado en 48 horas). El plano de
+datos de vuelo trajo el primer caso del vertical en que **la respuesta correcta a esa pregunta
+sigue sin autorizar el uso**: el código es GPL-3.0 y cumplible, y el **dato** no está
+licenciado para uso comercial.
+
+La diligencia, entonces, pasa a tener dos pasos y no uno:
+
+1. **¿Qué dice el archivo de licencia?** — abrirlo, anotar tamaño y fecha. Sin cambios.
+2. **¿Este componente consume una red o un servicio de un tercero?** — si la respuesta es sí,
+   buscar los términos de ese servicio, que **no están en el repositorio**. Si no se pueden
+   leer, el componente es apto para prototipo interno y **no** para un entregable facturable,
+   y así hay que decirlo en la propuesta.
 
 ---
 *Ver también: `repos/foundations.md` (ruteo, datos e identidad) y `compose/patterns.md`
