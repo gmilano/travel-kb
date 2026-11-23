@@ -71,6 +71,14 @@ defendiendo deliberadamente.
 | OTA: USD ~561B (2026) → ~1.3T (2033) | reportes de market research | **[sin verificar]** — las cifras varían entre informes |
 | LATAM travel USD 109B → 196,6B | nota de ciclos previos de esta KB | **[sin verificar]** — sin fuente localizable |
 
+**Viaje accesible — séptima pasada.** Las cifras divergen **más de 10×** por
+alcance: Mordor Intelligence estima el mercado de viaje accesible y asistido en
+**78.740 M USD (2026)**, mientras un panel de ATTA cita **>1 billón USD (2025)**
+contando a todos los viajeros mayores. **Para material de cliente usar Open
+Doors / Harris (~50.000 M USD/año, sólo EE.UU., sólo viajeros con
+discapacidad)** y decir el alcance. La cifra de 17.300 M que todavía circula es
+de 2015.
+
 ## Opportunities by region
 
 ### North America
@@ -253,6 +261,39 @@ compliance).
 placer de EE.UU. asistidos por IA" y un PIB de 43.000 M USD atribuido a WTTC,
 publicado por un sitio de baja calidad. **No se pudo verificar contra fuente
 primaria. No usar en material de cliente.**
+
+#### Séptima pasada 2026-11-23 — plano de accesibilidad
+
+**Regulación.** El US DOT publicó la *Wheelchair Rule* (Federal Register
+2024-29731, 17-12-2024; vigente desde el 16-01-2025). La pausa de
+cumplimiento sobre **cuatro** de sus disposiciones —incluida la presunción de
+violación de la ACAA si se vende un vuelo que no puede llevar la silla del
+pasajero, que es la que dispara reembolso— se **extendió del 31-12-2026 al
+30-04-2027** (FR 2026-15835), mientras se tramita una *Wheelchair Rule II*.
+A4A y varias aerolíneas litigan la regla. ⚠️ **Fuente secundaria:** el sitio
+del DOT no resuelve desde esta sesión; verificar la fecha antes de usarla con
+cliente.
+
+Además, la ACAA ya exige desde hace una década que el sitio principal de una
+aerolínea que vende a consumidores de EE.UU. cumpla **WCAG 2.0 AA** (14 CFR
+382.43). *(Conocido; no re-verificado en esta sesión.)*
+
+**Canadá.** *Accessible Transportation for Persons with Disabilities
+Regulations* (SOR/2019-244, bajo la Canada Transportation Act), consolidación
+vigente a 2026-03-17. La CTA identifica la **reserva** como punto de fricción;
+**esta sesión no pudo confirmar qué exige el reglamento al canal de reserva
+online.** Brecha escrita.
+
+**Demanda.** Open Doors Organization / Harris Poll: viajeros con discapacidad
+de EE.UU. gastan **~50.000 M USD/año** en viaje, **>100.000 M** con
+acompañantes; el gasto en crucero pasó de 10,4 a 18,5 mil M entre 2020 y 2024.
+Es la cifra citable de este plano (ver *Tamaño de mercado*).
+
+**Oportunidad.** La pieza que la regla del DOT vuelve contable —"¿este vuelo
+puede llevar **esta** silla?"— es un dato de **dimensiones de bodega y de la
+silla**, no una casilla. Un agente de reserva que no pregunta y no verifica
+vende el billete que la regla presume ilegal cuando la pausa termine. Receta 20
+con el dato de aeronave de la segunda pasada.
 
 ### EMEA
 
@@ -523,6 +564,36 @@ independientes europeos corren el riesgo de ser **invisibles en las respuestas
 de IA antes de llegar a competir por la reserva** — eso conecta directo con el
 plano de visibilidad de la cuarta pasada.
 
+#### Séptima pasada 2026-11-23 — plano de accesibilidad
+
+**Regulación — la más madura de las cuatro regiones en este plano.** La
+**European Accessibility Act** (Directiva (UE) 2019/882) aplica desde el
+**28-06-2025** a los servicios de comercio electrónico y a los sitios y apps
+de transporte aéreo, ferroviario, por autobús y por agua. Alcanza el sitio y la
+app donde se reserva un vuelo, un tren o un hotel. El estándar armonizado es
+**EN 301 549**, que remite a **WCAG 2.1 AA**. La aplicación es nacional: en
+Irlanda la **Irish Aviation Authority** es la autoridad de cumplimiento para
+aerolíneas y verifica la corrección de lo que encuentra.
+
+Matices que cambian el alcance de una propuesta *(texto de la Directiva,
+conocido; no re-verificado contra EUR-Lex en esta sesión)*: las
+**microempresas que prestan servicios** quedan exentas — muchos hoteles
+independientes caen ahí — y los servicios pueden seguir usando hasta el
+**28-06-2030** los productos que ya usaban legalmente antes de junio de 2025.
+
+**Cumplimiento real.** Un balance al primer año (junio 2026, proveedor de
+herramientas de accesibilidad) concluye que las empresas **todavía no
+cumplen** — fuente comercial, leerla como señal, no como medición.
+
+**Demanda.** El reporte TUR4all de España ubica al viajero estadounidense
+como el mercado receptivo accesible más rentable: **~273 €/día**.
+
+**Oportunidad.** Es la región donde la **Receta 19** (gate de accesibilidad en
+CI del flujo de reserva) se vende sola: hay obligación vigente, autoridad
+nombrada y estándar técnico. El diferencial de Globant no es correr un
+escáner — es **entregar el informe de conformidad EN 301 549 como artefacto de
+cada release**.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -721,6 +792,27 @@ todavía no vuela. Eso es un problema de **explicabilidad en el punto de venta**
 —por qué el billete subió sin que cambie nada visible— y es exactamente el tipo
 de cosa que un agente tiene que poder responder con una cita, no con una
 estimación.
+
+#### Séptima pasada 2026-11-23 — plano de accesibilidad
+
+**Regulación.** Japón: la reforma de la *Act for Eliminating Discrimination
+against Persons with Disabilities* volvió **obligatorio** para empresas
+privadas, desde el **1-04-2024**, el ajuste razonable a pedido de la persona —
+antes era deber de mejor esfuerzo. Alcanza la relación con clientes, no sólo
+con empleados (Libro Blanco de la Oficina del Gabinete). **No se encontró guía
+específica para hoteles** en los resultados; el lugar a revisar es MLIT.
+
+**Brecha escrita.** No se encontró, para este plano, regulación de
+accesibilidad digital o física específica de viaje en **Australia, Singapur,
+India, Corea ni China** con las búsquedas de esta pasada. **No significa que
+no exista**: significa que esta sesión no la encontró y no la afirma.
+
+**Oportunidad.** El ajuste razonable japonés es **a pedido y tras diálogo**:
+el sistema tiene que poder **recibir** el pedido de accesibilidad del huésped
+en la reserva y llevarlo hasta la operación. Eso es exactamente lo que
+`AccessibilityRequirement` y `DisabilityServices` de OpenTravel modelan y lo
+que un agente conversacional puede capturar bien — siempre que no lo resuma en
+texto libre.
 
 ### LATAM
 
@@ -959,6 +1051,30 @@ con atributos y no con combustible físico en el tanque, el sistema necesita un
 vuelo y el crédito aplicado son dos hechos distintos que no deben colapsarse en
 un solo número. Un modelo de datos que guarde sólo "CO₂ del viaje" no puede
 reportar esto.
+
+#### Séptima pasada 2026-11-23 — plano de accesibilidad
+
+**Regulación — Brasil tiene la regla más cuantitativa de las cuatro regiones.**
+La *Lei Brasileira de Inclusão* (Lei 13.146/2015), art. 45, reglamentada por
+el **Decreto 9.296/2018** (modificado por el Decreto 11.303/2022), exige a los
+establecimientos hoteleros existentes **al menos 10% de dormitorios
+accesibles, con mínimo de uno**, sobre rutas accesibles. Para los construidos
+hasta 29-06-2004 el plazo era **3-12-2024** — **ya vencido**; esta sesión no
+verificó prórrogas posteriores. Hay un proyecto (PL 3.835/23) que daría **50%
+de descuento** a la persona con discapacidad si el hotel no tiene habitación
+adaptada; **estado no confirmado**. El art. 63 de la misma ley obliga a la
+accesibilidad de los sitios de empresas con sede o representación en Brasil.
+⚠️ **Fuente secundaria:** `planalto.gov.br` no resuelve desde esta sesión.
+
+**Brecha escrita.** México, Argentina, Chile y Colombia: **no se buscó en
+detalle** regulación de accesibilidad turística en esta pasada. Queda
+explícito para la próxima.
+
+**Oportunidad — la más concreta del plano en cualquier región.** El 10% es
+**contable contra el inventario del PMS**: cuántas habitaciones de la
+propiedad tienen ficha accesible verificada sobre el total. Es un reporte de
+cumplimiento que un grupo hotelero brasileño puede necesitar hoy, y que nadie
+vende en open source. Receta 21.
 
 ## Posicionamiento Globant
 

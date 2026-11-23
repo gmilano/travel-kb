@@ -576,3 +576,47 @@ En los otros planos de esta KB (pago, visibilidad, tierra) la ventaja regional
 rota. En emisiones no rota: **el producto se diseña contra requisitos europeos
 y se degrada hacia las otras tres regiones**, no al revés. Eso invierte el
 orden de diseño habitual de un engagement norteamericano.
+
+## 29. El agente sabe auditar la página para un usuario ciego y no sabe prometerle la habitación a uno en silla de ruedas
+
+Séptima pasada. El plano de accesibilidad se parte en dos con madurez opuesta:
+
+| | Digital (¿se puede completar la reserva?) | Físico (¿se puede entrar?) |
+|---|---|---|
+| Regulación | EAA vigente (EMEA), ACAA web (NA), LBI art. 63 (Brasil) | Wheelchair Rule (NA), LBI art. 45 10% (Brasil), ajuste razonable (Japón) |
+| Open source | Lighthouse y `equal-access` **Apache**, `axe-core` MPL | Dos routers **LGPL**, esquema de veredas **CC BY-ND** |
+| Agentes / MCP | 3 servidores MCP con licencia OSI | **0** |
+| Vocabulario estándar | WCAG / EN 301 549 | **schema.org: ninguno** para lugares; OpenTravel: rico y **sin licencia** |
+
+La consecuencia práctica: **un agente de viaje de 2026 puede ser accesible y
+seguir sin servir a la persona.** Es el mismo patrón que la quinta pasada
+encontró en tierra (informa pero no vende), un plano más abajo.
+
+## 30. En este plano el badge de licencia no alcanza
+
+De 7 repos centrales del plano, **en 4 la licencia que muestra GitHub o la
+wiki de OSM no coincide con el archivo**: 2 están **equivocadas**
+(`openrouteservice`, y `wheelmap-frontend` en la wiki) y 2 aparecen como
+`NOASSERTION` (`sa11y`, `TaskarCenterAtUW/AccessMap`). El caso de manual es `openrouteservice`:
+la wiki dice Apache (cierto hasta 2018), GitHub dice GPL-3.0 (lee sólo el
+texto GPL que acompaña por convención a LGPL), y el repo es LGPL-3.0. Los
+errores son **sistemáticos**, no anecdóticos:
+
+- **Cualquier repo con `LICENSE.LESSER`/`COPYING.LESSER` aparece como GPL** en
+  GitHub. Un escáner de licencias que confía en la API bloquea usos legítimos.
+- **Las wikis y directorios congelan la licencia del momento en que se
+  escribió la entrada**: `openrouteservice` (Apache→LGPL), `sa11y` (MIT→GPL-2.0).
+  Un relicenciamiento no actualiza a quien lo citó.
+
+Para Globant: el control de licencia de un SOW se hace **leyendo el archivo en
+el commit que se va a usar**, y el commit se fija.
+
+## 31. Es el primer eje donde las cuatro regiones tienen ley vigente — y ninguna dicta el formato del dato
+
+North America (ACAA, Wheelchair Rule), EMEA (EAA), APAC (Japón, 2024) y LATAM
+(Brasil, LBI) tienen obligación **vigente** de accesibilidad que toca viaje.
+En los demás planos de esta KB siempre había una región sin ley. Pero **ninguna
+de las cuatro fija un formato de dato** para describir una habitación o una
+entrada: obligan al resultado, no a la representación. El formato lo tiene que
+elegir el integrador — y la elección permisiva medida es `a11yjson` (MIT),
+alimentado desde los códigos de OpenTravel que el hotel ya emite.

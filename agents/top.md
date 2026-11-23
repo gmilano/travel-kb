@@ -18,6 +18,10 @@ updated: 2026-11-23
 > **Ciclo 2026-11-23:** se re-midieron las filas principales del 2026-11-21 (ver
 > *Re-medición* abajo) y se agregó una sección nueva: **identidad y documento de viaje**,
 > el plano que esta KB venía nombrando (biometría, visado) sin ninguna fila de código.
+>
+> **Séptima pasada 2026-11-23:** se agrega el **plano de accesibilidad** — el primero que
+> no tenía ni una mención en la KB. Todo lo agentic que existe audita páginas; para el
+> acceso físico hay **cero agentes**. Ver la sección al final.
 
 ## Agentes y herramientas verificadas
 
@@ -394,3 +398,63 @@ librería y exponerlo uno mismo como tool — ver el patrón nuevo en
 | Agente de cumplimiento **CORSIA / EU ETS** | **Cero.** |
 | Servidor MCP de emisiones **sin API key de terceros** | **Cero.** |
 | Agente que cubra el viaje **puerta a puerta** (ISO 14083) | **Cero.** |
+
+## Accesibilidad — el agente audita la página y no puede prometer la habitación
+
+Séptima pasada del 2026-11-23. Es el primer plano de esta KB que **no tenía ni
+una mención**: `wheelchair`, `a11y`, `axe-core` y `silla de ruedas` devolvían
+cero en los ocho archivos antes de esta pasada.
+
+**Método.** Existencia por `git ls-remote` (27/27 vivos). Estrellas y
+`pushed_at` por `search/repositories` el 2026-11-23. **Licencia leída del
+archivo de licencia del repo**, y dependencias leídas del `package.json` —
+porque en este plano el wrapper y el motor tienen licencias distintas.
+
+### Servidores MCP de accesibilidad — todos auditan **páginas web**
+
+| Servidor | Repo | Licencia (archivo) | Motor debajo | Stars | Último push | Qué hace |
+|---|---|---|---|---|---|---|
+| mcp-accessibility-scanner | [JustasMonkev/mcp-accessibility-scanner](https://github.com/JustasMonkev/mcp-accessibility-scanner) | MIT | `axe-core` (MPL-2.0) + Playwright | 59 | 2026-11-23 | Escaneo WCAG de una URL desde el agente, con navegador real. El más vivo del plano. |
+| a11ymcp | [ronantakizawa/a11ymcp](https://github.com/ronantakizawa/a11ymcp) | MIT | `axe-core` (MPL-2.0) + Puppeteer | 97 | 2026-03-10 | Testing de accesibilidad web como tools MCP. Más estrellas, ~8 meses sin push. |
+| a11y-mcp | [priyankark/a11y-mcp](https://github.com/priyankark/a11y-mcp) | **MPL-2.0** | `axe-core` (MPL-2.0) + Puppeteer | 53 | 2026-11-22 | Mismo patrón; el wrapper también es MPL — modificar sus archivos obliga a publicarlos. |
+
+Tres filas. Son los tres servidores MCP de accesibilidad con licencia OSI que
+se encontraron, se clonaron y se leyeron.
+
+**Lo que las tres filas tienen en común, y es la tesis de este plano:** las tres
+auditan **una página para un usuario ciego o con baja visión**. Ninguna sabe
+nada de **un umbral, una rampa, una ducha o un ascensor**.
+
+### ⚠️ Trampas medidas en este plano
+
+| Repo | Lo que parece | Lo que es | Consecuencia |
+|---|---|---|---|
+| [ctoldigital/axuse](https://github.com/ctoldigital/axuse) | El más estrellado del plano (805★, push 2026-11-03), "accessibility-first browser & computer use for AI agents" | **PolyForm Noncommercial 1.0.0** en `package.json` | **No usar en trabajo de cliente.** Misma trampa que `trvl` en el plano de vuelo. |
+| [dequelabs/axe-mcp-server-public](https://github.com/dequelabs/axe-mcp-server-public) | El servidor MCP **oficial** de Deque, autor de `axe-core`, en un repo público | `LICENSE`: **"Proprietary License … All rights reserved"** | Público ≠ abierto. Requiere contrato con Deque. |
+| Los dos MCP "MIT" | MIT de punta a punta | MIT el wrapper; **`axe-core` es MPL-2.0** | Usable: MPL es copyleft **por archivo**. Usar `axe-core` sin modificar como dependencia no contamina el producto; **parchear un archivo de `axe-core` obliga a publicar ese archivo.** Hay que decirlo en el SOW. |
+
+### Las búsquedas de este plano que devolvieron cero, escritas
+
+| Búsqueda en `search/repositories` | Resultado |
+|---|---|
+| `wheelchair accessible travel agent` | **0 repos.** |
+| `wheelchair routing llm` | 1 repo, 0★, sin licencia. |
+| `disability travel ai` | 5 repos, **todos 0★ y sin licencia**. |
+| `accessible hotel` | 170 resultados; **ninguno** es dato de accesibilidad hotelera (menús, sistemas de hospital). |
+| Agente que responda "¿puedo entrar en silla de ruedas?" con fuente | **Cero.** |
+
+**El plano físico no tiene un solo agente.** Lo que existe para él está abajo,
+en `repos/foundations.md`: un vocabulario MIT (`a11yjson`), uno de la industria rico y **sin licencia**
+(`OpenTravel`), dos motores de
+ruteo LGPL con perfil de silla de ruedas, y un validador Apache que verifica el
+grafo de una estación. El agente hay que escribirlo — ver Receta 20.
+
+### Regla de diseño de este plano
+
+Igual que la emisión en la sexta pasada: **la accesibilidad física es un hecho
+devuelto por herramienta, con fuente y fecha de relevamiento, nunca un token
+generado.** Y tiene un tercer estado que el agente no puede colapsar:
+`sí / no / **desconocido**`. `OpenTripPlanner` ya lo modela así — penaliza lo
+desconocido (600 por defecto) distinto que lo inaccesible conocido (3600). Un
+agente que responde "sí, es accesible" porque el campo estaba vacío deja a una
+persona en la puerta de un hotel.

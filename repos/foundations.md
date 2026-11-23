@@ -706,3 +706,113 @@ host que no fuera GitHub. Verificado con `curl -sS -I`:
 sesión no tenía permiso de salida. Esas cinco URLs se citan en esta KB como
 referencia de contexto y **están sin verificar**. Todas las URLs de GitHub de
 este archivo sí se verificaron, con `git ls-remote` o `git clone --depth 1`.
+
+## Plano de accesibilidad — digital resuelto, físico huérfano
+
+Séptima pasada del 2026-11-23. Dos subplanos con licencias y madurez opuestas:
+
+- **Digital** (¿puede un usuario con lector de pantalla completar la reserva?):
+  maduro, vivo, con opciones Apache-2.0. Lo empuja la EAA en EMEA desde el
+  28-06-2025.
+- **Físico** (¿puede una persona en silla de ruedas llegar, entrar y ducharse?):
+  sin término en schema.org, con dos motores de ruteo LGPL, un esquema
+  norteamericano **No-Derivatives** y cero agentes.
+
+**Método.** `git ls-remote` 27/27 vivos; estrellas y `pushed_at` por
+`search/repositories` el 2026-11-23; **licencia leída del archivo**, porque en
+este plano **el badge de GitHub se equivoca en ambas direcciones** (ver
+`openrouteservice` abajo).
+
+### Capa digital — auditoría del flujo de reserva
+
+| Repo | Licencia (archivo) | Stars | Último push | Rol |
+|---|---|---|---|---|
+| [GoogleChrome/lighthouse](https://github.com/GoogleChrome/lighthouse) | Apache-2.0 | 31193 | 2026-11-20 | Auditoría con score; su categoría de accesibilidad corre sobre `axe-core`. |
+| [dequelabs/axe-core](https://github.com/dequelabs/axe-core) | **MPL-2.0** | 7872 | 2026-11-19 | El motor de reglas WCAG de facto. Copyleft **por archivo**: usar sin modificar, no parchear. |
+| [IBMa/equal-access](https://github.com/IBMa/equal-access) | **Apache-2.0** | 788 | 2026-11-13 | El **único motor de reglas de escala con licencia totalmente permisiva**. Segundo motor en CI, o reemplazo si el cliente veta MPL. |
+| [pa11y/pa11y](https://github.com/pa11y/pa11y) | LGPL-3.0 | 4604 | 2026-11-16 | Runner de tests. Se corre como herramienta en CI, no se embebe. |
+| [pa11y/pa11y-ci](https://github.com/pa11y/pa11y-ci) | LGPL-3.0 | 649 | 2026-11-23 | Runner de CI sobre una lista de URLs (búsqueda → resultados → checkout). |
+| [ryersondmp/sa11y](https://github.com/ryersondmp/sa11y) | **GPL-2.0** | 338 | 2026-11-19 | QA visual para editores de contenido. ⚠️ `LICENSE.md`: **v2.0 y anteriores eran MIT**; lo actual es GPL. GitHub muestra `NOASSERTION`. |
+| [nvaccess/nvda](https://github.com/nvaccess/nvda) | GPL-2.0-or-later + 2 excepciones (`copying.txt`) | 2692 | 2026-11-23 | Lector de pantalla para la prueba **manual** que ningún escáner reemplaza. Herramienta de QA, nunca dependencia. |
+
+### Capa física — ruteo con perfil de silla de ruedas
+
+| Repo | Licencia (archivo) | Stars | Último push | Rol |
+|---|---|---|---|---|
+| [GIScience/openrouteservice](https://github.com/GIScience/openrouteservice) | **LGPL-3.0** (`LICENSE` + `LICENSE.LESSER`; cabeceras Java: LGPL-2.1-or-later) | 1996 | 2026-11-23 | Ruteo peatonal con **27 archivos `Wheelchair*`** en el árbol: pendiente (`WheelchairIncline`), cordón (`WheelchairKerb`), superficie, lisura, aptitud. |
+| [opentripplanner/OpenTripPlanner](https://github.com/opentripplanner/OpenTripPlanner) | LGPL-3.0-or-later | 2781 | 2026-11-23 | Ruteo multimodal con accesibilidad (`doc/user/Accessibility.md`); modela **desconocido ≠ inaccesible**, pendiente máx. 8,3%, transbordos accesibles pre-calculados opcionales. |
+| [MobilityData/gtfs-validator](https://github.com/MobilityData/gtfs-validator) | Apache-2.0 | 434 | 2026-11-19 | Valida el **grafo interior de la estación** (GTFS-Pathways): `PathwayLoop`, `PathwayDanglingGenericNode`, `PathwayReachableLocation`, `PathwayStopAccess`, `PathwayEndpointType`, `MissingLevelId`. Sin esto, el ruteo accesible rutea sobre basura. |
+| [MobilityData/mobility-database-catalogs](https://github.com/MobilityData/mobility-database-catalogs) | Apache-2.0 | 354 | 2026-11-19 | Catálogo de feeds GTFS: de dónde sale el dato a validar. |
+| [TaskarCenterAtUW/AccessMap](https://github.com/TaskarCenterAtUW/AccessMap) | **GPL-3.0-or-later** (archivo; GitHub: `NOASSERTION`) | 2 | 2026-10-14 | Ruteo de veredas sensible a preferencias de accesibilidad. **Es donde se mudó AccessMap** — ver capa descartada. |
+
+### ⚠️ `openrouteservice`: tres fuentes, tres licencias, ninguna es la del badge
+
+| Fuente | Dice | Es |
+|---|---|---|
+| Wiki de OpenStreetMap | Apache-2.0 | **Cierto hasta 2018.** El primer `LICENSE` (commit `811c28dee`, 2017-09-13) era Apache. |
+| Badge y API de GitHub | GPL-3.0 | **Lectura errónea.** GitHub lee sólo `LICENSE`, que contiene el texto GPL — que es como **LGPL-3.0 se distribuye por convención**. |
+| El repo | `LICENSE` + `LICENSE.LESSER` (commit `d81d11794`, 2018-09-20: *"Changed license to LGPL3"*) | **LGPL-3.0.** Las cabeceras de los `.java` dicen LGPL-2.1-or-later. |
+
+Por qué importa más allá de este repo: **un escáner de licencias que lee el badge
+bloquea un uso legítimo** (GPL) y **una wiki desactualizada deja pasar
+obligaciones** (Apache). Ambos errores son sistemáticos. Para cualquier repo con
+`LICENSE.LESSER` o `COPYING.LESSER`, el badge de GitHub dice GPL y miente.
+
+### Capa física — vocabulario y dato
+
+| Repo | Licencia (archivo) | Stars | Último push | Rol |
+|---|---|---|---|---|
+| [sozialhelden/a11yjson](https://github.com/sozialhelden/a11yjson) | **MIT** | 115 | 2026-10-07 | **El vocabulario que schema.org no tiene.** Interfaces tipadas con unidades físicas: `Room`, `Entrance`, `Door`, `Shower`, `Restroom`, `Toilet`, `GrabBars`, `Stairs`, `Slope`, `Pathways`, `Parking`, `PersonalProfile`. El bloque permisivo central del plano. |
+| [sozialhelden/wheelmap-frontend](https://github.com/sozialhelden/wheelmap-frontend) | **MIT** (archivo) | 57 | 2026-11-16 | Frontend React de wheelmap.org. ⚠️ La wiki de OSM dice **GPLv3** para la web: **el archivo dice MIT**. La wiki se equivoca en la dirección opuesta que con `openrouteservice`. |
+| [schemaorg/schemaorg](https://github.com/schemaorg/schemaorg) | Apache-2.0 | 6316 | 2026-11-20 | Medido en `data/schema.ttl`: `accessibilityFeature`, `accessibilitySummary` y `accessibilityHazard` tienen **`domainIncludes :CreativeWork`** — documentos y medios, **no lugares**. Para `LodgingBusiness`/`Accommodation` sólo existe `amenityFeature`, texto libre. En los **2483 archivos de `data/`** (incluido `pending`), `wheelchair` aparece **sólo dentro de texto de ejemplo**, nunca como término. |
+
+### ⚠️ El vocabulario de la industria existe — y no tiene licencia
+
+Esta pasada empezó dando por hecho que el estándar de distribución del vertical
+no modelaba accesibilidad. **Se clonó y se midió, y el supuesto era falso.**
+
+| Medición en [OpenTravel/OpenTravel-Specifications](https://github.com/OpenTravel/OpenTravel-Specifications) | Resultado |
+|---|---|
+| Tamaño | 18.817 archivos, 10.848 `.xsd`; último commit 2024-11-26 |
+| Tokens | `wheelchair` ×974, `AccessibilityFeatures` ×763, `AccessibleCode` ×507, `DisabilityFeature_Enum` ×256 |
+| Definición vigente | `DisabilityFeature_Enum` en OTA 2.0 **2020A** (`CodeList_4_0_0_Trim.xsd`): enumeración **abierta** de **~163 etiquetas** — *Accessible entrance*, *Bathtub grab bars*, *Elevator near accessible rooms*, *Width/diameter of wheelchair turning space in bathroom* |
+| OTA 1.0 hotelero | `DisabledInd`, `AccessibilityRequirement`, `AccessibilityCode`, `DisabilityServices` en los esquemas comunes; un *Hotel Disability Project Brief* publicado desde OTA2011B |
+| Archivo de licencia | **Ninguno** (los únicos `License*` son `LicensePlate`, de Ground). Coincide con lo que midió la cuarta pasada. |
+
+Dos lecturas para cliente:
+
+1. **El dato hotelero ya viaja con estos códigos** por canales que hablan OTA
+   XML. Un agente que los ignora tira información que el hotel ya cargó.
+2. **Son etiquetas, no medidas.** *"Door width in inches"* (5 de las ~163
+   etiquetas nombran pulgadas) **nombra** la medida pero no tiene campo tipado
+   para llevarla, y una etiqueta dice literalmente *"Americans with Disabilities
+   Act (ADA) compliance"* — un criterio de un país. `a11yjson` (MIT) lleva la
+   medida con unidad (`Length`, `Slope`). **Leer OpenTravel, normalizar a
+   `a11yjson`** es el puente — ver Receta 20.
+
+### Capa descartada — medida, no asumida
+
+| Repo | Por qué no | Qué usar en su lugar |
+|---|---|---|
+| [AccessMap/accessmap](https://github.com/AccessMap/accessmap), [AccessMap/accessmap-webapp](https://github.com/AccessMap/accessmap-webapp) | El router accesible más citado en la literatura. **Sin archivo de licencia**; sin push desde 2023-12 y 2023-04. 27 repos en la org, la mayoría sin licencia. | `TaskarCenterAtUW/AccessMap` (GPL-3.0+, vivo) — el proyecto se mudó, no murió. |
+| [OpenSidewalks/OpenSidewalks-Schema](https://github.com/OpenSidewalks/OpenSidewalks-Schema) | El esquema norteamericano de veredas accesibles: **CC BY-ND 4.0** (No-Derivatives). Se puede usar tal cual; **no se puede publicar una versión extendida.** El dato de ejemplo declara ODbL. | Consumirlo sin modificar; extensiones propias en `a11yjson`. |
+| [sozialhelden/accessibility-cloud](https://github.com/sozialhelden/accessibility-cloud) | La plataforma de intercambio de dato de accesibilidad física. **Sin archivo de licencia** → todos los derechos reservados. | Consumir su API bajo sus términos; no forkear. |
+| [odileeds/OTP4GB](https://github.com/odileeds/OTP4GB) | MIT, OTP para Gran Bretaña con análisis de accesibilidad. **Sin push desde 2021-11.** | Referencia de configuración, no dependencia. |
+
+### Brechas del plano de accesibilidad, medidas el 2026-11-23
+
+| Lo buscado | Resultado |
+|---|---|
+| Término de schema.org para silla de ruedas / acceso sin escalones en un lugar | **No existe** (medido sobre el TTL, ver arriba). |
+| Vocabulario de habitación accesible **de la industria** con licencia OSI | **Cero.** Existe y es rico (`OpenTravel`, ver arriba), pero **sin archivo de licencia**. |
+| Motor de ruteo accesible con licencia **permisiva** y vivo | **Cero.** Los dos vivos son LGPL; el MIT (`OTP4GB`) está dormido. |
+| Validador de dato de accesibilidad **hotelera** | **Cero.** `gtfs-validator` cubre estaciones; para hoteles no hay nada. |
+
+### ⚠️ Lo que esta sesión NO pudo verificar, dicho en voz alta
+
+- `www.transportation.gov` y `www.planalto.gov.br` **no resuelven** desde la red
+  de esta sesión. Las fechas del US DOT (pausa a 2027-04-30) y del Decreto
+  9.296 de Brasil en `intel/market.md` vienen de **fuentes secundarias** y así
+  están marcadas.
+- El backend de Wheelmap: la wiki dice GPLv3, pero la misma wiki se equivocó con
+  el frontend. **No se clonó** el backend; no se afirma su licencia.

@@ -31,6 +31,10 @@ del archivo de licencia**, no del badge.
    europeo está resuelto con código ISC/MIT vivo; **vender uno no tiene una línea de open source
    en el mundo**. El estándar de venta **OSDM es Apache-2.0** y respaldado por la TSI de
    telemática de la UE — y `osdm client implementation` devuelve **0 repositorios**.
+5. **La accesibilidad se audita pero no se promete.** (séptima pasada, 2026-11-23) Auditar el
+   flujo de reserva contra la EAA tiene herramientas Apache vivas; responder "¿puedo entrar en
+   silla de ruedas?" tiene **0 agentes open source**, y schema.org **no tiene término** para eso
+   en un lugar. El vocabulario de la industria (OpenTravel) existe y **no tiene licencia**.
 
 ## Estructura
 

@@ -12,6 +12,32 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — séptima pasada (plano de accesibilidad: lo que el agente puede auditar y lo que no puede prometer)
+
+**Plano nuevo.** Antes de esta pasada, `wheelchair`, `a11y` y `axe-core` daban
+**cero** coincidencias en la KB. Estrellas medidas hoy por `search/repositories`.
+
+| Señal | Repo | Licencia | Stars | Push | Lectura |
+|---|---|---|---|---|---|
+| Más vivo del plano | [JustasMonkev/mcp-accessibility-scanner](https://github.com/JustasMonkev/mcp-accessibility-scanner) | MIT (motor `axe-core` MPL-2.0) | 59 | 2026-11-23 | Push el mismo día de la medición. El MCP a usar para auditar un flujo de reserva. |
+| Más estrellado en MCP con licencia OSI | [ronantakizawa/a11ymcp](https://github.com/ronantakizawa/a11ymcp) | MIT (motor `axe-core` MPL-2.0) | 97 | 2026-03-10 | ~8 meses sin push. |
+| Activo | [priyankark/a11y-mcp](https://github.com/priyankark/a11y-mcp) | MPL-2.0 | 53 | 2026-11-22 | Wrapper también MPL. |
+| ⚠️ El más estrellado no se puede usar | [ctoldigital/axuse](https://github.com/ctoldigital/axuse) | **PolyForm Noncommercial 1.0.0** | 805 | 2026-11-03 | 8× las estrellas del siguiente; **no comercial**. |
+| ⚠️ El oficial no es abierto | [dequelabs/axe-mcp-server-public](https://github.com/dequelabs/axe-mcp-server-public) | **Propietaria** | 10 | 2026-11-17 | Repo público, `LICENSE` "All rights reserved". |
+
+**Ausencia, que es la señal principal de la semana:** `wheelchair accessible
+travel agent` → **0 repos**. `disability travel ai` → 5 repos, todos 0★ sin
+licencia. **Todo lo agentic de accesibilidad audita páginas; nada razona sobre
+acceso físico.**
+
+### Señales generales de esta pasada (búsquedas globales del brief)
+
+| Señal | Fuente | Estado |
+|---|---|---|
+| [nirbar1985/ai-travel-agent](https://github.com/nirbar1985/ai-travel-agent) — MIT, **811★**, LangGraph | `search/repositories` | Un directorio lo lista con ~745★; la medida real es 811. **Sin push desde 2025-08-21** (~15 meses). Referencia, no dependencia. |
+| [michaelpersonal/trip-optimizer](https://github.com/michaelpersonal/trip-optimizer) — "autoresearch pattern" | Listado en Trendshift | 36★, **sin archivo de licencia**, sin push desde 2026-04-02. **"Trending" en un agregador no es vigencia.** |
+| Trip.com TripGenie: volumen de órdenes asistidas por AI **~+400% interanual** | Prensa de viajes vía búsqueda | Cifra de la propia empresa; no auditada. |
+
 ## 2026-11-23 — sexta pasada (plano de emisiones: lo que el regulador obliga a calcular)
 
 Licencias leídas en el `LICENSE` del repo tras `git clone --depth 1`. Fecha =

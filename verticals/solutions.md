@@ -241,3 +241,35 @@ medir el vuelo con precisión de tres tiers y **no sabe medir la noche de
 hotel**. Para un cliente hotelero que necesita reportar bajo CSRD, hoy eso se
 resuelve con planilla y consultoría — que es exactamente la definición de un
 hueco de producto.
+
+## Lo que agregó la séptima pasada del 2026-11-23
+
+### No hay plataforma vertical de viaje accesible open source — hay piezas
+
+Plano de accesibilidad. Ninguna plataforma de travel open source de las que
+esta KB recomienda (QloApps, HotelDruid, Odoo, TREK) trae un **modelo de dato
+de accesibilidad física** de primera clase. Lo customizable está en tres
+lugares:
+
+| Plataforma | Licencia (archivo) | Qué se customiza con AI encima |
+|---|---|---|
+| [OpenTripPlanner](https://github.com/opentripplanner/OpenTripPlanner) | LGPL-3.0-or-later | La plataforma de planificación accesible que **ya operan agencias de transporte**. El agente consulta su API con `wheelchair=true`; no se modifica el motor. |
+| [openrouteservice](https://github.com/GIScience/openrouteservice) | LGPL-3.0 | Perfil `wheelchair` con pendiente, cordón y superficie. Se corre como servicio sin modificar; el agente lo llama como tool para "el último tramo hasta la puerta del hotel". |
+| Wheelmap ([frontend](https://github.com/sozialhelden/wheelmap-frontend), MIT) + [a11yjson](https://github.com/sozialhelden/a11yjson) (MIT) | MIT | El stack de dato de accesibilidad física más maduro y permisivo. Base para la ficha de accesibilidad de una propiedad. |
+
+### ⚠️ Lo que los listados recomiendan en este plano y no conviene tomar
+
+| Recomendado | Problema medido |
+|---|---|
+| AccessMap (`AccessMap/*`) | Sin licencia y dormido desde 2023. Se mudó a `TaskarCenterAtUW/AccessMap` (GPL-3.0+). |
+| accessibility.cloud | Sin archivo de licencia. Consumir la API, no forkear. |
+| `axuse` como "browser accesible para agentes" | PolyForm Noncommercial. |
+| Workspaces del TDEI (UW Taskar Center) | [Backend](https://github.com/TaskarCenterAtUW/workspaces-backend) MIT, **[frontend](https://github.com/TaskarCenterAtUW/workspaces-frontend) sin licencia**. Medio stack no se puede redistribuir. |
+
+### El hueco de producto más claro de este plano
+
+**Un servicio de "ficha de accesibilidad verificable" por propiedad**: lee los
+códigos `DisabilityFeature_Enum` que el hotel ya emite por OTA XML, los
+normaliza a `a11yjson` con medidas y fecha de relevamiento, y los expone como
+tool MCP de tres estados (`sí / no / desconocido`). No existe en open source
+(ver *Brechas* en `repos/foundations.md`). Es la Receta 20.

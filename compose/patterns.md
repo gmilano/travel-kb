@@ -800,3 +800,116 @@ inversor, y el ciclo de compra es otro.
 `timcp`: **los LLM alucinan números de emisiones.** Una cifra inventada aquí no
 produce un hotel equivocado, produce un número en un reporte regulatorio
 firmado. La emisión se calcula con herramienta o no se responde.
+
+## Receta 19 — Gate de accesibilidad en CI del flujo de reserva (la receta de EMEA)
+
+**Problema.** Un cliente que vende vuelos, tren u hotel en la UE está bajo la
+**EAA desde el 28-06-2025**: el flujo búsqueda → resultados → selección →
+datos del pasajero → pago tiene que cumplir EN 301 549 (WCAG 2.1 AA), y en
+Irlanda la autoridad de aviación ya audita sitios de aerolíneas. Hoy lo
+típico es una auditoría manual por año; el sitio cambia cada semana.
+
+**Cableado:**
+
+1. **Recorrido scriptado del flujo**, no una lista de URLs: Playwright navega
+   la reserva con datos de prueba y se detiene **antes** del cargo (el mismo
+   corte de la Receta 4). Las páginas de un checkout no existen como URL suelta.
+2. En cada paso, **dos motores**: `dequelabs/axe-core` (MPL-2.0, como
+   dependencia **sin modificar**) e `IBMa/equal-access` (Apache-2.0). Discrepan
+   en reglas; dos motores reducen falsos negativos, y si el cliente veta MPL,
+   `equal-access` queda solo.
+3. `pa11y/pa11y-ci` (LGPL-3.0) para las páginas estáticas del sitio (FAQ,
+   condiciones, contacto). Corre como herramienta de CI; no se embebe, así que
+   LGPL no se propaga.
+4. `GoogleChrome/lighthouse` (Apache-2.0) para el score de accesibilidad como
+   métrica de tendencia en el dashboard — no como criterio de aprobación.
+5. **El agente de código corrige**: `JustasMonkev/mcp-accessibility-scanner`
+   (MIT) se le da al agente de desarrollo para que reproduzca la violación en
+   navegador real y proponga el fix en el PR. El merge sigue siendo humano.
+6. **Artefacto por release:** informe de conformidad mapeado a cláusulas EN
+   301 549, versionado junto al build. Es lo que se le muestra a la autoridad.
+7. **Prueba manual con `nvaccess/nvda`** (GPL-2.0+) sobre el flujo de pago una
+   vez por release mayor. Ningún escáner automatizado detecta que un lector de
+   pantalla anuncia mal el total a pagar.
+
+**Lo que NO se usa:** `ctoldigital/axuse` (PolyForm Noncommercial) y
+`dequelabs/axe-mcp-server-public` (propietario) — ver `agents/top.md`.
+
+⚠️ **Límite que hay que decir en la propuesta:** los motores automáticos
+detectan una fracción de los problemas WCAG; el resto requiere criterio
+humano. El gate **evita regresiones**; no certifica conformidad por sí solo.
+
+## Receta 20 — Ficha de accesibilidad física verificable, como tool de tres estados (la receta transversal)
+
+**Problema.** El viajero pregunta "¿puedo llegar al hotel desde la estación en
+silla de ruedas, y la ducha es a ras de suelo?". El LLM responde que sí, con
+confianza, porque la página del hotel dice "accesible". **No hay en schema.org
+un término para eso en un lugar** (medido: `accessibilityFeature` es de
+`CreativeWork`), y no existe un agente open source que lo responda
+(medido: `wheelchair accessible travel agent` → 0 repos).
+
+**Cableado:**
+
+1. **Ingesta desde lo que el hotel ya emite.** Parsear los códigos
+   `DisabilityFeature_Enum` / `AccessibilityCode` de OpenTravel que llegan por
+   el channel manager o el PMS. ⚠️ El repo de especificación de OpenTravel **no
+   tiene archivo de licencia**: se **leen mensajes** que ya circulan, no se
+   redistribuye el esquema.
+2. **Normalizar a `sozialhelden/a11yjson` (MIT)**: cada habitación accesible
+   pasa a un `Room` con `Door`, `Shower`, `GrabBars` y **medidas con unidad**
+   (`Length`), no etiquetas. Lo que OpenTravel trae como etiqueta (*"Door width
+   in inches"*) queda **`desconocido` hasta que alguien mida**.
+3. **Cada atributo guarda fuente y fecha de relevamiento**: `declarado por el
+   hotel (OTA XML, fecha)`, `medido en sitio (fecha)` o `crowdsourced
+   (Wheelmap)`. El agente cita la fuente en la respuesta.
+4. **El último tramo** (estación → puerta): `GIScience/openrouteservice`
+   (LGPL-3.0) **como servicio sin modificar**, perfil `wheelchair`, con los
+   parámetros de pendiente y cordón del viajero desde su `PersonalProfile` de
+   `a11yjson`.
+5. **El tramo en transporte público**: `opentripplanner/OpenTripPlanner`
+   (LGPL-3.0+) con `wheelchair=true`, alimentado por feeds que **primero pasan**
+   `MobilityData/gtfs-validator` (Apache-2.0) — si el feed falla los
+   validadores de Pathways (`PathwayReachableLocation`, `PathwayStopAccess`),
+   el ruteo accesible de esa estación se marca como `desconocido`, no como
+   ruta válida.
+6. **Exponer todo como un tool MCP de tres estados**:
+   `check_accessibility(property_id, needs) → {sí | no | desconocido, fuente,
+   fecha}`. El tercer estado es obligatorio, y **copia el modelo de OTP**:
+   desconocido no es inaccesible ni accesible.
+7. **Regla del agente** (system prompt + test de evaluación): nunca responde
+   "accesible" sin tool call; ante `desconocido` dice qué falta y ofrece
+   contactar a la propiedad. Mismo principio que la emisión (Receta 17): **el
+   hecho viene de la herramienta o no se responde.**
+
+**Para North America** se suma: el dato de dimensiones de bodega de la
+aeronave (plano de vuelo, segunda pasada) contra las dimensiones de la silla
+del `PersonalProfile` — es la pregunta que la *Wheelchair Rule* vuelve
+contable cuando termine la pausa de enforcement.
+
+## Receta 21 — Reporte del 10% de habitaciones accesibles contra el PMS (la receta de LATAM)
+
+**Problema.** En Brasil, el Decreto 9.296/2018 (LBI art. 45) exige a los
+hoteles existentes **≥10% de dormitorios accesibles, mínimo uno**, y el plazo
+para los edificios hasta 2004 venció el 3-12-2024. Un grupo hotelero con
+decenas de propiedades no sabe, propiedad por propiedad, si cumple: la
+habitación "adaptada" está en una planilla o en la memoria del gerente.
+
+**Cableado:**
+
+1. Inventario de habitaciones desde el PMS existente (QloApps, HotelDruid u
+   Odoo — las tres de la Receta 14).
+2. La ficha `a11yjson` de cada habitación accesible (Receta 20, paso 2), con
+   **estado de verificación**: declarada / medida / vencida.
+3. Un cálculo **determinista** por propiedad: `habitaciones con ficha medida ÷
+   total ≥ 10%` y `≥ 1`. Un `if`, no un modelo — mismo criterio que la Receta 18.
+4. El agente **explica y prioriza**: qué propiedades no llegan, cuántas
+   habitaciones faltan, cuáles tienen ficha "declarada" pero no "medida". No
+   decide cumplimiento.
+5. La misma ficha alimenta la web (LBI art. 63, sitios accesibles → Receta 19)
+   y la distribución (OTA XML de salida con los códigos correctos).
+
+⚠️ **Antes de vender:** confirmar en `planalto.gov.br` el texto vigente del
+Decreto 9.296 y si hubo prórroga después del 3-12-2024 — esta sesión no pudo
+abrir la fuente primaria. Y confirmar el estado del PL 3.835/23: si se aprueba,
+el incumplimiento pasa a tener **costo por reserva** (50% de descuento), y el
+reporte deja de ser de cumplimiento para ser de ingresos.

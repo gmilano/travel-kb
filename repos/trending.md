@@ -11,6 +11,32 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — séptima pasada (plano de accesibilidad: el badge que miente en las dos direcciones)
+
+| Repo | Licencia (archivo) | Stars | Push | Por qué entra hoy |
+|---|---|---|---|---|
+| [GIScience/openrouteservice](https://github.com/GIScience/openrouteservice) | **LGPL-3.0** | 1996 | 2026-11-23 | **Badge de GitHub: GPL-3.0. Wiki de OSM: Apache-2.0. Archivo: LGPL-3.0.** Relicenciado Apache → LGPL3 el 2018-09-20 (`d81d11794`). 27 archivos `Wheelchair*`. |
+| [sozialhelden/wheelmap-frontend](https://github.com/sozialhelden/wheelmap-frontend) | **MIT** | 57 | 2026-11-16 | Wiki de OSM: GPLv3. **Archivo: MIT.** La wiki se equivoca para el otro lado. |
+| [sozialhelden/a11yjson](https://github.com/sozialhelden/a11yjson) | MIT | 115 | 2026-10-07 | Vocabulario tipado de accesibilidad física (`Room`, `Door`, `Shower`, `GrabBars`, `Slope`). Lo que schema.org no tiene. |
+| [IBMa/equal-access](https://github.com/IBMa/equal-access) | Apache-2.0 | 788 | 2026-11-13 | Único motor de reglas de accesibilidad de escala totalmente permisivo. |
+| [ryersondmp/sa11y](https://github.com/ryersondmp/sa11y) | **GPL-2.0** | 338 | 2026-11-19 | **Era MIT hasta v2.0**; hoy GPL-2.0. GitHub: `NOASSERTION`. |
+| [TaskarCenterAtUW/AccessMap](https://github.com/TaskarCenterAtUW/AccessMap) | GPL-3.0-or-later | 2 | 2026-10-14 | AccessMap **se mudó**: la org original (`AccessMap/*`) está dormida desde 2023 y casi sin licencias. |
+| [OpenSidewalks/OpenSidewalks-Schema](https://github.com/OpenSidewalks/OpenSidewalks-Schema) | **CC BY-ND 4.0** | 63 | 2026-11-16 | El esquema de veredas accesibles **no admite derivados**. |
+
+### La métrica de la pasada
+
+De los **7 repos de esta tabla, en 4 la licencia que muestra GitHub o la wiki
+de OSM no coincide con el archivo**: 2 equivocadas (`openrouteservice`,
+`wheelmap-frontend`) y 2 `NOASSERTION` (`sa11y`, `AccessMap`). En este plano,
+el badge no alcanza: hay que leer el archivo.
+
+### El estándar de la industria, medido por primera vez para este plano
+
+`OpenTravel/OpenTravel-Specifications` (sin archivo de licencia, último commit
+2024-11-26) contiene `DisabilityFeature_Enum` con ~163 etiquetas en OTA 2.0
+2020A y `wheelchair` 974 veces. **El vocabulario existe en la industria; la
+licencia no.**
+
 ## 2026-11-23 — sexta pasada (plano de emisiones: modelo, dato y la licencia que no cierra)
 
 Licencias leídas en el `LICENSE` del repo tras `git clone --depth 1`. Fecha =
