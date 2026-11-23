@@ -620,3 +620,96 @@ de las cuatro fija un formato de dato** para describir una habitación o una
 entrada: obligan al resultado, no a la representación. El formato lo tiene que
 elegir el integrador — y la elección permisiva medida es `a11yjson` (MIT),
 alimentado desde los códigos de OpenTravel que el hotel ya emite.
+
+## 32. La obligación sobre reseñas llegó a tres regiones y la capa open source que la cumpliría está vacía
+
+Es la asimetría más limpia que esta KB midió, porque las dos mitades se midieron
+el mismo día con el mismo método.
+
+**La obligación, fechada.** La regla de la FTC (16 CFR Part 465) alcanza a quien
+**difunde** reseñas falsas, no solo a quien las escribe, y la FTC nombró
+expresamente las generadas por AI. Italia puso en vigor la Ley 34/2026 el
+**7-abr-2026**, con prohibición de compraventa de reseñas y **prueba de estadía**
+exigible. China publicó en **jun-2026** reglas de divulgación: enlace comercial
+etiquetado como publicidad, base de la reseña declarada. La Comisión Europea
+abrió **procedimiento formal DSA contra Booking.com el 21-oct-2026** por listados
+fraudulentos, phishing y publicidad no identificada. Y la AGCM italiana ya multó
+a **Trustpilot con 4 M€** por no verificar reseñas **marcadas como "verificadas"**.
+
+**La herramienta, medida.** `fake review detection stars:>=20` devuelve **8 repos
+en todo GitHub**, y uno de los ocho es de robótica escolar y entra por la sigla
+`FTC`. El más estrellado (109★) no tiene licencia. El único MIT real está
+**archivado**. `review moderation trust safety stars:>=200` y
+`review authenticity provenance stars:>=50` devuelven **0**.
+
+**Por qué no es un hueco de madurez.** En los demás planos de esta KB el vacío se
+explicaba por juventud: el estándar acababa de salir, nadie había escrito el
+cliente. Acá no: la detección de reseñas falsas tiene veinte años de literatura.
+Lo que no hay es **razón para publicarla**. Quien tiene un detector bueno lo tiene
+cerrado, porque publicarlo es publicar el manual de evasión. **Es el primer plano
+del vertical donde el vacío open source es estructural y no transitorio** — y por
+eso es el que no se resuelve esperando otro ciclo.
+
+## 33. Las tres capas de un mismo plano envejecieron a velocidades distintas, y las estrellas apuntan al revés
+
+La cohorte que **lee** reseñas (ABSA) suma **4535★ en seis repos** y tiene **un
+solo push en 2026**. La cohorte que prueba **procedencia** de contenido (C2PA)
+suma **1045★ en siete repos** y tuvo **dos push el día de este ciclo**. Menos de
+una cuarta parte de las estrellas, y toda la vida.
+
+La lectura operativa: **las estrellas miden el pasado de un plano y `pushed_at`
+mide si se puede construir sobre él mañana**, y en este plano las dos métricas
+apuntan en direcciones opuestas. Elegir por la métrica visible lleva directo a
+`songyouwei/ABSA-PyTorch`: 2112★, el más recomendado del tema en listados y
+blogs, **archivado desde 2023, sin archivo de licencia y con 516 forks**. Es la
+tercera vez que esta KB mide que el repo más estrellado de un plano es el menos
+tomable (tras `plane-notify` en vuelo y `axuse` en accesibilidad). **Ya no es
+anécdota: es el comportamiento esperable de un vertical donde el prestigio
+académico y el mantenimiento comercial no coinciden.**
+
+## 34. El error de licencia tiene dos direcciones, y la segunda es la cara
+
+Esta KB registró tres casos de **`NOASSERTION` escondiendo una licencia permisiva
+real** (`valhalla`, `odoo`, `airportsdata`): GitHub no reconocía el archivo, y
+leerlo revelaba que el repo **sí** era usable. El costo de ese error es una
+oportunidad perdida.
+
+Esta pasada midió el error inverso. `songyouwei/ABSA-PyTorch` **no tiene archivo
+de licencia en ninguna ruta estándar de su rama default** —comprobado una por
+una—, su único rastro es un badge de `shields.io` cuya URL apunta a
+`packagist/l/doctrine/orm.svg`, es decir **la licencia de un ORM de PHP sin
+relación con el proyecto**, y la API de GitHub devuelve `MIT`. El costo de este
+error no es perder una oportunidad: es **construir sobre un permiso que nadie
+otorgó**, y con 516 forks la afirmación ya se replicó 516 veces.
+
+Y en el mismo plano apareció una tercera forma: **dual licensing invisible**.
+`c2pa-rs`, `c2pa-swift` y `c2pa-cpp` traen `LICENSE-MIT` **y** `LICENSE-APACHE`;
+la API muestra `NOASSERTION` para el primero y solo `Apache-2.0` para los otros
+dos. Acá la API **esconde una opción que el proyecto concede** — y si el contrato
+de un cliente excluye Apache-2.0 por su cláusula de patentes, leer el badge
+habría descartado un stack tomable bajo MIT.
+
+**La regla, en su forma final tras ocho pasadas:** no se lee el archivo *porque
+GitHub diga `NOASSERTION`*. Se lee **siempre**, incluso —sobre todo— cuando la
+API afirma una licencia limpia.
+
+## 35. El resumen AI de reseñas creó un modo de falla nuevo: no miente, omite
+
+El hallazgo de *Which?* del **3-jul-2026** sobre los resúmenes AI de Tripadvisor
+no es un caso de alucinación: es de **supresión de la cola**. Los resúmenes
+omitían intoxicaciones alimentarias —102 menciones en una propiedad en
+marzo-2026, con 32 reseñas de 1-2 estrellas entre dic-2025 y abr-2026— y
+denuncias de acoso sexual, describiendo lo más cercano como "algunas carencias
+señaladas por unos pocos", mientras los resúmenes de Google **sí** advertían
+"posibilidad de enfermedad" sobre la misma propiedad. Tripadvisor discrepa y
+sostiene que suprime el resumen en fichas con incidentes graves.
+
+**Por qué es tendencia y no incidente.** Un resumen es, por construcción, una
+media; y la información que un viajero más necesita vive en la cola. Es el mismo
+error de forma que esta KB registró en accesibilidad —colapsar
+`sí / no / desconocido` en `sí`— aplicado al texto: **el promedio de las reseñas
+borra exactamente lo que había que leer**. Dos competidores corrieron sobre el
+mismo corpus y uno advirtió: no es un límite del método, es una decisión de
+diseño. Y para quien construye, es la regla operativa más clara del plano:
+**la minoría grave no se promedia, se eleva** — con volumen y ventana temporal
+declarados. Receta 23.

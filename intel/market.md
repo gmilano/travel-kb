@@ -295,6 +295,24 @@ silla**, no una casilla. Un agente de reserva que no pregunta y no verifica
 vende el billete que la regla presume ilegal cuando la pausa termine. Receta 20
 con el dato de aeronave de la segunda pasada.
 
+*Agregado en la octava pasada del 2026-11-23 — plano de la reseña:*
+
+**Regulación.** La **Consumer Review Rule de la FTC (16 CFR Part 465)** es la norma sobre
+reseñas más dura de las cuatro regiones y la única de alcance federal en EE.UU. Prohíbe
+crear, vender, comprar y **difundir** reseñas falsas "cuando la empresa supiera o debiera
+haber sabido" que lo eran, y la FTC citó expresamente las **reseñas generadas por AI** como
+caso cubierto, por representar a alguien que no existe. *[fuentes secundarias coincidentes]*
+sanción civil de hasta **USD 53.088 por infracción**, y acciones que en 2026 ya invocan la
+regla. El punto que importa para el diseño: **"difundir" alcanza a quien muestra la reseña,
+no solo a quien la escribe.** Un agente de viaje que resume reseñas de terceros está
+difundiendo.
+
+**Oportunidad.** La más vendible de la región en este plano no es un detector: es **el
+expediente**. Si la responsabilidad se activa por "debiera haber sabido", el entregable es la
+**traza**: qué reseñas entraron al resumen, de qué ventana temporal, con qué volumen, y qué se
+dejó afuera y por qué. `ScalaConsultants/ABSA` (Apache-2.0) sirve justamente porque **expone
+pesos de atención por aspecto** — es decir, es auditable, no una caja negra. Receta 23.
+
 ### EMEA
 
 **Evidencia.** *[sin verificar]* 38% de adopción de AI en travel en Europa Occidental y 42% en
@@ -594,6 +612,44 @@ nombrada y estándar técnico. El diferencial de Globant no es correr un
 escáner — es **entregar el informe de conformidad EN 301 549 como artefacto de
 cada release**.
 
+*Agregado en la octava pasada del 2026-11-23 — plano de la reseña:*
+
+**Es la región donde este plano dejó de ser teórico, con tres hechos fechados.**
+
+1. **Comisión Europea, 21-oct-2026: procedimiento formal DSA contra Booking.com.** Tres
+   frentes: **listados fraudulentos o no conformes**, **phishing que explota datos de reserva
+   y de huésped**, y **listados impulsados por pago no identificables como publicidad**.
+   *[fuente secundaria, múltiple]* los artículos señalados serían **26, 34 y 35** del DSA. El
+   procedimiento habilita medidas provisionales, decisión de incumplimiento o compromisos.
+2. **Italia, Ley 34/2026 (Ley Anual de PyMEs), en vigor el 7-abr-2026.** Prohíbe **comprar y
+   vender reseñas, valoraciones e interacciones, por cualquier motivo**, incluido entre
+   hoteleros e intermediarios, y desconoce las reseñas obtenidas con descuentos o regalos para
+   "ajustar" la calificación. Exige **prueba de la estadía** vía recibo o documento fiscal
+   —**la ventana aparece como 15 días en el borrador de ene-2025 y como 30 en coberturas
+   posteriores; no se pudo leer el texto final, se registran las dos**— y habilita al hotelero
+   a pedir la **remoción** de la reseña ilícita al hosting provider por la vía del DSA.
+3. **AGCM multó a Trustpilot con 4 M€** por práctica comercial desleal: no verificó
+   adecuadamente la autenticidad de las reseñas, **incluidas las marcadas como "verificadas"**.
+   Es el precedente más citable del plano: **el sello de verificación, sin mecanismo detrás, es
+   el pasivo, no la defensa.**
+
+**Reino Unido, 3-jul-2026.** *Which?* publicó que los **resúmenes AI de reseñas de Tripadvisor**
+omitían intoxicaciones alimentarias y denuncias de acoso sexual —102 menciones de intoxicación
+en una propiedad en marzo-2026 y 32 reseñas de 1-2 estrellas entre dic-2025 y abr-2026—
+mientras los resúmenes de Google sí advertían "posibilidad de enfermedad". Tripadvisor
+"discrepa fundamentalmente" y afirma que suprime el resumen AI en fichas con incidentes graves
+de seguridad. **No hay sanción: hay un método de auditoría publicado y replicable**, que es
+peor para quien vende resúmenes y mejor para quien los audita.
+
+**Oportunidad.** Dos entregables distintos, los dos con comprador identificado:
+1. **Prueba de estadía como producto, para el hotelero italiano.** La ley le da el derecho de
+   pedir remoción, pero la carga de la prueba. El PMS ya tiene el folio: convertirlo en
+   atributo verificable de estadía es la Receta 22, y el mercado es inmediato y obligatorio.
+2. **Procedencia del listado, para la plataforma bajo DSA.** El frente de "listados
+   fraudulentos" se ataca con la capa que **sí está viva**: firmar la foto del alojamiento en
+   origen con C2PA (`c2pa-swift`/`c2pa-js`, MIT *o* Apache-2.0) y verificarla en la ficha.
+   Receta 24.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -814,19 +870,47 @@ en la reserva y llevarlo hasta la operación. Eso es exactamente lo que
 que un agente conversacional puede capturar bien — siempre que no lo resuma en
 texto libre.
 
+*Agregado en la octava pasada del 2026-11-23 — plano de la reseña:*
+
+**Regulación — y es la región que regula la reseña por un eje distinto al europeo.**
+- **China, jun-2026:** reglas conjuntas del regulador del ciberespacio y el de mercado sobre
+  reseñas engañosas en redes sociales. Dos obligaciones de diseño: la reseña que **incluye
+  enlace de compra debe marcarse como publicidad**, y el creador debe **declarar cuándo la
+  reseña se apoya solo en experiencia personal**. Además, las afirmaciones de función,
+  rendimiento y calidad deben estar **ensayadas por instituciones acreditadas** contra norma
+  nacional. *[encuesta CCA 2023, citada en la cobertura]* 55,7% de las cuentas de reseña
+  difuminaban la frontera entre reseña y promoción y 35,7% eran sospechadas de fabricar
+  contenido.
+- **Corea del Sur, jul-2026:** la ley de redes de información y comunicaciones revisada obliga
+  a plataformas como **Naver y Kakao** a ofrecer vías de denuncia de información falsa o
+  manipulada y a **publicar informes de transparencia cada seis meses**. Sumado al etiquetado
+  de AI generativa vigente desde ene-2026.
+- **Japón:** **no se encontró norma vinculante sobre reseñas falsas**; las guías de AI siguen
+  siendo voluntarias. **Se escribe la ausencia**: es la jurisdicción donde el argumento
+  comercial tiene que ser reputacional, no de cumplimiento.
+
+**Oportunidad.** El eje chino —**divulgación**, no detección— es el más barato de implementar y
+el que ningún producto occidental trae de fábrica: **etiquetar el origen y la base de cada
+reseña y de cada resumen** (experiencia propia / incentivada / con enlace comercial). Es
+metadato, no modelo. Y el informe semestral coreano convierte la traza de la Receta 23 en un
+**entregable periódico contratable**, no en un proyecto de una vez.
+
 ### LATAM
 
 **Evidencia — y aquí la narrativa ha ido por delante de los datos durante tres industrias
 seguidas en esta red de KBs, así que se separa lo medido de lo afirmado.**
 
 Lo que está documentado y es verificable:
-- **Perú: 7-abr-2026.** MINCETUR y PROMPERÚ integraron un asistente virtual de viaje con AI
+- **Perú: 14/15-abr-2026** *(fecha corregida en la octava pasada del 2026-11-23; esta KB
+  arrastraba 7-abr-2026)*. MINCETUR y PROMPERÚ integraron un asistente virtual de viaje con AI
   directamente en la plataforma oficial **Peru.travel** — descrito como el primer asistente
   conversacional de viaje oficial en una plataforma nacional de turismo de Sudamérica.
-- **Chile: 15-sep-2026.** Sernatur lanzó la **Chile Travel App** con asistente AI e información
+- **Chile: 15-sep-2026** *(⚠️ pendiente de reverificación — las búsquedas de la octava pasada
+  no devolvieron fuente)*. Sernatur lanzó la **Chile Travel App** con asistente AI e información
   personalizada.
-- **Argentina.** El gobierno nacional anunció un planificador de viaje con AI para
-  **Visit Argentina**, que arma itinerarios según intereses y tiempo disponible.
+- **Argentina** *(⚠️ pendiente de reverificación — ídem Chile)*. El gobierno nacional anunció
+  un planificador de viaje con AI para **Visit Argentina**, que arma itinerarios según
+  intereses y tiempo disponible.
 - **Regulación: 716 instrumentos regulatorios de AI en 23 países y territorios**, más del 80%
   iniciados desde 2023 (estudio 2026, Universidad de los Andes, Bogotá). La fragmentación, no
   la ausencia, es el problema.
@@ -1075,6 +1159,38 @@ explícito para la próxima.
 propiedad tienen ficha accesible verificada sobre el total. Es un reporte de
 cumplimiento que un grupo hotelero brasileño puede necesitar hoy, y que nadie
 vende en open source. Receta 21.
+
+*Agregado en la octava pasada del 2026-11-23 — plano de la reseña:*
+
+**La ausencia, escrita primero.** Las búsquedas de este ciclo **no encontraron ninguna norma
+específica sobre reseñas falsas en ningún país de LATAM** —ni equivalente a la Ley 34/2026
+italiana, ni a la regla de la FTC, ni a las reglas chinas de divulgación—. Aplica el derecho de
+consumidor general. **Es la única de las cuatro regiones sin obligación específica**, y hay que
+decirlo así en una propuesta: acá el plano **no se vende por cumplimiento**, se vende por
+conversión y por confianza, que es un argumento más difícil y de ciclo más largo.
+
+**Lo verificado de nuevo en esta pasada, con una corrección.** El asistente de **Peru.travel**
+(PROMPERÚ) se confirma por múltiples fuentes, con un dato que esta KB no tenía: **la tecnología
+es de Mindtrip** —la misma empresa que el historial de esta KB registraba en el hito
+Sabre+PayPal+Mindtrip—. **La fecha hay que corregirla**: el comunicado es del **14-15 de
+abril de 2026**, no del 7-abr-2026 que esta KB venía arrastrando. El posicionamiento declarado
+es "primer asistente conversacional de AI en una plataforma nacional de turismo de Sudamérica",
+y su propósito explícito es **distribuir visitantes hacia destinos menos conocidos**.
+
+**Lo que esta pasada NO pudo reconfirmar, dicho en voz alta.** Las búsquedas de este ciclo **no
+devolvieron ninguna fuente** sobre la **Chile Travel App de Sernatur (15-sep-2026)** ni sobre el
+planificador AI de **Visit Argentina (may-2026)**, los dos registrados en esta misma sección en
+una pasada anterior. **No se borran ni se confirman**: quedan marcados como *pendientes de
+reverificación*, y la próxima pasada de travel debería ir a los sitios oficiales de Sernatur y
+de Visit Argentina antes de usarlos en una propuesta.
+
+**Oportunidad.** El asistente de destino estatal es el patrón propio de la región —Perú
+confirmado, Chile y Argentina por reverificar— y **ninguno de los tres puede citar una fuente
+de confianza sobre un alojamiento privado**: un estado no puede recomendar un hotel por
+reseñas que no controla. Eso vuelve a la **reseña con estadía probada** (Receta 22) la pieza
+que un ente de turismo nacional podría exigir a su oferta inscripta para poder recomendarla.
+**Es el único lugar del mundo donde este plano tiene un comprador público en lugar de un
+regulador**, y es la clase de encargo que esta región ya demostró que compra.
 
 ## Posicionamiento Globant
 

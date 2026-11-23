@@ -816,3 +816,131 @@ Dos lecturas para cliente:
   están marcadas.
 - El backend de Wheelmap: la wiki dice GPLv3, pero la misma wiki se equivocó con
   el frontend. **No se clonó** el backend; no se afirma su licencia.
+
+## Plano de la reseña y la confianza — detección vacía, lectura congelada, procedencia viva
+
+Agregado en la **octava pasada del 2026-11-23**. La reseña es el insumo que cada agente de esta
+KB cita cuando recomienda un hotel, y hasta hoy no tenía fila de código en ningún archivo. El
+plano se divide en tres capas que **no están en el mismo estado**, y la que la regulación de
+2026 vuelve obligatoria es exactamente la que está vacía.
+
+### Método de verificación de esta tabla
+
+Igual que en las siete pasadas anteriores: existencia por `git ls-remote` (19/19 vivos),
+estrellas, forks y `pushed_at` por `search/repositories`, y **licencia leída del archivo**
+—probando `LICENSE`, `LICENSE.md`, `LICENSE.txt`, `LICENSE-MIT`, `LICENSE-APACHE`, `license` y
+`COPYING` sobre `main` y `master`— no el badge ni el campo de la API. En este plano esa
+distinción decidió el resultado: **dos repos que la API declara licenciados no tienen archivo
+de licencia, y tres que la API declara con una licencia tienen dos.**
+
+### Capa de procedencia — permisiva, viva, y resuelve el problema de al lado
+
+| Repo | Licencia (archivo leído) | Stars | Forks | Último push |
+|------|--------------------------|-------|-------|-------------|
+| [contentauth/c2pa-rs](https://github.com/contentauth/c2pa-rs) | **MIT *o* Apache-2.0** (`LICENSE-MIT` 1083B + `LICENSE-APACHE`) | 454 | 208 | 2026-11-23 |
+| [c2pa-org/specifications](https://github.com/c2pa-org/specifications) | **CC-BY-4.0** (18650B) | 215 | 35 | 2026-11-16 |
+| [contentauth/c2patool](https://github.com/contentauth/c2patool) | Apache-2.0 | 174 | 47 | 2026-11-20 |
+| [contentauth/c2pa-python](https://github.com/contentauth/c2pa-python) | Apache-2.0 | 110 | 41 | 2026-11-18 |
+| [c2pa-org/conformance-public](https://github.com/c2pa-org/conformance-public) | CC-BY-4.0 | 52 | 25 | 2026-11-20 |
+| [contentauth/c2pa-js](https://github.com/contentauth/c2pa-js) | MIT | 44 | 30 | 2026-11-23 |
+| [contentauth/c2pa-swift](https://github.com/contentauth/c2pa-swift) | **MIT *o* Apache-2.0** (ambos presentes) | 28 | 16 | 2026-11-21 |
+| [contentauth/c2pa-cpp](https://github.com/contentauth/c2pa-cpp) | **MIT *o* Apache-2.0** (ambos presentes) | 20 | 14 | 2026-11-16 |
+
+**Lo que habilita en travel, dicho con precisión.** C2PA firma criptográficamente **medios**:
+una foto o un video, con quién lo capturó y qué herramientas lo editaron. En travel eso cubre
+un caso real y valioso —**la foto de la habitación**, que es la otra mitad de la confianza en
+una ficha de hotel, y donde el fraude de listados es justamente lo que la Comisión Europea
+puso bajo procedimiento el 21-oct-2026—. **Lo que no cubre:** el texto de una reseña escrita
+por una persona en un formulario web. No hay cadena de custodia para eso. Quien venda
+"procedencia de reseñas" con C2PA está vendiendo la foto y cobrando el texto.
+
+### Capa de lectura de reseñas — 4535★ y un solo push en 2026
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Nota |
+|------|--------------------------|-------|-------------|------|
+| [ScalaConsultants/Aspect-Based-Sentiment-Analysis](https://github.com/ScalaConsultants/Aspect-Based-Sentiment-Analysis) | Apache-2.0 (11357B) | 585 | 2026-09-07 | **El único vivo.** Expone pesos de atención por aspecto: interpretable, auditable. |
+| [songyouwei/ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch) | **NO HAY ARCHIVO** (API dice `MIT`) | 2112 | 2023-06-12 | **Archivado.** 516 forks. Ver trampa abajo. |
+| [HSLCY/ABSA-BERT-pair](https://github.com/HSLCY/ABSA-BERT-pair) | MIT (1062B) | 519 | 2022-01-04 | NAACL-2019. Licencia limpia. |
+| [howardhsu/BERT-for-RRC-ABSA](https://github.com/howardhsu/BERT-for-RRC-ABSA) | Apache-2.0 (11357B) | 461 | 2021-02-05 | Post-entrenado sobre reseñas: el más cercano al dominio, el más viejo. |
+| [jiangqn/Aspect-Based-Sentiment-Analysis](https://github.com/jiangqn/Aspect-Based-Sentiment-Analysis) | MIT (1067B) | 457 | 2024-03-27 | Colección de implementaciones. |
+| [lixin4ever/BERT-E2E-ABSA](https://github.com/lixin4ever/BERT-E2E-ABSA) | Apache-2.0 (11357B) | 401 | 2023-07-09 | End-to-end. |
+
+**Por qué importa que esté congelada y no muerta.** Estos seis repos resuelven bien un problema
+que no cambió: extraer aspecto y polaridad de un texto de opinión. Las licencias de cinco de
+los seis son limpias y permisivas. **Lo que envejeció no es el método, es el runtime**:
+dependencias de PyTorch y `transformers` de 2019-2021. Para Globant el costo real no es
+reimplementar el modelo, es **actualizar el entorno** — y eso hay que presupuestarlo como tal,
+no como investigación.
+
+### Capa de detección de reseñas falsas — la medición más corta de todo el vertical
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Nota |
+|------|--------------------------|-------|-------------|------|
+| [SayamAlt/Fake-Reviews-Detection](https://github.com/SayamAlt/Fake-Reviews-Detection) | **NINGUNA** | 109 | 2022-04-14 | El más estrellado de la capa. Sin licencia no hay derecho de uso. |
+| [kavgan/OpinRank](https://github.com/kavgan/OpinRank) | **NINGUNA** | 44 | 2021-05-28 | Corpus de reseñas de hotel (TripAdvisor) y de autos. **El único hotel-específico del plano.** |
+| [TrueStarHQ/browser-extension](https://github.com/TrueStarHQ/browser-extension) | MIT (1064B) | 22 | 2025-09-03 | **El único MIT real de la capa — y está ARCHIVADO.** |
+| [bretthollenbeck/fake-reviews-data](https://github.com/bretthollenbeck/fake-reviews-data) | MIT (1073B) | 12 | 2026-03-15 | Dataset etiquetado real/falsa de un paper de economía. **El único permisivo, vivo y usable. 12★.** |
+
+**`fake review detection stars:>=20` devuelve 8 repos en todo GitHub**, y uno de los 8 es un
+repo de robótica escolar que entra por la sigla `FTC`. Esa es la totalidad del piso abierto para
+una obligación que en 2026 es vinculante en Italia, EE.UU. y China.
+
+### ⚠️ La trampa inversa: cuando GitHub **afirma** una licencia que no existe
+
+Esta KB registró tres casos de `NOASSERTION` ocultando una licencia permisiva real
+(`valhalla`, `odoo`, `airportsdata`). `songyouwei/ABSA-PyTorch` es el caso contrario:
+
+| Comprobación | Resultado |
+|--------------|-----------|
+| `LICENSE`, `LICENSE.md`, `LICENSE.txt`, `COPYING` en `master` | **404 los cuatro** |
+| Rama default | `refs/heads/master` (confirmada por `git ls-remote --symref`) |
+| Rastro de licencia en `README.md` | Un badge: `img.shields.io/packagist/l/doctrine/orm.svg` → **la licencia de Doctrine ORM, un paquete PHP ajeno al repo** |
+| `license.spdx_id` en la API de GitHub | `MIT` |
+| Estado | **Archivado**, 2112★, **516 forks** |
+
+**La regla:** leer el archivo no es solo el remedio para `NOASSERTION`. **Una licencia afirmada
+por la API también hay que abrirla**, porque el error existe en las dos direcciones y la segunda
+es la cara: en la primera se descarta algo usable, en la segunda se construye sobre un permiso
+que nadie otorgó. Con 516 forks, esa afirmación ya se replicó 516 veces.
+
+### ⚠️ Dual licensing que la API no muestra
+
+`c2pa-rs`, `c2pa-swift` y `c2pa-cpp` traen **`LICENSE-MIT` y `LICENSE-APACHE` los dos**. La API
+devuelve `NOASSERTION` para el primero y solo `Apache-2.0` para los otros dos. El efecto
+práctico no es cosmético: **el proyecto concede elegir y la API esconde la opción.** Si el
+contrato de un cliente excluye Apache-2.0 por la cláusula de patentes, leer el badge habría
+descartado un stack que sí se podía tomar bajo MIT. Casos 4, 5 y 6 del registro de divergencia
+badge-vs-archivo de esta KB.
+
+### Brechas del plano de la reseña, medidas el 2026-11-23
+
+| Consulta (`search/repositories`) | Resultado | Lectura |
+|----------------------------------|-----------|---------|
+| `fake review detection stars:>=20` | **8** (uno es robótica por la sigla FTC) | El piso de la obligación regulatoria de 2026. |
+| `review authenticity provenance stars:>=50` | **0** | Nadie cruzó procedencia con reseñas. El puente hay que construirlo. |
+| `review moderation trust safety stars:>=200` | **0** | Sin infraestructura abierta de moderación a ninguna escala. |
+| `hotel review analysis stars:>=30` | **1** (`Tony607/Chinese_sentiment_analysis`, sin licencia, 2017) | El vertical más dependiente de la reseña no tiene herramienta propia. |
+| `review dataset hotel tripadvisor stars:>=30` | **1** (`OpinRank`, sin licencia) | **No hay corpus de reseñas de hotel redistribuible.** Quien entrene, entrena con dato propio del cliente. |
+| `reputation management open source stars:>=100` | **0** | La gestión de reputación —producto que el vertical compra cerrado— no tiene equivalente abierto. |
+| `tours activities booking open source stars:>=50` | **0** | Registrado al pasar: el tercer segmento de travel tampoco tiene piso. Candidato a plano futuro. |
+
+**La conclusión de arquitectura.** En este plano no hay nada que adoptar: hay algo que
+**construir sobre dos piezas sanas y un dataset de 12★**. `ScalaConsultants/ABSA` (Apache-2.0,
+vivo) para leer, el org de C2PA (MIT *o* Apache, vivo) para la procedencia de la foto, y el
+dato de reseñas del propio cliente —porque corpus redistribuible no hay—. Todo lo que diga
+"detectar reseñas falsas" con licencia utilizable **hay que escribirlo**. Recetas 22 a 24 en
+`compose/patterns.md`.
+
+### ⚠️ Lo que esta sesión NO pudo verificar, dicho en voz alta
+
+- `ec.europa.eu` y `www.tripadvisor.com` **no resuelven** desde la red de esta sesión. El
+  procedimiento DSA contra Booking.com (21-oct-2026) y las cifras del Transparency Report de
+  Tripadvisor están **corroboradas por múltiples fuentes secundarias coincidentes** (incluida
+  la página de noticias de `digital-strategy.ec.europa.eu` citada en los resultados, CNBC,
+  Phocuswire y Lodging Magazine), pero **no leídas del documento primario**. Se marcan así.
+- La **ventana de prueba de estadía** de la ley italiana aparece como **15 días** en el
+  borrador de ene-2025 y como **30 días** en coberturas posteriores. **No se pudo leer el texto
+  final de la Ley 34/2026**: se registran las dos cifras y ninguna se afirma.
+- Las guías de aplicación de AGCM/Agcom para esa ley estaban **pendientes** en las fuentes
+  consultadas (consulta pública con comentarios al 15-jul). No se pudo confirmar si se
+  emitieron.

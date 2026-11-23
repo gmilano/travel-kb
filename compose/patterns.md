@@ -913,3 +913,140 @@ Decreto 9.296 y si hubo prórroga después del 3-12-2024 — esta sesión no pud
 abrir la fuente primaria. Y confirmar el estado del PL 3.835/23: si se aprueba,
 el incumplimiento pasa a tener **costo por reserva** (50% de descuento), y el
 reporte deja de ser de cumplimiento para ser de ingresos.
+
+## Receta 22 — Sello de estadía verificada sobre el PMS (la receta de EMEA, y la única que invierte el problema)
+
+**Problema.** La Ley 34/2026 italiana, vigente desde el **7-abr-2026**, le da al hotelero el
+derecho de pedir la remoción de una reseña ilícita, pero le pone **la carga de la prueba**: hay
+que acreditar la estadía con recibo o documento fiscal. Y la multa de 4 M€ de la AGCM a
+Trustpilot dejó el precedente de que **un sello de "verificada" sin mecanismo detrás es el
+pasivo, no la defensa**. La tentación es construir un detector de reseñas falsas. Esta receta
+no lo hace, por una razón medida: **no existe** —`fake review detection stars:>=20` devuelve 8
+repos en todo GitHub, el único MIT archivado, el más estrellado sin licencia— y **la
+regulación no lo exige**. Lo que piden las tres normas es acreditar las verdaderas.
+
+**Cableado:**
+
+1. **La fuente de verdad es el folio, no la reseña.** El PMS ya sabe quién durmió y qué noches.
+   Sobre **HAIP** (Apache-2.0, PMS NestJS multi-tenant, ya en `verticals/solutions.md`) o
+   **QloApps** —donde reserva y comentario **viven en la misma base**, que es el gancho más
+   corto del stack— se emite un token de estadía al checkout: `{property_id, rango de noches,
+   hash de reserva}`. **Nunca el nombre ni el documento.**
+2. **El atributo se prueba sin revelar la identidad.** Mismo mecanismo que la pasada de
+   frontera registró para el pasaporte: `zkpassport/circuits` (Apache-2.0, 94★) o
+   `rarimo/passport-zk-circuits` (MIT, 94★) para demostrar "esta persona se alojó en esta
+   propiedad en esta ventana" sin exponer quién es. Esto es lo que resuelve la objeción que la
+   propia cobertura italiana señaló como el agujero de la ley: *cómo aportar la prueba sin
+   violar privacidad*.
+3. **La foto que acompaña se firma en origen.** `contentauth/c2pa-swift` (**MIT *o*
+   Apache-2.0**) en la app del huésped: la imagen sale del dispositivo con manifiesto de
+   procedencia. Verificación en la ficha con `contentauth/c2pa-js` (MIT, push 2026-11-23).
+   ⚠️ **No usar `c2pa-node`** (MIT, 21★): está **archivado** desde sep-2025; el binding vivo de
+   JavaScript es `c2pa-js`.
+4. **La ventana de prueba es configurable, no cableada.** El texto final de la ley aparece como
+   **15 días** en el borrador de ene-2025 y **30** en coberturas posteriores, y **no se pudo
+   leer el texto final**. Se implementa como parámetro por jurisdicción, con el valor y su
+   fuente en el expediente. Si se cablea 30 y la ley dice 15, el sello miente.
+5. **El canal de remoción es el del DSA, no un formulario propio.** La ley habilita al
+   representante legal del alojamiento a reportar la reseña ilícita al hosting provider
+   (Tripadvisor, Booking, Google) por la vía del DSA. El entregable incluye **el expediente
+   armado**, no solo la detección.
+
+**Lo que esta receta NO promete.** No dice que las reseñas sin sello sean falsas. Dice que las
+selladas son de huéspedes reales. **La distinción es jurídica, no cosmética**: afirmar la
+primera cosa es exactamente la práctica desleal por la que cayó Trustpilot.
+
+**Para LATAM** cambia el comprador, no el diseño: no hay norma específica de reseñas en ningún
+país de la región (medido en esta pasada), pero sí **entes de turismo estatales comprando
+asistentes de destino** —Perú/PROMPERÚ con tecnología de Mindtrip, abr-2026, confirmado—. Un
+estado no puede recomendar un hotel privado por reseñas que no controla: el sello de estadía es
+el requisito que le permitiría exigírselo a su oferta inscripta. **Mismo producto, comprador
+público en lugar de regulador.**
+
+## Receta 23 — Resumen de reseñas auditable, con la cola negativa elevada (la receta de North America)
+
+**Problema.** La regla de la FTC (16 CFR Part 465) alcanza a quien **difunde** reseñas falsas
+"cuando supiera o debiera haber sabido" —y un agente que resume reseñas de terceros está
+difundiendo—. Al mismo tiempo, *Which?* mostró el **3-jul-2026** que los resúmenes AI de
+Tripadvisor **omitían** intoxicaciones alimentarias (102 menciones en una propiedad en
+marzo-2026) y denuncias de acoso, mientras Google **sí** advertía sobre la misma propiedad. Las
+dos presiones empujan al mismo entregable: **un resumen que se puede auditar y que no promedia
+la minoría grave.**
+
+**Cableado:**
+
+1. **Clasificar por aspecto con un modelo interpretable.**
+   `ScalaConsultants/Aspect-Based-Sentiment-Analysis` (**Apache-2.0**, 585★, **el único repo de
+   la cohorte con push en 2026**). Se elige por una propiedad concreta, no por estrellas:
+   **expone pesos de atención por aspecto**, así que cada afirmación del resumen se puede
+   trazar a las frases que la produjeron. ⚠️ **No usar `songyouwei/ABSA-PyTorch`** (2112★) por
+   más que todo listado lo recomiende: **archivado, sin archivo de licencia, y su badge
+   renderiza la licencia de Doctrine ORM**, un paquete PHP ajeno.
+   Presupuestar **actualización de runtime**, no investigación: la cohorte es de 2019-2021.
+2. **Clasificación de severidad separada de la de sentimiento.** Un aspecto `limpieza:
+   negativo` y una mención de **intoxicación alimentaria** no son el mismo objeto. Se define una
+   lista de categorías graves —enfermedad, intoxicación, acoso, seguridad, plagas— que **no
+   entran al promedio**: entran a un canal propio con conteo y fechas. Es el mismo principio de
+   tres estados de la Receta 20, aplicado al texto: **la minoría grave no se promedia, se
+   eleva.**
+3. **Cada resumen declara su denominador.** `{n reseñas, ventana temporal, distribución de
+   estrellas, n reseñas graves por categoría}` visible, no en un tooltip. El caso *Which?* se
+   construyó justamente contando menciones y reseñas de 1-2 estrellas en una ventana: si el
+   producto publica ese conteo, el método de auditoría pasa a ser el propio.
+4. **El expediente, que es el entregable que la FTC vuelve valioso.** Por cada resumen
+   publicado se persiste: qué reseñas entraron, cuáles se excluyeron **y por qué regla**, la
+   versión del modelo y la fecha. Ante "debiera haber sabido", la defensa es la traza.
+5. **Divulgación al estilo APAC, que es metadato y no modelo.** Las reglas chinas de jun-2026
+   piden marcar como publicidad la reseña con enlace comercial y declarar la base de la reseña.
+   Se agrega como campo desde el día uno: `origen ∈ {estadía verificada, incentivada, con
+   enlace comercial, sin verificar}`. Es barato acá y carísimo retrofitearlo.
+6. **Entrega periódica, no proyecto único.** Corea del Sur obliga desde jul-2026 a plataformas
+   como Naver y Kakao a **publicar informes de transparencia cada seis meses**. El mismo
+   expediente del punto 4, agregado, **es** ese informe.
+
+**Regla del agente.** Nunca afirma que una reseña es auténtica —no hay herramienta y la
+regulación castiga la afirmación falsa, no la abstención—. Cita y enlaza en lugar de resumir
+sin rastro, declara volumen y ventana, y **si hay categoría grave en la ventana, la dice antes
+del promedio.**
+
+## Receta 24 — Procedencia del listado para una plataforma bajo DSA (la receta de EMEA, lado plataforma)
+
+**Problema.** La Comisión Europea abrió el **21-oct-2026** procedimiento formal DSA contra
+Booking.com por tres frentes, y el primero es **listados fraudulentos o no conformes**
+(*[fuente secundaria]* arts. 26, 34 y 35). El procedimiento habilita medidas provisionales,
+decisión de incumplimiento o compromisos — y "compromisos" significa que la plataforma puede
+cerrar el caso **ofreciendo un mecanismo**. Ese mecanismo es construible hoy, porque es el
+único tramo de este plano cuya capa open source está **viva y permisiva**.
+
+**Cableado:**
+
+1. **Firmar el medio en origen, no validarlo al final.** `contentauth/c2pa-rs` (**MIT *o*
+   Apache-2.0**, 454★, 208 forks, push 2026-11-23) en el backend de onboarding de la
+   propiedad; `c2pa-swift` (MIT *o* Apache-2.0) si el hotelero sube desde móvil. La foto del
+   alojamiento entra al catálogo **con manifiesto**: qué dispositivo la capturó, qué
+   herramientas la editaron.
+2. **Verificar en la ficha, del lado del viajero.** `contentauth/c2pa-js` (MIT, push
+   2026-11-23) muestra el estado de procedencia donde se decide la compra.
+3. **Prueba de concepto antes de integrar.** `contentauth/c2patool` (Apache-2.0, 174★) firma y
+   verifica desde la línea de comandos: la demo para el comité se arma en un día, sin tocar el
+   backend.
+4. **Conformidad contra la norma, no contra la implementación.**
+   `c2pa-org/specifications` (**CC-BY-4.0**) y `c2pa-org/conformance-public` (CC-BY-4.0).
+   ⚠️ **Son licencias de contenido, no de software** —mismo matiz que Travel Impact Model en la
+   segunda pasada—: se **citan** en el expediente de cumplimiento, no se copian a un repo
+   propio como si fueran código.
+5. **El límite, dicho al cliente en la primera reunión.** C2PA firma **medios**. Cubre la foto
+   del listado, que es exactamente el frente de "listados fraudulentos" bajo investigación. **No
+   cubre el texto de una reseña escrita en un formulario**: para eso no hay cadena de custodia
+   y `review authenticity provenance stars:>=50` devuelve **0 repos**. Quien venda "procedencia
+   de reseñas" con C2PA está vendiendo la foto y cobrando el texto.
+6. **El segundo frente del procedimiento no es de procedencia y no se mezcla.** El phishing que
+   explota datos de reserva y de huésped es seguridad de cuenta del hotelero, no autenticidad
+   de contenido. Se separa en la propuesta: mezclarlos produce un alcance que no se puede
+   cumplir.
+
+**Por qué esta receta es la más ejecutable de las tres.** No depende de ninguna pieza
+archivada, de ningún repo sin licencia ni de ningún modelo de 2021. Las siete piezas tienen
+licencia leída del archivo, dos tuvieron push el día en que se midieron, y la más grande tiene
+208 forks: la capa tiene integradores reales. **Es el único tramo del plano de la reseña donde
+Globant adopta en lugar de construir.**

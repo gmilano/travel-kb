@@ -11,6 +11,60 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — octava pasada (plano de la reseña: la cohorte de 4535★ con un solo push en 2026)
+
+Octavo ciclo del mismo día, lado infraestructura. **Append-only**: las siete pasadas anteriores
+quedan intactas debajo. Este archivo sigue **repos de infraestructura**; los agentes y skills de
+esta misma pasada están en `agents/trending.md`. Verificación: existencia por `git ls-remote`,
+métricas por `search/repositories`, **licencia leída del archivo byte a byte**.
+
+| Repo | Licencia (archivo leído) | Stars | Forks | Último push | Por qué entra |
+|------|--------------------------|-------|-------|-------------|---------------|
+| [contentauth/c2pa-rs](https://github.com/contentauth/c2pa-rs) | **MIT *o* Apache-2.0** (`LICENSE-MIT` 1083B + `LICENSE-APACHE`) | 454 | 208 | 2026-11-23 | Núcleo Rust de procedencia de contenido. Push el día del ciclo. 208 forks: la capa tiene integradores reales. |
+| [c2pa-org/specifications](https://github.com/c2pa-org/specifications) | **CC-BY-4.0** (18650B) | 215 | 35 | 2026-11-16 | La norma. **Licencia de contenido**: se cita, no se copia a un repo propio. |
+| [contentauth/c2patool](https://github.com/contentauth/c2patool) | Apache-2.0 | 174 | 47 | 2026-11-20 | CLI de firma y verificación. Entra como herramienta de piloto. |
+| [contentauth/c2pa-python](https://github.com/contentauth/c2pa-python) | Apache-2.0 | 110 | 41 | 2026-11-18 | Binding Python: el que encaja en pipeline de datos. |
+| [contentauth/c2pa-js](https://github.com/contentauth/c2pa-js) | MIT | 44 | 30 | 2026-11-23 | Verificación en browser, push del día. |
+| [contentauth/c2pa-swift](https://github.com/contentauth/c2pa-swift) | **MIT *o* Apache-2.0** (ambos archivos) | 28 | 16 | 2026-11-21 | Firma en el dispositivo del huésped. La API muestra solo Apache. |
+| [contentauth/c2pa-cpp](https://github.com/contentauth/c2pa-cpp) | **MIT *o* Apache-2.0** (ambos archivos) | 20 | 14 | 2026-11-16 | Para incrustar en PMS o kiosco existente. |
+| [ScalaConsultants/Aspect-Based-Sentiment-Analysis](https://github.com/ScalaConsultants/Aspect-Based-Sentiment-Analysis) | Apache-2.0 (11357B) | 585 | 94 | 2026-09-07 | **El único de su cohorte con push en 2026.** Trae pesos de atención por aspecto: interpretable, que es lo que pide un expediente regulatorio. |
+| [songyouwei/ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch) | **NO HAY ARCHIVO** — GitHub declara `MIT` | 2112 | 516 | 2023-06-12 | **ARCHIVADO.** 516 forks de un repo sin licencia verificable: la trampa ya se propagó. Ver abajo. |
+| [HSLCY/ABSA-BERT-pair](https://github.com/HSLCY/ABSA-BERT-pair) | MIT (1062B) | 519 | 132 | 2022-01-04 | NAACL-2019. Licencia limpia, 5 años dormido. |
+| [howardhsu/BERT-for-RRC-ABSA](https://github.com/howardhsu/BERT-for-RRC-ABSA) | Apache-2.0 (11357B) | 461 | 110 | 2021-02-05 | Post-entrenado **sobre reseñas**: lo más cercano al dominio de toda la cohorte, y el más viejo. |
+| [jiangqn/Aspect-Based-Sentiment-Analysis](https://github.com/jiangqn/Aspect-Based-Sentiment-Analysis) | MIT (1067B) | 457 | 83 | 2024-03-27 | Colección de implementaciones, licencia limpia. |
+| [lixin4ever/BERT-E2E-ABSA](https://github.com/lixin4ever/BERT-E2E-ABSA) | Apache-2.0 (11357B) | 401 | 88 | 2023-07-09 | Extracción y clasificación del aspecto en un paso. |
+| [bretthollenbeck/fake-reviews-data](https://github.com/bretthollenbeck/fake-reviews-data) | MIT (1073B) | 12 | 0 | 2026-03-15 | **El único dato de reseñas falsas con licencia permisiva y push en 2026.** 12★. Es el piso real de la capa de detección. |
+| [kavgan/OpinRank](https://github.com/kavgan/OpinRank) | **NINGUNA** | 44 | 12 | 2021-05-28 | Entra a la tabla de trampas: único corpus de reseñas **de hotel** del plano, y sin licencia no se redistribuye. |
+
+### La trampa de licencia de esta pasada: la inversa de todas las anteriores
+
+Esta KB lleva registrados tres casos de **`NOASSERTION` escondiendo una licencia permisiva
+real** (`valhalla`, `odoo`, `airportsdata`): GitHub no reconocía el archivo y había que leerlo
+para descubrir que el repo *sí* era usable. `ABSA-PyTorch` invierte el error y lo vuelve
+peligroso:
+
+- No hay `LICENSE`, `LICENSE.md`, `LICENSE.txt` ni `COPYING` en su rama default (`master`,
+  comprobado ruta por ruta, todas 404).
+- Su `README.md` muestra un badge de licencia cuya URL es
+  `https://img.shields.io/packagist/l/doctrine/orm.svg` — **el badge consulta Packagist y
+  devuelve la licencia de Doctrine ORM, un ORM de PHP sin ninguna relación con el proyecto.**
+- La API de GitHub devuelve, pese a todo, `"spdx_id": "MIT"`.
+- El repo está **archivado** y tiene **516 forks**.
+
+**La regla que esta KB saca de acá:** `NOASSERTION` obliga a leer el archivo, y **una licencia
+afirmada también**. Las dos direcciones del error existen y la segunda es la cara: en la
+primera se pierde una oportunidad, en la segunda se construye sobre un derecho que nadie
+otorgó. Y con 516 forks, la afirmación ya se copió 516 veces.
+
+### Lo que esta pasada mide como tendencia
+
+La cohorte de lectura de reseñas suma **4535★ y tiene un solo push en 2026**: se publicó entre
+2019 y 2021 al calor de los papers de ABSA, y se detuvo. La cohorte de procedencia tiene
+**menos de la mitad de estrellas (1045★ en siete repos) y dos push el día de este ciclo**.
+**Las estrellas miden el pasado de un plano; `pushed_at` mide si se puede construir sobre él
+mañana** — y en este plano las dos métricas apuntan en direcciones opuestas. Elegir por
+estrellas acá lleva directo a un repo archivado y sin licencia.
+
 ## 2026-11-23 — séptima pasada (plano de accesibilidad: el badge que miente en las dos direcciones)
 
 | Repo | Licencia (archivo) | Stars | Push | Por qué entra hoy |

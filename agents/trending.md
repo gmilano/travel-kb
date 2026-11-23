@@ -12,6 +12,46 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — octava pasada (plano de la reseña: la obligación llegó y la herramienta no)
+
+Octavo ciclo del mismo día. **No reemplaza nada**: las siete pasadas anteriores quedan intactas
+debajo. Foco: **el insumo que todo agente de esta KB cita al recomendar un hotel** — la reseña —
+y que hasta hoy no tenía una sola mención en los ocho archivos. Verificación: 19/19 slugs vivos
+por `git ls-remote`, métricas por `search/repositories`, **licencias leídas del archivo**.
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Qué cambió |
+|--------|------|--------------------------|-------|-------------|------------|
+| c2pa-rs | [contentauth/c2pa-rs](https://github.com/contentauth/c2pa-rs) | **MIT *o* Apache-2.0** (los dos archivos presentes) — GitHub dice `NOASSERTION` | 454 | 2026-11-23 | Entra por primera vez. **Push el mismo día de este ciclo.** La capa de procedencia es la más sana que esta KB midió en cualquier plano. |
+| c2pa-org/specifications | [c2pa-org/specifications](https://github.com/c2pa-org/specifications) | **CC-BY-4.0** (18650B) | 215 | 2026-11-16 | Entra por primera vez. **Segunda licencia de contenido del vertical** tras Travel Impact Model: se puede citar, no copiar como código. |
+| c2patool | [contentauth/c2patool](https://github.com/contentauth/c2patool) | Apache-2.0 | 174 | 2026-11-20 | Entra por primera vez. El CLI: la vía más corta a una prueba de procedencia. |
+| c2pa-js | [contentauth/c2pa-js](https://github.com/contentauth/c2pa-js) | MIT | 44 | 2026-11-23 | Entra por primera vez, **con push de hoy**, mientras `c2pa-node` (MIT, 21★) está **archivado** desde sep-2025. El binding vivo de JS no es el que dice "node". |
+| Aspect-Based-Sentiment-Analysis | [ScalaConsultants/Aspect-Based-Sentiment-Analysis](https://github.com/ScalaConsultants/Aspect-Based-Sentiment-Analysis) | Apache-2.0 (11357B) | 585 | 2026-09-07 | Entra por primera vez. **El único repo de lectura de reseñas con push en 2026** — de una cohorte de seis que suma 4535★. |
+| ABSA-PyTorch | [songyouwei/ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch) | **NO HAY ARCHIVO** — GitHub declara `MIT` | 2112 | 2023-06-12 | **El repo más estrellado que entra a esta KB este ciclo, y entra a la tabla de trampas.** Archivado. Su único rastro de licencia es un badge que renderiza `packagist/l/doctrine/orm.svg`: **la licencia de un paquete PHP ajeno**. |
+| browser-extension (TrueStar) | [TrueStarHQ/browser-extension](https://github.com/TrueStarHQ/browser-extension) | MIT (1064B) | 22 | 2025-09-03 | Entra por primera vez y **como medición de escasez**: es el **único repo MIT real de detección de reseñas falsas en todo GitHub**, y está **archivado**. |
+
+**Lo que esta pasada agrega a la tendencia, dicho como tendencia y no como lista.** Los siete
+ciclos anteriores midieron planos donde la pregunta era *cómo está repartida la licencia*
+(permisivo en frontera, copyleft en datos de vuelo, ausente en terrestre). Este plano se
+reparte en un eje distinto: **por estado de mantenimiento, y el estado no correlaciona con la
+demanda regulatoria**. Las tres capas, medidas con el mismo método el mismo día:
+
+- **Detectar que una reseña es falsa** → `fake review detection stars:>=20` devuelve **8 repos
+  en todo GitHub** (uno de ellos entra por la sigla `FTC` y es de robótica). El más estrellado
+  no tiene licencia; el único MIT está archivado.
+- **Leer qué dice la reseña** → 6 repos, **4535★ sumadas**, y **un solo push en 2026**. El más
+  grande (2112★) está archivado y sin licencia verificable.
+- **Probar de dónde vino un contenido** → un org completo, doble licencia permisiva, **dos
+  repos con push el día de este ciclo**. Sana. Y **firma medios, no texto**: no resuelve la
+  autenticidad de una reseña escrita.
+
+**La asimetría es el hallazgo.** En 2026 la obligación sobre reseñas se volvió vinculante en
+tres de las cuatro regiones —Italia (Ley 34/2026, en vigor 7-abr-2026), la regla de la FTC en
+EE.UU., las reglas conjuntas de China (jun-2026)— y la Comisión Europea abrió **procedimiento
+formal DSA contra Booking.com el 21-oct-2026**. La capa open source que respondería a esa
+obligación es la única de las tres que está vacía. **No es un hueco de madurez: es un hueco de
+incentivo.** Nadie publica un detector de reseñas falsas porque el que lo tiene bueno lo tiene
+cerrado — y eso, para Globant, es la definición de trabajo a medida.
+
 ## 2026-11-23 — séptima pasada (plano de accesibilidad: lo que el agente puede auditar y lo que no puede prometer)
 
 **Plano nuevo.** Antes de esta pasada, `wheelchair`, `a11y` y `axe-core` daban

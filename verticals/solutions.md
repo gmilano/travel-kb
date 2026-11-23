@@ -273,3 +273,51 @@ códigos `DisabilityFeature_Enum` que el hotel ya emite por OTA XML, los
 normaliza a `a11yjson` con medidas y fecha de relevamiento, y los expone como
 tool MCP de tres estados (`sí / no / desconocido`). No existe en open source
 (ver *Brechas* en `repos/foundations.md`). Es la Receta 20.
+
+## Lo que agregó la octava pasada del 2026-11-23
+
+### No hay plataforma vertical de reputación open source — y acá la ausencia es un mercado
+
+| Consulta (`search/repositories`) | Resultado |
+|----------------------------------|-----------|
+| `reputation management open source stars:>=100` | **0** |
+| `review moderation trust safety stars:>=200` | **0** |
+| `hotel review analysis stars:>=30` | **1**, sin licencia, último push 2017 |
+
+La gestión de reputación es una categoría de producto que la hotelería **ya compra**
+—TrustYou, Revinate, ReviewPro y los módulos de reputación de los PMS— y no tiene **ninguna**
+contraparte open source. Es la tercera vez que esta KB mide este patrón (emisiones, séptima
+pasada: accesibilidad; ahora reputación) y la lectura se repite: **donde la obligación es
+nueva y el comprador tiene presupuesto, el open source no llegó.**
+
+### Dónde enchufa esto en las plataformas que esta KB ya recomienda
+
+La reseña no entra por una plataforma nueva: entra **en la que el cliente ya tiene**.
+
+| Plataforma ya recomendada en este archivo | Dónde vive la reseña | Qué se le agrega con lo medido en la octava pasada |
+|-------------------------------------------|----------------------|----------------------------------------------------|
+| **QloApps** (hotel booking, basado en PrestaShop) | Módulo de comentarios de producto, con la reserva asociada en la misma base | El **gancho de prueba de estadía** más directo del stack: la reserva y la reseña ya están en la misma tabla. Es exactamente la evidencia que pide la Ley 34/2026 italiana. |
+| **HAIP** (Apache-2.0, PMS NestJS multi-tenant) | No trae módulo de reseñas | Punto de integración del folio con la reseña: el folio prueba la estadía sin exponer el documento del huésped. |
+| **Odoo** (ERP) | Portal y módulos de rating | Clasificación por aspecto con `ScalaConsultants/ABSA` (Apache-2.0) sobre el texto que ya almacena. |
+
+### ⚠️ Lo que los listados recomiendan en este plano y no conviene tomar
+
+| Lo que aparece recomendado | Por qué no |
+|----------------------------|------------|
+| `songyouwei/ABSA-PyTorch` como "el estándar de análisis de reseñas" (2112★) | **Archivado, sin archivo de licencia, y su badge muestra la licencia de un paquete PHP ajeno.** Es el repo más recomendado del plano en listados y blogs, y el menos tomable. |
+| `TrueStarHQ/browser-extension` como detector de reseñas falsas | MIT real, pero **archivado** desde sep-2025. |
+| `SayamAlt/Fake-Reviews-Detection` (109★) | **Sin licencia.** Aparece primero en casi toda búsqueda del tema. |
+| `OpinRank` como corpus de entrenamiento de hotel | **Sin licencia**: no se redistribuye ni se entrena para un cliente con él. |
+| C2PA vendido como "procedencia de reseñas" | C2PA firma **medios**, no el texto de un formulario. Sirve para la **foto** de la habitación; para la reseña escrita no hay cadena de custodia. |
+
+### El hueco de producto más claro de este plano
+
+**Un "sello de estadía verificada" por propiedad, montado sobre el PMS que el cliente ya
+tiene.** No intenta detectar reseñas falsas —no existe la herramienta y la regulación no la
+exige—: invierte el problema y **prueba las verdaderas**. El PMS ya sabe quién durmió ahí y qué
+noches; la reseña se emite con un atributo verificable de estadía (sin exponer identidad, con
+el mismo mecanismo ZK que la séptima pasada registró para el pasaporte:
+`zkpassport/circuits`, Apache-2.0), y la foto que la acompaña se firma con C2PA en el
+dispositivo del huésped (`c2pa-swift`, MIT *o* Apache-2.0). Es lo único de este plano que
+puede construirse **hoy, con licencias limpias, sin pedirle a nadie que detecte un fraude**.
+Es la Receta 22.

@@ -22,6 +22,12 @@ updated: 2026-11-23
 > **Séptima pasada 2026-11-23:** se agrega el **plano de accesibilidad** — el primero que
 > no tenía ni una mención en la KB. Todo lo agentic que existe audita páginas; para el
 > acceso físico hay **cero agentes**. Ver la sección al final.
+>
+> **Octava pasada 2026-11-23:** se agrega el **plano de la reseña y la confianza** — el
+> insumo que todo agente de esta KB cita al recomendar un hotel, y que ninguno puede
+> verificar. Tres capas en tres estados distintos (detección **vacía**, lectura
+> **congelada**, procedencia **viva pero del problema de al lado**) y la **trampa inversa**
+> de licencia: un badge que renderiza la licencia de otro proyecto. Ver la sección al final.
 
 ## Agentes y herramientas verificadas
 
@@ -458,3 +464,101 @@ generado.** Y tiene un tercer estado que el agente no puede colapsar:
 desconocido (600 por defecto) distinto que lo inaccesible conocido (3600). Un
 agente que responde "sí, es accesible" porque el campo estaba vacío deja a una
 persona en la puerta de un hotel.
+
+## Reseña y confianza — el insumo que todo agente cita y ninguno puede verificar
+
+Agregada en la **octava pasada del 2026-11-23**. Es el segundo plano, después del de
+accesibilidad, **sin una sola mención previa en esta KB**: las palabras `review`,
+`reputación` y `fake review` devolvían cero en los ocho archivos. Y es el plano del que
+depende silenciosamente todo lo demás, porque la reseña es **el insumo que cada agente de
+esta KB cita cuando recomienda un hotel**.
+
+El hallazgo de esta pasada no es una lista de agentes: es que **no hay agentes**. Lo que hay
+son tres capas separadas, medidas el 2026-11-23 con el método de siempre (`git ls-remote`
+para existencia, `search/repositories` para métricas, **licencia leída del archivo**), y las
+tres están en un estado distinto.
+
+### Capa 1 — Detectar que una reseña es falsa: **vacía**
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Estado |
+|--------|------|--------------------------|-------|-------------|--------|
+| Fake-Reviews-Detection | [SayamAlt/Fake-Reviews-Detection](https://github.com/SayamAlt/Fake-Reviews-Detection) | **NINGUNA** — no existe archivo de licencia en la rama default | 109 | 2022-04-14 | El más estrellado de la capa. **Sin licencia = sin derecho de uso.** 4 años sin push. |
+| browser-extension (TrueStar) | [TrueStarHQ/browser-extension](https://github.com/TrueStarHQ/browser-extension) | MIT (`LICENSE`, 1064B) | 22 | 2025-09-03 | **El único MIT real de la capa, y está ARCHIVADO.** Era análisis de reseñas de Amazon en el browser. |
+| fake-reviews-data | [bretthollenbeck/fake-reviews-data](https://github.com/bretthollenbeck/fake-reviews-data) | MIT (`LICENSE`, 1073B) | 12 | 2026-03-15 | Dataset de reseñas de Amazon etiquetadas real/falsa, de un paper de economía. **Vivo.** Es un dataset, no un detector. |
+| OpinRank | [kavgan/OpinRank](https://github.com/kavgan/OpinRank) | **NINGUNA** | 44 | 2021-05-28 | Dataset clásico de reseñas de hoteles y autos (TripAdvisor, Edmunds). **Es el único activo hotel-específico de toda la capa, y no tiene licencia.** |
+
+### Capa 2 — Leer qué dice la reseña: **abundante y congelada**
+
+Aspect-Based Sentiment Analysis (ABSA) es la técnica que convierte "la habitación era chica
+pero el desayuno excelente" en `habitación: negativo / desayuno: positivo`. Es exactamente lo
+que un agente de travel necesita, y es la capa con más estrellas del plano. También es la más
+vieja.
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Estado |
+|--------|------|--------------------------|-------|-------------|--------|
+| ABSA-PyTorch | [songyouwei/ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch) | **NO HAY ARCHIVO** — GitHub declara `MIT`. Ver trampa abajo. | 2112 | 2023-06-12 | **ARCHIVADO.** El repo más estrellado de todo el plano, y no se puede licenciar con certeza. |
+| Aspect-Based-Sentiment-Analysis (Scala) | [ScalaConsultants/Aspect-Based-Sentiment-Analysis](https://github.com/ScalaConsultants/Aspect-Based-Sentiment-Analysis) | Apache-2.0 (`LICENSE`, 11357B) | 585 | 2026-09-07 | **El único de la capa con push en 2026.** Pipeline con interpretabilidad (pesos de atención por aspecto). La pieza utilizable. |
+| ABSA-BERT-pair | [HSLCY/ABSA-BERT-pair](https://github.com/HSLCY/ABSA-BERT-pair) | MIT (`LICENSE`, 1062B) | 519 | 2022-01-04 | NAACL-2019. Licencia limpia, 5 años sin push. |
+| BERT-for-RRC-ABSA | [howardhsu/BERT-for-RRC-ABSA](https://github.com/howardhsu/BERT-for-RRC-ABSA) | Apache-2.0 (`LICENSE`, 11357B) | 461 | 2021-02-05 | Post-entrenamiento sobre reseñas (*review reading comprehension*). El más cercano al dominio. **Casi 6 años sin push.** |
+| jiangqn/ABSA | [jiangqn/Aspect-Based-Sentiment-Analysis](https://github.com/jiangqn/Aspect-Based-Sentiment-Analysis) | MIT (`LICENSE`, 1067B) | 457 | 2024-03-27 | Colección de implementaciones. Licencia limpia. |
+| BERT-E2E-ABSA | [lixin4ever/BERT-E2E-ABSA](https://github.com/lixin4ever/BERT-E2E-ABSA) | Apache-2.0 (`LICENSE`, 11357B) | 401 | 2023-07-09 | End-to-end: extrae el aspecto y lo clasifica en un paso. |
+
+### Capa 3 — Probar de dónde vino un contenido: **viva, permisiva y del problema de al lado**
+
+C2PA (*Coalition for Content Provenance and Authenticity*) es el estándar de procedencia
+criptográfica de contenido. Es la capa más sana que esta KB midió en cualquier plano: **push
+el mismo día de este ciclo** y **doble licencia MIT *o* Apache-2.0**, que deja elegir a quien
+integra.
+
+| Nombre | Repo | Licencia (archivos leídos) | Stars | Último push | Descripción |
+|--------|------|----------------------------|-------|-------------|-------------|
+| c2pa-rs | [contentauth/c2pa-rs](https://github.com/contentauth/c2pa-rs) | **MIT *o* Apache-2.0** (`LICENSE-MIT` 1083B + `LICENSE-APACHE`) — GitHub dice `NOASSERTION` | 454 | 2026-11-23 | Implementación de referencia en Rust: firma y verifica manifiestos de procedencia. **Push el día de este ciclo.** |
+| c2pa-org/specifications | [c2pa-org/specifications](https://github.com/c2pa-org/specifications) | **CC-BY-4.0** (`LICENSE`, 18650B) | 215 | 2026-11-16 | La especificación. Licencia de **contenido, no de software** — mismo matiz que Travel Impact Model en la segunda pasada. |
+| c2patool | [contentauth/c2patool](https://github.com/contentauth/c2patool) | Apache-2.0 | 174 | 2026-11-20 | CLI para firmar y verificar. La vía más corta a una prueba de concepto. |
+| c2pa-python | [contentauth/c2pa-python](https://github.com/contentauth/c2pa-python) | Apache-2.0 | 110 | 2026-11-18 | Binding Python. El que encaja en un pipeline de datos de travel. |
+| c2pa-js | [contentauth/c2pa-js](https://github.com/contentauth/c2pa-js) | MIT | 44 | 2026-11-23 | Verificación en el browser. **Push el día de este ciclo.** Es el que iría en una ficha de hotel. |
+| c2pa-swift | [contentauth/c2pa-swift](https://github.com/contentauth/c2pa-swift) | **MIT *o* Apache-2.0** (ambos archivos presentes) — GitHub muestra solo `Apache-2.0` | 28 | 2026-11-21 | iOS. Firma la foto **en el dispositivo del huésped**, que es donde la procedencia sirve. |
+| c2pa-cpp | [contentauth/c2pa-cpp](https://github.com/contentauth/c2pa-cpp) | **MIT *o* Apache-2.0** (ambos presentes) — GitHub muestra solo `Apache-2.0` | 20 | 2026-11-16 | C++. Para integrar en software de PMS o kiosco existente. |
+
+### ⚠️ Trampas medidas en este plano
+
+1. **`ABSA-PyTorch` (2112★): el badge de licencia del README apunta a otro proyecto.** El
+   único rastro de licencia en el repo es un badge de shields.io cuya URL es
+   `packagist/l/doctrine/orm.svg` — es decir, **renderiza la licencia de Doctrine ORM, un
+   paquete PHP sin relación alguna con el repo**. No hay `LICENSE`, `LICENSE.md`,
+   `LICENSE.txt` ni `COPYING` en la rama default (`master`, verificado uno por uno). Y pese a
+   eso, la API de GitHub devuelve `MIT`. **Es la trampa inversa a todas las que esta KB
+   registró hasta hoy**: hasta ahora el patrón era `NOASSERTION` escondiendo una licencia
+   permisiva real (`valhalla`, `odoo`, `airportsdata`). Acá GitHub **afirma** una licencia
+   donde no hay texto que la otorgue. Un badge no es una licencia.
+2. **Dual licensing invisible en la API.** `c2pa-rs` trae `LICENSE-MIT` **y**
+   `LICENSE-APACHE`; la API devuelve `NOASSERTION`. `c2pa-swift` y `c2pa-cpp` traen los dos
+   archivos y la API muestra solo `Apache-2.0`. El efecto práctico es que **la API oculta una
+   opción que el proyecto concede**: quien integra puede elegir MIT. Cuarto, quinto y sexto
+   caso registrado de la etiqueta de GitHub divergiendo del archivo.
+3. **`contentauth/c2pa-node` (21★, MIT) está ARCHIVADO** desde 2025-09-19, mientras
+   `c2pa-js` (MIT, 44★) tiene push de hoy. Si alguien elige por nombre —"necesito Node"—
+   toma el archivado. **En este org el binding vivo de JavaScript no es el que dice Node.**
+4. **Las dos piezas hotel-específicas del plano no tienen licencia.** `OpinRank` (44★) y el
+   único repo de análisis de reseñas de hotel con ≥30★ (`Tony607/Chinese_sentiment_analysis`,
+   47★, 2017, sin licencia). Lo más cercano al dominio es lo menos usable.
+
+### Las búsquedas de este plano que devolvieron cero o casi, escritas
+
+| Consulta (`search/repositories`) | Resultado | Lectura |
+|----------------------------------|-----------|---------|
+| `fake review detection stars:>=20` | **8 repos en todo GitHub** | Y de los 8, uno es un repo de robótica que entra por la sigla `FTC`. La obligación regulatoria de cuatro regiones se apoya en **siete repos**, casi todos sin licencia y sin push desde 2022-2024. |
+| `review authenticity provenance stars:>=50` | **0** | Nadie cruzó las dos palabras. La capa 3 existe para medios, no para reseñas: **hay que cruzarla a mano.** |
+| `review moderation trust safety stars:>=200` | **0** | No hay infraestructura abierta de moderación de reseñas a ninguna escala. |
+| `hotel review analysis stars:>=30` | **1** (sin licencia, 2017) | El vertical más dependiente de la reseña no tiene herramienta propia. |
+| `review dataset hotel tripadvisor stars:>=30` | **1** (`OpinRank`, sin licencia) | No hay corpus de reseñas de hotel redistribuible. |
+| `tours activities booking open source stars:>=50` | **0** | Registrado al pasar: el tercer segmento de travel tampoco tiene piso abierto. Candidato a plano futuro. |
+
+### Regla de diseño de este plano
+
+**El agente no puede afirmar que una reseña es auténtica, y no debe intentarlo.** No existe
+la herramienta, y la regulación de 2026 castiga la afirmación falsa, no la abstención. Lo que
+sí puede hacer, con lo medido arriba: (a) **citar y enlazar** la reseña en lugar de resumirla
+sin rastro, (b) **declarar el volumen y la ventana temporal** sobre la que resume, y (c) **no
+suprimir la cola negativa** — que es precisamente el hallazgo de Which? de julio-2026 contra
+los resúmenes AI de Tripadvisor. Receta completa en `compose/patterns.md` → Recetas 22 y 23.
