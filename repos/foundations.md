@@ -1162,3 +1162,116 @@ entero a un entregable mezcla dos regímenes en un mismo árbol.
 - **No examinado en esta pasada, y se dice:** carga aérea (distinta del equipaje), equipaje
   ferroviario, África más allá de la cifra de SITA, y los sistemas de los aeropuertos de Japón y
   Singapur más allá de material secundario.
+
+## Plano del precio — la ley estructural de este KB, en su forma más extrema
+
+Décimo plano, 2026-11-23. Los nueve anteriores encontraron variantes de la misma ley: lo permisivo
+está en la infraestructura horizontal, lo copyleft o lo ausente está en el vertical. **Acá la
+distancia es la mayor medida hasta ahora**, y se puede poner en dos números: la capa horizontal de
+optimización suma **más de 20.000 estrellas bajo Apache-2.0 y MIT**; la única biblioteca de revenue
+management de viajes real y permisiva tiene **2**.
+
+### Método de verificación de este plano
+
+1. Existencia: `git ls-remote` sobre cada slug (13 probados, 12 vivos; el único muerto,
+   `pymc-devs/pymc-marketing`, era **mi propio error de owner** — es `pymc-labs`, y se corrigió).
+2. Estrellas, `pushed_at`, `created_at` y forks: `search/repositories` con `q=repo:<slug>`.
+3. **Licencia leyendo el archivo**, no el badge ni el campo de la API: `curl` de
+   `LICENSE`, `LICENSE.md`, `LICENSE.txt` y `COPYING` en `main` y en `master`, y se registró la
+   primera línea literal. Los `api_license: None` se confirmaron como **ausencia de archivo**, no
+   como fallo de la API.
+
+### Capa horizontal — permisiva, viva, enorme, y no sabe nada de viajes
+
+| Repo | Licencia (leída) | Stars | Último push | Para qué sirve en este plano |
+| --- | --- | --- | --- | --- |
+| [google/or-tools](https://github.com/google/or-tools) | Apache-2.0 (`main/LICENSE`) | 14.433 | 2026-11-23 | El solver. Bid prices de red, asignación de inventario, control de *booking limits* como programa lineal. |
+| [Nixtla/statsforecast](https://github.com/Nixtla/statsforecast) | Apache-2.0 (`main/LICENSE`) | 4.984 | 2026-11-19 | Pronóstico de demanda estadístico y rápido: el insumo real de cualquier EMSR (media y desvío por clase tarifaria). |
+| [pymc-labs/pymc-marketing](https://github.com/pymc-labs/pymc-marketing) | Apache-2.0 (`main/LICENSE`) | 1.314 | 2026-11-23 | Elasticidad de precio bayesiana con intervalos de credibilidad. La pieza que permite **decir cuánta incertidumbre tiene el precio**, que es lo que un regulador pregunta. |
+| [facebook/prophet](https://github.com/facebook/prophet) | MIT (`main/LICENSE`, «Copyright (c) Facebook, Inc. and its affiliates») | **no medido** | **no medido** | Pronóstico con estacionalidad y feriados — la estacionalidad múltiple del viaje. Ver la nota de honestidad abajo. |
+
+> **Nota de honestidad sobre `prophet`:** `git ls-remote` lo da **vivo**, y su `LICENSE` se leyó byte
+> a byte (MIT). Pero `search/repositories` con `q=repo:facebook/prophet` devolvió **cero hits** en
+> esta sesión, así que **no tengo estrellas ni fecha de push medidas** y no las invento. Es el mismo
+> tipo de hueco que el noveno plano declaró con los PDFs de SITA: se dice que no se midió.
+
+### Capa vertical permisiva — existe, es una sola, y es buena
+
+| Repo | Licencia (leída) | Stars | Creado | Último push | Qué trae |
+| --- | --- | --- | --- | --- | --- |
+| [arikanatakan/revmng](https://github.com/arikanatakan/revmng) | **MIT** (`main/LICENSE`) | **2** | 2026-06-16 | 2026-06-17 | Littlewood, EMSR-a, EMSR-b, **DP exacto**, overbooking (por nivel de servicio o por costo), newsvendor, precio óptimo con demanda lineal o de elasticidad constante, bid prices de red, grupos por análisis de desplazamiento, length-of-stay, y las métricas (RevPAR, yield, load factor, ROM). |
+
+**Las tres propiedades de `revmng` que importan más que sus 2 estrellas**, todas leídas del README y
+del código, no del marketing:
+
+1. **El core no tiene dependencias de terceros.** Para una entrega de cliente, eso es la diferencia
+   entre embeber y negociar.
+2. **Cada resultado lleva procedencia: versión de la biblioteca, *hash* de las entradas y
+   *timestamp*, con `to_dict()` serializable a JSON.** Esto no es una comodidad de logging: **es
+   exactamente el artefacto de auditoría que el plano regulatorio pide**, y no conozco otra
+   biblioteca del vertical que lo emita de fábrica.
+3. **Validada contra ejemplos publicados** y con CI. Está en PyPI (`pip install revmng`).
+
+**La propiedad que importa más que las tres juntas, y es de arquitectura:** `revmng` calcula el
+precio a partir de **tarifas, demanda, capacidad, no-shows y costos**. No toma ni un atributo de la
+persona. Un stack construido sobre él tiene una respuesta estructural —no documental— a la pregunta
+del § 349-a de Nueva York, cuyo disparador es *un algoritmo que usa el dato personal del consumidor*.
+Elegir RM por capacidad en lugar de precio personalizado **es una postura de cumplimiento**, no sólo
+una decisión de modelado. Receta 28.
+
+### Capa de dato competitivo — chica, permisiva y viva
+
+El insumo que el *skill* de Asgard llama «precio de competencia» y sin el cual su «IRON LAW» no se
+cumple:
+
+| Repo | Licencia (leída) | Stars | Último push | Qué hace |
+| --- | --- | --- | --- | --- |
+| [seanbabalala/hotelrate-crawl](https://github.com/seanbabalala/hotelrate-crawl) | MIT (`main/LICENSE`) | 14 | 2026-04-28 | Crawl de tarifas hoteleras. |
+| [borzelo/hotel-price-aggregator](https://github.com/borzelo/hotel-price-aggregator) | MIT (`main/LICENSE`) | 11 | 2026-06-04 | Agregación de precio hotelero multi-fuente. |
+
+> ⚠️ **Lo que ninguno de los dos resuelve, y hay que decirlo antes de proponerlo:** *rate shopping*
+> por crawling tiene un problema de términos de servicio del lado de la fuente, y en China —tras la
+> decisión de SAMR sobre Trip.com— un problema adicional: **el registro de paridad puede ser prueba
+> de la conducta, no sólo insumo del precio.** Son útiles como referencia de esquema; el dato de
+> producción se compra.
+
+### Capa de simulación — MIT, académica, dormida
+
+| Repo | Licencia (leída) | Stars | Último push | Nota |
+| --- | --- | --- | --- | --- |
+| [hpi-epic/pricewars](https://github.com/hpi-epic/pricewars) | MIT (`master/LICENSE.md`) | 56 | **2018-10-16** | Plataforma de simulación de competencia de precios del Hasso-Plattner-Institut. **Dormida ~8 años**: sirve para entender la dinámica de competencia algorítmica (el riesgo de colusión implícita que el PL 1635/2024 brasileño quiere tipificar), no como dependencia. |
+| [ashenclock/airline-revenue-management-lab](https://github.com/ashenclock/airline-revenue-management-lab) | MIT (`main/LICENSE`, «Copyright (c) 2025 Antonio») | 0 | 2026-10-23 | Laboratorio de RM aéreo. 0★ pero **con licencia y con push reciente**, a diferencia de los cinco de abajo. |
+
+### ⚠️ La auditoría de licencia de este plano — cinco de ocho repos de RM de viajes son inusables
+
+Esta es la medición más decisiva de la pasada para un estudio que tiene que entregar código a un
+cliente. De los **ocho** repos de revenue management específicos de viajes que encontré, **cinco no
+tienen archivo de licencia en absoluto** — lo que en derecho de autor significa *todos los derechos
+reservados*, no «open source sin especificar»:
+
+| Repo | Stars | Último push | Archivo de licencia | Veredicto |
+| --- | --- | --- | --- | --- |
+| [jdautell/hotel-revenue-management-engine](https://github.com/jdautell/hotel-revenue-management-engine) | 0 | 2026-09-11 | **ninguno** | Inusable. EMSR-b + modelo de cancelación XGBoost (AUC 0,84) + Streamlit, README en español — y no se puede tocar. |
+| [normanlrasmussen/airline-revenue-optimizer](https://github.com/normanlrasmussen/airline-revenue-optimizer) | 0 | 2026-09-17 | **ninguno** | Inusable. Compara Open Sales, EMSR-b y DP sobre el mismo flujo simulado, con tests. |
+| [shashank0208/airline_revenue_management](https://github.com/shashank0208/airline_revenue_management) | 0 | 2026-10-26 | **ninguno** | Inusable. FCFS vs EMSR-b vs LP con demanda ARIMA y Monte Carlo. |
+| [Naresh1401/hotel-revenue-management](https://github.com/Naresh1401/hotel-revenue-management) | 0 | 2026-10-11 | **ninguno** | Inusable. Elasticidad log-log, LightGBM, optimizador de RevPAR. |
+| [adhikariprajitraj/AirLine-Revenue-Managment-OR](https://github.com/adhikariprajitraj/AirLine-Revenue-Managment-OR) | 1 | **2025-06-06** | **ninguno** | Inusable y dormido. DAVN + EMSR-b en red; acompaña un tutorial en SSRN. |
+| [tule2236/Airbnb-Dynamic-Pricing-Optimization](https://github.com/tule2236/Airbnb-Dynamic-Pricing-Optimization) | **243** | **2018-11-14** | **ninguno** | **El repo de precio de viajes más estrellado que existe, y no se puede usar.** |
+| [DallasBuyer/awesome-dynamic-pricing](https://github.com/DallasBuyer/awesome-dynamic-pricing) | 127 | 2022-10-27 | **ninguno** | La lista de referencia del campo tampoco tiene licencia. |
+
+**La conclusión operativa, sin vueltas:** salvo `revmng` y
+`ashenclock/airline-revenue-management-lab`, **el revenue management de viajes en GitHub es código
+de portfolio sin licencia**. Lo que parece una biblioteca es un trabajo práctico. Para Globant eso
+significa que en este plano **no hay nada que forkear**: hay una biblioteca MIT de 2 estrellas para
+embeber y una capa horizontal enorme para construir encima. Lo demás se lee y se descarta.
+
+### Brechas del plano del precio, medidas el 2026-11-23
+
+| Brecha | Evidencia | Consecuencia |
+| --- | --- | --- |
+| **No existe capa de divulgación de precio** | `price explanation transparency algorithm` → 0 repos; `algorithmic pricing disclosure` → 1 y es de otro tema | Hay que escribirla. Es la Receta 29 y es el hueco de producto más claro del plano. |
+| No hay plataforma vertical de RM open source | Ver `verticals/solutions.md` | El motor se compra (IDeaS, Duetto, Fetcherr, Atomize) o se arma con `revmng` + horizontal. |
+| La única pieza del vertical tiene 5 meses sin commit | `revmng`/`revmng-mcp`, push 2026-06-17 | Fijar versión; presupuestar mantenimiento propio. |
+| `prophet` no pudo medirse por la API de búsqueda | `q=repo:facebook/prophet` → 0 hits | Declarado, no estimado. |
+| El dato competitivo abierto no es contractualmente limpio | `hotelrate-crawl`, `hotel-price-aggregator` (MIT, crawling) | El código sirve; el dato de producción se compra. |
+| Ningún repo del plano implementa paridad **como control auditable** | Sólo monitorización (vía API ajena) | Tras SAMR/Trip.com es una brecha con exposición regulatoria, no sólo técnica. |

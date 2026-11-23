@@ -32,8 +32,8 @@ updated: 2026-11-23
 |------------|-----------------|------------|
 | [antonkarasbiz/qloapps-hotel-booking](https://github.com/antonkarasbiz/qloapps-hotel-booking) | 59★, aparece **primero** al buscar "open source hotel PMS booking engine" y se describe igual que el original | Es un **fork** de QloApps, no el upstream. Último push 2026-09-13 frente al 2026-11-20 del original. Partir del fork es heredar el mantenimiento de otro. |
 | [digital-druid/hoteldruid](https://github.com/digital-druid/hoteldruid) | Citado en todo listado de "mejores PMS open source 2026" | Mirror de GitHub **sin push desde 2018-07-01** (19★). El proyecto upstream sigue vivo fuera de GitHub, pero este repo no es un punto de partida. Además es AGPL-3.0 y solo back-office: no trae booking engine público. |
-
 | [moizkamran/ExcursioX](https://github.com/moizkamran/ExcursioX) | Es **el único resultado travel-específico** al buscar "travel CRM open source", y una fuente secundaria lo describe explícitamente como **MIT**: CRM de viajes con ticketing, booking y gestión hotelera sobre MERN | **No tiene archivo de licencia.** Probadas `LICENSE`, `LICENSE.md` y `license` en `main` y `master` el 2026-11-23: **404 en las seis**. 22★ y **sin push desde el 2024-03-11**; el propio README dice "we are working on this, please be patient". La fuente secundaria **afirmó una licencia que el repo no tiene** — el motivo exacto por el que esta KB lee el archivo en vez del listado. El hueco de "CRM/back-office de agencia open source" **sigue vacío**, y se cubre con Odoo (LGPL-3.0) + módulos propietarios, como ya indica la tabla de arriba. |
+
 ## Cómo customizar con AI
 
 El patrón que funciona con estas plataformas, en orden:
@@ -359,3 +359,67 @@ proveedor de tracing. Lo que no tiene es **el modelo de evento de custodia que l
 obligaciones regionales consumen** (reloj en NA, liquidación por pasajero en EMEA, rastreo de
 proceso completo en APAC, franquía numérica en LATAM). Eso es construible, es MIT, y es la
 Receta 27.
+
+## Plano del precio — qué se puede personalizar y qué hay que comprar (2026-11-23, décima pasada)
+
+### No hay plataforma vertical de revenue management open source, y acá la ausencia es casi total
+
+En los planos de emisiones, accesibilidad y reputación este KB encontró «no hay plataforma, hay
+piezas». En el plano del precio el hallazgo es más duro: **hay una sola pieza**
+(`arikanatakan/revmng`, MIT, 2★) y una capa horizontal gigante. No existe ni un Odoo, ni un
+OpenMRS, ni un Moodle del precio de viajes.
+
+### Lo que existe como plataforma abierta y se puede customizar
+
+Las plataformas que este KB ya recomienda **almacenan la tarifa pero no la deciden**. Ahí es donde
+enchufa este plano:
+
+| Plataforma | Licencia | Stars | Último push | Qué hace con el precio hoy | Dónde enchufa `revmng` |
+| --- | --- | --- | --- | --- | --- |
+| [Kamra-PMS/kamra-pms](https://github.com/Kamra-PMS/kamra-pms) | Apache-2.0 | 113 | 2026-11-23 | Guarda tarifas y disponibilidad por habitación y fecha | El PMS pide el *booking limit* por clase tarifaria y fecha; `revmng.emsr_b()` lo devuelve con procedencia. El PMS no cambia su modelo de datos: agrega un campo de decisión y un registro. |
+| QloApps / HotelDruid / miniCal *(ya auditados en este archivo)* | ver filas de arriba en este mismo archivo | — | — | Tarifa manual o por temporada | Mismo punto de enchufe: la plataforma sigue siendo la fuente de verdad de la tarifa publicada; el motor sólo propone y deja evidencia. |
+
+> El patrón es deliberadamente conservador: **el motor propone, la plataforma publica**. Es lo que
+> permite apagar el motor sin apagar el hotel, y es también lo que permite responderle a un
+> regulador qué precio se publicó y de dónde salió.
+
+### Lo que hay que comprar, porque no existe abierto
+
+| Capacidad | Productos de mercado | Por qué no hay alternativa abierta |
+| --- | --- | --- |
+| RM hotelero de producción | IDeaS (desplegado por **Accor** en su portfolio, citado por ITB y Skift), Duetto, Atomize | Requieren dato de mercado propietario y curvas calibradas por cadena; `revmng` da los métodos, no el dato. |
+| Precio aéreo generativo | **Fetcherr** — clientes publicados: Delta, WestJet, Virgin Atlantic, **Azul** (Brasil), **Viva Aerobus** (México) | Es el modelo más la operación de publicación de tarifas; no hay equivalente open source ni cerca. |
+| Dato competitivo de producción | Rate shoppers comerciales | Lo abierto (`hotelrate-crawl`, `hotel-price-aggregator`, ambos MIT) es crawling: sirve de esquema, no de fuente contractualmente limpia. |
+| Publicación de tarifa a GDS/NDC | Travelport, Amadeus, Sabre | Ya cubierto por el plano de distribución de este KB. |
+
+### ⚠️ Lo que los listados recomiendan en este plano y no conviene tomar
+
+- **`tule2236/Airbnb-Dynamic-Pricing-Optimization` (243★)** aparece primero en casi toda búsqueda de
+  precio de viajes. **Sin archivo de licencia y último push 2018-11-14.** No es un punto de partida:
+  es un trabajo académico de hace ocho años.
+- **`DallasBuyer/awesome-dynamic-pricing` (127★)** es la lista de referencia del campo y **tampoco
+  tiene licencia**. Úsese como bibliografía, nunca como dependencia.
+- Los cinco repos de RM de viajes **sin licencia** (tabla completa en `repos/foundations.md`): varios
+  tienen código técnicamente bueno —EMSR-b con modelo de cancelación XGBoost, DAVN en red— y son
+  igualmente inusables en una entrega a cliente.
+- **Odoo** aparece con «revenue management» en su vertical de hotel. Lo que se encontró son páginas
+  de producto de la edición hosteada, **sin módulo open source de RM confirmado**; y la comunidad es
+  LGPL, no permisiva. No se cuenta como motor de precio.
+
+### El hueco de producto más claro de este plano
+
+**Un «registro de decisión de precio» como componente instalable**, agnóstico de motor: recibe el
+evento de precio (entradas, modelo, versión, resultado), decide si hay que divulgar y con qué texto
+según jurisdicción y **línea de producto**, emite el artefacto regional y guarda la evidencia
+consultable.
+
+Tres hechos lo convierten en producto y no en idea:
+
+1. **No existe**: `price explanation transparency algorithm` → 0 repos.
+2. **Ya es obligatorio en tres regiones** y hay una multa de RMB 5.200 millones en una de ellas.
+3. **La pieza que lo alimenta ya está escrita y es MIT**: `revmng` emite versión, *hash* de entradas
+   y *timestamp* en cada resultado. Falta la mitad que traduce eso a la obligación local.
+
+Y la variante más vendible es la de LATAM, porque ahí **todavía no es obligatorio**: se vende como
+gobierno de dato sobre un motor ya desplegado, y se convierte en cumplimiento el día que el
+PL 5441/2025 o su sucesor salga. Receta 30.

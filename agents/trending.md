@@ -12,6 +12,52 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — décima pasada (plano del precio: el agente calcula y no explica)
+
+**Lo nuevo de la semana en agentes de precio, y son tres.** Primera pasada de este KB sobre el
+precio: ninguno de los nueve planos anteriores lo había tocado.
+
+| Agente / skill | Licencia (leída del archivo) | Stars | Último push | Por qué entra |
+| --- | --- | --- | --- | --- |
+| [arikanatakan/revmng-mcp](https://github.com/arikanatakan/revmng-mcp) | MIT | 3 | 2026-06-17 | **El único MCP server de revenue management que existe en GitHub.** De `revenue management mcp server` (7 resultados), es el único del tema. |
+| [asgard-ai-platform/skills](https://github.com/asgard-ai-platform/skills) | MIT | 249 | 2026-06-06 | Skill `algo-price-dynamic` con referencia de RM. El precio se distribuye como *skill*, igual que el inventario en la tendencia 7. Origen Taiwán. |
+| [mtnrabi/travel-agent-skills](https://github.com/mtnrabi/travel-agent-skills) | MIT | 4 | 2026-10-23 | Ocho skills de precio en vivo **con monitorización de paridad tarifaria** — que tras SAMR/Trip.com es conducta observable, no sólo métrica. |
+
+**La señal de la pasada, en una línea:** los tres calculan; **ninguno divulga**.
+`price explanation transparency algorithm` devuelve **0 repos** y `algorithmic pricing disclosure`
+devuelve **1 que no es del tema**. Cuatro reguladores piden una explicación del precio y la capa
+open source que la emitiría está vacía.
+
+**El movimiento regulatorio que empuja esta pasada (todo de 2026, todo nuevo para este KB):**
+
+- **NA:** NY GBL § 349-a en vigor desde el **2025-11-10**, con una frase textual obligatoria y hasta
+  USD 1.000 por violación; apelación de la NRF **argumentada el 2026-10-19** sin fallo localizado; y
+  la *One Fair Price Act* —que **prohíbe**, no divulga— aprobada en junio de 2026 y **pendiente de
+  firma con plazo 2026-12-31**. En paralelo, el Congreso pidió explicaciones a **ocho aerolíneas** y
+  el Senado hizo su primera audiencia dedicada a *surveillance pricing* el **2026-08-04**.
+- **APAC:** reglas de conducta de precio de plataformas en vigor el **2026-04-10** por cinco años, y
+  la decisión de SAMR sobre **Trip.com** (reportada 2026-07-25, **RMB 5.200 millones**) por imponer
+  paridad y exclusividad a hoteles **mediante algoritmos**. Es la primera multa del mundo a una
+  empresa de viajes por sus algoritmos de precio.
+- **EMEA:** la CRD ya obliga a avisar que el precio fue personalizado (y **no** obliga a explicar los
+  parámetros); el *Digital Fairness Act* está **en disputa entre fuentes** sobre si ya fue presentado.
+- **LATAM:** **ninguna ley sancionada.** Tres proyectos en trámite (PL 1309/2026, PL 1635/2024,
+  PL 5441/2025) y el *Mapa de Temas Prioritários* 2026-2027 de la ANPD.
+
+**La inversión que hace notable a esta pasada:** LATAM es, por primera vez en diez planos, la región
+que tiene **el despliegue sin la norma** — Azul (Brasil) y Viva Aerobus (México) ya corren el motor
+generativo de Fetcherr. En frontera, equipaje y accesibilidad el hallazgo había sido siempre el
+contrario.
+
+**Trampa nueva registrada:** `mtnrabi/travel-agent-skills` es MIT sobre RapidAPI de un tercero
+(10 búsquedas/día gratis, luego llave, luego USD 10/mes). Tendencia 15 otra vez.
+
+**Nota de método, heredada del noveno plano y aplicada:** no se cerró el plano con búsquedas. Se
+leyeron `revmng`, `revmng-mcp` y el skill de Asgard archivo por archivo. La diferencia con equipaje
+es que ahí la implementación estaba escondida y apareció; acá, tras leer los tres, **la divulgación
+sigue sin existir**.
+
+
 ## 2026-11-23 — novena pasada (plano del equipaje: el agente que no existe sobre la librería que sí)
 
 Noveno ciclo del mismo día. **No reemplaza nada**: las ocho pasadas anteriores quedan intactas

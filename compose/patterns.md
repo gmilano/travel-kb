@@ -1211,3 +1211,218 @@ mantenedor y 5 forks, y se declara pre-1.0.** La recomendación es **adoptar el 
 contribuir al repo**, no apostar la operación de un cliente a un proveedor único sin plan de
 contingencia. Es la primera vez en nueve planos que esta KB recomienda **contribuir** en lugar de
 adoptar o construir.
+
+## Receta 28 — Motor de precio que no toca dato personal, con procedencia exportable (la receta base del plano)
+
+**El problema.** Un cliente quiere precio dinámico y su equipo legal quiere poder responder «¿por
+qué este precio?» sin apagar el motor. La respuesta habitual es documental: una política escrita y
+un *log*. Hay una respuesta mejor y es **estructural**: si el precio se calcula desde capacidad,
+demanda y tarifa, y **no** desde atributos de la persona, el disparador del § 349-a de Nueva York
+—*un algoritmo que fija el precio usando el dato personal del consumidor*— simplemente no se activa.
+No es un truco: es elegir las entradas del modelo, y hay que decidirlo antes de escribir la primera
+línea, porque después es un rediseño.
+
+**Las piezas, todas verificadas el 2026-11-23 con licencia leída del archivo:**
+
+- [`arikanatakan/revmng`](https://github.com/arikanatakan/revmng) — **MIT** (`main/LICENSE`), 2★,
+  push 2026-06-17, en PyPI. `littlewood()`, `emsr_b()`, `emsr_a()`, `optimal_protection_levels()`,
+  `overbooking_limit()`, `newsvendor()`, `optimal_price()`, `LinearDemand`, `evaluate_group()`,
+  `revenue_opportunity()`. **Core sin dependencias de terceros.**
+- [`arikanatakan/revmng-mcp`](https://github.com/arikanatakan/revmng-mcp) — **MIT**, 3★ — la
+  superficie agentic: tools `protection_levels`, `overbooking_limit`, `newsvendor`,
+  `optimal_price`, `revenue_opportunity`, `evaluate_group`.
+- [`Nixtla/statsforecast`](https://github.com/Nixtla/statsforecast) — **Apache-2.0**, 4.984★, push
+  2026-11-19 — la media y el desvío por clase tarifaria que EMSR necesita de entrada.
+- [`google/or-tools`](https://github.com/google/or-tools) — **Apache-2.0**, 14.433★ — sólo si hace
+  falta bid prices de red como LP; para un solo *leg* o un solo hotel, `revmng` alcanza.
+
+**El cableado.**
+
+1. **Declarar el contrato de entrada y hacerlo cumplir en CI.** El motor acepta exclusivamente:
+   tarifa por clase, media y desvío de demanda, capacidad, tasa de no-show, costo de *denied
+   boarding* y costo de *spoilage*. Ni `customer_id`, ni dispositivo, ni historial, ni geolocalización,
+   ni ingreso inferido. Una aserción de tres líneas en CI es lo que lo convierte en garantía:
+
+   ```python
+   FORBIDDEN = {"customer_id","email","device","ip","browsing_history","loyalty_tier",
+                "income","household_size","lat","lon","user_agent"}
+   def assert_capacity_only(payload: dict) -> None:
+       leaked = FORBIDDEN & set(payload)          # recursivo en el caso real
+       assert not leaked, f"dato personal en la entrada de precio: {sorted(leaked)}"
+   ```
+
+2. **Pronosticar la demanda, no el precio.** `statsforecast` produce media y desvío por clase y
+   fecha a partir del historial **agregado** de reservas. El agregado es la clave: la serie es por
+   clase tarifaria y vuelo/habitación-noche, nunca por persona.
+
+3. **Calcular el control con `revmng`** y quedarse con el objeto, no con el número:
+
+   ```python
+   import revmng
+   a = revmng.emsr_b([(1000,30,12),(700,40,15),(400,60,20)], capacity=120)
+   decision = a.to_dict()        # trae version, hash de entradas y timestamp
+   limits = a.booking_limits_int
+   ```
+
+4. **Persistir `decision` como registro inmutable** antes de publicar la tarifa. Es un `INSERT`, no
+   un `UPDATE`: una fila por decisión, con el *hash* de entradas como clave de reproducción.
+
+5. **Publicar por la plataforma, no por el motor.** El PMS (`Kamra-PMS/kamra-pms`, Apache-2.0, 113★,
+   push 2026-11-23) o el motor de reservas sigue siendo la fuente de verdad de la tarifa publicada.
+   El motor **propone**; la plataforma **publica**. Eso permite apagar el motor sin apagar el hotel.
+
+6. **Exponer por MCP sólo lectura y cálculo**, con `revmng-mcp`, fijado por versión. El agente elige
+   el análisis y explica el resultado; **no hace la aritmética** — que es el modo de falla que el
+   propio README de `revmng-mcp` describe.
+
+**Lo que esta receta deja listo y no hay que rehacer:** el registro del paso 4 es el insumo exacto de
+las Recetas 29 y 30. Y la respuesta al regulador es una sola frase verificable en el código: *el
+precio no se fijó desde la persona*.
+
+**Lo que NO promete.** No es un RM de producción calibrado: no trae dato de mercado, ni curvas por
+cadena, ni *rate shopping* contractualmente limpio. Para eso se compra IDeaS, Duetto, Atomize o
+Fetcherr. Esta receta es el camino honesto cuando el cliente quiere **control y auditabilidad** sobre
+un motor propio, no el mejor ingreso posible el primer trimestre.
+
+## Receta 29 — Interruptor de divulgación por producto, no por estado (la receta de North America)
+
+**El problema.** Una OTA o una cadena con tráfico de Nueva York tiene que mostrar, cuando
+corresponde, la frase **«THIS PRICE WAS SET BY AN ALGORITHM USING YOUR PERSONAL DATA»** (GBL § 349-a,
+en vigor desde el 2025-11-10, hasta USD 1.000 por violación). El error de diseño por defecto es un
+*flag* por estado: `if state == "NY": show_notice()`. Es incorrecto por dos razones distintas, y las
+dos importan.
+
+**Por qué el *flag* por estado está mal.**
+
+1. **Sobre-divulga.** § 349-a se dispara sólo si el precio usó **dato personal del consumidor**. Un
+   precio calculado con la Receta 28 no lo usó: mostrar el aviso igual es declarar por escrito una
+   práctica que no se tiene, y es una afirmación falsa frente al consumidor.
+2. **Sub-divulga, y por el lado que nadie mira: la línea de producto.** La Airline Deregulation Act
+   (49 U.S.C. § 41713) impide a los estados legislar sobre precios de aerolíneas; *Morales* anuló el
+   uso de estatutos estatales de consumo para vigilar publicidad de tarifas; y el DOT, en su
+   propuesta de julio de 2026, afirma que los estados ya están *preempted* en ese terreno.
+   **Ninguna fuente que alcancé aplica eso a § 349-a en particular** — es una inferencia de este KB y
+   va marcada como tal. Pero la consecuencia de ingeniería no depende de quién gane la apelación del
+   Segundo Circuito (argumentada el 2026-10-19, sin fallo localizado): **hotel, auto, OTA, tours y
+   actividades están en alcance; la tarifa aérea es territorio disputado**, y un motor único que
+   sirve las dos necesita las dos ramas y el registro de cuál disparó.
+
+**Las piezas.** El registro de la Receta 28 (`decision` con versión, *hash* y *timestamp*), más un
+componente propio: **no existe nada que forkear** — `algorithmic pricing disclosure` devuelve 1 repo
+ajeno al tema y `price explanation transparency algorithm` devuelve 0.
+
+**El cableado.**
+
+```python
+from dataclasses import dataclass
+
+NY_TEXT = "THIS PRICE WAS SET BY AN ALGORITHM USING YOUR PERSONAL DATA"
+
+@dataclass(frozen=True)
+class PriceEvent:
+    product: str          # "hotel" | "car" | "tour" | "air" | "package"
+    jurisdiction: str     # "US-NY" | "EU" | "CN" | "BR" | ...
+    used_personal_data: bool
+    personal_fields: tuple[str, ...]
+    decision_ref: str     # hash de entradas de revmng
+
+def ny_disclosure(ev: PriceEvent) -> dict:
+    if ev.jurisdiction != "US-NY":
+        return {"show": False, "reason": "fuera de jurisdiccion"}
+    if not ev.used_personal_data:
+        # la salida estructural de la Receta 28
+        return {"show": False, "reason": "precio por capacidad; sin dato personal",
+                "evidence": ev.decision_ref}
+    if ev.product == "air":
+        # NO se decide solo: se marca y se escala
+        return {"show": True, "text": NY_TEXT, "flag": "ADA_PREEMPTION_CONTESTED",
+                "review": "legal", "evidence": ev.decision_ref}
+    return {"show": True, "text": NY_TEXT, "fields": ev.personal_fields,
+            "evidence": ev.decision_ref}
+```
+
+**Las tres reglas que hacen que esto sea auditable y no decorativo.**
+
+- **El texto es literal y va en constante, nunca interpolado ni traducido.** La norma pide esa frase;
+  un sinónimo no cumple.
+- **La rama `air` no se resuelve en el código: se marca y se escala.** Un flag
+  `ADA_PREEMPTION_CONTESTED` con revisión legal es la respuesta honesta a una cuestión jurídica
+  abierta. Un `return False` silencioso es tomar partido en un litigio sin decirlo.
+- **Se registra la rama que disparó, no sólo el resultado.** Cada evaluación persiste
+  `(product, jurisdiction, used_personal_data, rama, decision_ref)`. Eso es lo que permite, seis
+  meses después y ante un pedido de la AG, mostrar por qué un precio particular no llevó aviso.
+
+**La prueba que cierra la receta:** un test de matriz sobre el producto ×  jurisdicción × uso de dato
+personal. Con 5 productos y 2 valores de `used_personal_data` son 10 casos por jurisdicción, todos
+con aserción del texto exacto o de su ausencia. Es la receta más chica de este KB y la que más
+expone si falta.
+
+**Lo que viene y hay que dejar preparado.** La *One Fair Price Act* (S.8623B/A.9349B), aprobada en
+junio de 2026 y **pendiente de firma con plazo 2026-12-31**, no divulga: **prohíbe** el precio
+personalizado por historial de compra, navegación, ubicación en tiempo real, ingreso o tamaño de
+hogar inferido. Si se firma, este componente pasa de «mostrar aviso» a «bloquear el cálculo», y el
+punto de corte es el mismo `assert_capacity_only()` de la Receta 28. **El cliente que ya haya hecho
+la Receta 28 no rehace nada**; el que personalice va a tener que desarmar su motor en semanas.
+
+## Receta 30 — Un evento de precio, cuatro artefactos regionales (la receta transversal del plano)
+
+**El problema.** Es la cuarta vez que este KB se encuentra con la misma forma (equipaje fue la
+tercera, Receta 27): cuatro regiones piden cosas distintas **sobre el mismo evento**, y la tentación
+es cuatro implementaciones. Acá el evento es la decisión de precio, y los cuatro artefactos no se
+parecen en nada entre sí: uno es **una frase literal**, uno es **un aviso sin parámetros**, uno es
+**una negación demostrable** y el cuarto **no existe todavía**.
+
+**El modelo único.** Un solo registro, emitido por la Receta 28, con cuatro proyecciones:
+
+| Región | Disparador | Proyección a emitir |
+| --- | --- | --- |
+| **North America (NY)** | Algoritmo + dato personal del consumidor | La frase literal de § 349-a, con la rama por producto de la Receta 29 |
+| **EMEA** | Precio personalizado por **decisión automatizada** (no requiere dato identificable) | Aviso de personalización en el flujo de reserva. **Sin parámetros**: la CRD no los exige, y declararlos de más es regalar información comercial sin obligación |
+| **APAC (China)** | Discriminación por dato **no divulgada**; paridad impuesta por algoritmo | **Dos aserciones negativas por transacción**: (a) el precio no se fijó por frecuencia del cliente, (b) no se impuso paridad al proveedor |
+| **LATAM** | — sin norma vigente | **Registro voluntario** con el mismo esquema, retenido y consultable |
+
+**El cableado, y es una sola función por región sobre un solo registro.**
+
+```python
+def project(ev: PriceEvent, record: dict) -> dict:
+    j = ev.jurisdiction
+    if j == "US-NY":
+        return ny_disclosure(ev)                               # Receta 29
+    if j in EU_MEMBER_STATES:
+        return {"show": ev.automated_personalization,
+                "text_key": "price.personalized_notice",       # i18n, sin parametros
+                "params_disclosed": False}
+    if j == "CN":
+        return {"show": False,                                 # no hay texto obligatorio
+                "assert_no_frequency_pricing": "customer_frequency" not in record["inputs"],
+                "assert_no_imposed_parity": record["parity_clause_applied"] is False,
+                "evidence": record["input_hash"]}
+    if j in LATAM_STATES:
+        return {"show": False, "retain": True, "schema": "v1",
+                "evidence": record["input_hash"]}              # anticipacion, no cumplimiento
+    return {"show": False, "reason": "sin obligacion localizada"}
+```
+
+**Las dos cosas que hacen que esto no sea un `switch` decorativo.**
+
+1. **La rama de China no emite texto: emite negaciones.** Y eso cambia qué hay que guardar. Para
+   poder afirmar «no se fijó por frecuencia del cliente» hace falta que la frecuencia **no esté en
+   las entradas** —otra vez la Receta 28— y para afirmar «no se impuso paridad» hace falta registrar
+   la cláusula de paridad **como dato de la decisión**, no como configuración del contrato. La
+   decisión de SAMR sobre Trip.com (reportada 2026-07-25, **RMB 5.200 millones**) sancionó
+   exactamente la paridad **ejecutada por algoritmo**: la paridad dejó de ser una regla de negocio y
+   pasó a ser una conducta legible en el código.
+2. **La rama de LATAM no es un *no-op*: es `retain: True`.** Es la única región donde hoy no hay
+   nada que cumplir, y es la que más conviene instrumentar, porque el motor **ya está corriendo**
+   (Azul en Brasil, Viva Aerobus en México, ambos con Fetcherr). Con PL 1309/2026, PL 1635/2024 y
+   PL 5441/2025 en trámite y la IA como uno de los cuatro ejes del *Mapa de Temas Prioritários*
+   2026-2027 de la ANPD, el registro de hoy es el expediente de mañana. Es el mismo argumento de la
+   Receta 22 (sello de estadía verificada) aplicado al precio: **tener la evidencia antes de que la
+   pidan.**
+
+**Lo que esta receta reemplaza.** Cuatro integraciones de cumplimiento, una por región, cada una con
+su propio modelo de dato y su propia deuda. Lo que queda es **un registro, cuatro proyecciones y una
+sola prueba de matriz** — exactamente la forma de la Receta 27, y la cuarta vez que este KB la
+encuentra. A esta altura conviene decirlo como regla y no como hallazgo: **en este vertical, la
+divergencia regulatoria es de artefacto, no de modelo. Modelar el evento una vez y proyectar es,
+hasta ahora, siempre correcto.**

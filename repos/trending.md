@@ -11,6 +11,70 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — décima pasada (plano del precio: 20.000★ horizontales contra 2★ verticales)
+
+**La medición de la pasada, y es la brecha más grande de los diez planos de este KB:**
+
+| Capa | Repos | Estrellas | Licencias | Estado |
+| --- | --- | --- | --- | --- |
+| Horizontal (optimización y pronóstico) | `or-tools`, `statsforecast`, `pymc-marketing`, `prophet` | **14.433 + 4.984 + 1.314** (+ `prophet`, no medido) | Apache-2.0 ×3, MIT ×1 | Todas con push de los últimos 5 días |
+| Vertical permisiva (RM de viajes) | **`revmng`** | **2** | MIT | Un solo día de pushes, 2026-06-17 |
+| Vertical sin licencia | 5 de 8 repos de RM de viajes | 0, 0, 0, 0, 1 | **ninguna** | Inusables |
+| Divulgación de precio | **ninguno** | — | — | **La categoría no existe** |
+
+### Lo nuevo y usable de esta pasada
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué aporta |
+| --- | --- | --- | --- | --- |
+| [arikanatakan/revmng](https://github.com/arikanatakan/revmng) | MIT (`main/LICENSE`) | 2 | 2026-06-17 | Littlewood, EMSR-a/b, DP exacto, overbooking, newsvendor, bid prices de red, grupos, LOS, RevPAR/yield/ROM. **Core sin dependencias** y **procedencia en cada resultado** (versión, *hash* de entradas, *timestamp*). |
+| [google/or-tools](https://github.com/google/or-tools) | Apache-2.0 | 14.433 | 2026-11-23 | El solver para bid prices de red como LP. |
+| [Nixtla/statsforecast](https://github.com/Nixtla/statsforecast) | Apache-2.0 | 4.984 | 2026-11-19 | El pronóstico de demanda que EMSR necesita de entrada. |
+| [pymc-labs/pymc-marketing](https://github.com/pymc-labs/pymc-marketing) | Apache-2.0 | 1.314 | 2026-11-23 | Elasticidad bayesiana: permite declarar la incertidumbre del precio. |
+| [seanbabalala/hotelrate-crawl](https://github.com/seanbabalala/hotelrate-crawl) | MIT | 14 | 2026-04-28 | Dato competitivo hotelero (con reserva de ToS). |
+| [borzelo/hotel-price-aggregator](https://github.com/borzelo/hotel-price-aggregator) | MIT | 11 | 2026-06-04 | Agregación de precio multi-fuente. |
+| [ashenclock/airline-revenue-management-lab](https://github.com/ashenclock/airline-revenue-management-lab) | MIT | 0 | 2026-10-23 | 0★ pero **con licencia y vivo**, a diferencia de los cinco de abajo. |
+| [hpi-epic/pricewars](https://github.com/hpi-epic/pricewars) | MIT (`master/LICENSE.md`) | 56 | **2018-10-16** | Simulador de competencia algorítmica del HPI. Dormido ~8 años; sirve para estudiar la colusión implícita que el PL 1635/2024 quiere tipificar. |
+
+### La trampa de licencia de esta pasada: cinco repos, cero archivos
+
+No es una licencia mal leída ni un badge que miente —las dos trampas de las pasadas séptima y
+octava—. Es **ausencia total de archivo de licencia** en cinco de los ocho repos de RM de viajes, y
+en los dos repos más estrellados del campo:
+
+| Repo | Stars | Último push | Licencia |
+| --- | --- | --- | --- |
+| [tule2236/Airbnb-Dynamic-Pricing-Optimization](https://github.com/tule2236/Airbnb-Dynamic-Pricing-Optimization) | **243** | 2018-11-14 | **ninguna** |
+| [DallasBuyer/awesome-dynamic-pricing](https://github.com/DallasBuyer/awesome-dynamic-pricing) | 127 | 2022-10-27 | **ninguna** |
+| [jdautell/hotel-revenue-management-engine](https://github.com/jdautell/hotel-revenue-management-engine) | 0 | 2026-09-11 | **ninguna** |
+| [normanlrasmussen/airline-revenue-optimizer](https://github.com/normanlrasmussen/airline-revenue-optimizer) | 0 | 2026-09-17 | **ninguna** |
+| [shashank0208/airline_revenue_management](https://github.com/shashank0208/airline_revenue_management) | 0 | 2026-10-26 | **ninguna** |
+| [Naresh1401/hotel-revenue-management](https://github.com/Naresh1401/hotel-revenue-management) | 0 | 2026-10-11 | **ninguna** |
+| [adhikariprajitraj/AirLine-Revenue-Managment-OR](https://github.com/adhikariprajitraj/AirLine-Revenue-Managment-OR) | 1 | 2025-06-06 | **ninguna** |
+
+Verificado por `curl` de `LICENSE`, `LICENSE.md`, `LICENSE.txt` y `COPYING` en `main` y `master`:
+HTTP 404 en todas las combinaciones. **Sin archivo no hay permiso**: son todos los derechos
+reservados, y para un estudio que entrega código son inusables, no «grises».
+
+### La quinta colisión de palabra de industria, y la gana energía
+
+`dynamic pricing stars:>=50` devuelve **21 repos en todo GitHub**, y los dos con tracción y
+mantenimiento real son de **tarifas eléctricas**:
+[martinarva/dynamic_energy_cost](https://github.com/martinarva/dynamic_energy_cost) (MIT, 207★,
+push 2026-11-21) y [corneel27/day-ahead](https://github.com/corneel27/day-ahead) (Apache-2.0, 188★,
+push 2026-11-22). Y `pricing mcp server` devuelve **1.619 repos** encabezados por costo de nube
+(`aws-samples/sample-aws-pricing-calculator-mcp`, MIT-0, 161★) y finanzas. Las cuatro colisiones
+anteriores (`trip`, `gate`, `review`, `baggage`) eran ruido o un estándar del W3C; **esta la pierde
+el vertical frente a otro vertical de este mismo KB.**
+
+### Error de método propio, encontrado y corregido
+
+`git ls-remote` me dio **DEAD** en `pymc-devs/pymc-marketing`. No era un repo muerto: **era mi owner
+equivocado** — es `pymc-labs/pymc-marketing`, vivo, Apache-2.0, 1.314★, push del 2026-11-23. Un
+`ls-remote` que falla prueba que *ese slug* no existe, no que el proyecto no exista. Queda anotado
+junto al error de la novena pasada (`[ -n "$code" ]` sobre JSON de error) como el segundo defecto de
+método de verificación detectado por el propio ciclo.
+
+
 ## 2026-11-23 — novena pasada (plano del equipaje: 72.163 líneas MIT que ninguna búsqueda encuentra)
 
 Noveno ciclo del mismo día, lado infraestructura. **Append-only**: las ocho pasadas anteriores

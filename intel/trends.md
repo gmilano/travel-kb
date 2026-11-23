@@ -766,3 +766,110 @@ según la región, **la operación aérea no tiene un solo agente con diez estre
 agentic de 2026 que esta KB viene registrando está del lado de **buscar y reservar**; ninguna del
 lado de **operar y responder**. Es la brecha más grande y más estable del vertical, y es donde un
 estudio con acceso a sistemas de operador tiene ventaja sobre un laboratorio de IA.
+
+## 36. El precio es el primer plano donde lo que falta no es una pieza, es una categoría
+
+En los nueve planos anteriores, «lo que no existe» siempre fue una pieza concreta dentro de una
+categoría poblada: faltaba el cliente de OSDM, faltaba el agente de equipaje del lado del operador,
+faltaba el detector de reseña falsa. En el plano del precio falta **la categoría entera**:
+
+| Consulta (`search/repositories`, 2026-11-23) | `total_count` |
+| --- | --- |
+| `price explanation transparency algorithm` | **0** |
+| `algorithmic pricing disclosure` | 1 (ajeno al tema: `Rastaman4e/-1`, sin licencia, 2021) |
+| `personalized pricing audit` | 1, **y es de retail** (`mizcausevic-dev/retail-decision-record-audit-str`, MIT, 0★) |
+
+Cero no es «pocos». Significa que nadie nombró el problema todavía en código, mientras tres regiones
+ya lo nombraron en ley. La única pista existente viene **del vertical de al lado**: el repo de
+auditoría de decisiones es de retail, el mismo vertical cuyo plano de *fulfilment* esta rotación
+procesó en la pasada anterior.
+
+## 37. La brecha horizontal-vertical del precio es la mayor medida en este KB
+
+La tendencia 8 de este archivo dice que el copyleft domina la plataforma y lo permisivo la
+infraestructura. El plano del precio no la contradice: **la lleva al extremo**. Todo es permisivo
+—Apache-2.0 y MIT de punta a punta, sin una sola licencia copyleft en el plano— y la asimetría se
+corrió de la licencia a la **masa**:
+
+| Capa | Suma de estrellas | Licencias | Mantenimiento |
+| --- | --- | --- | --- |
+| Horizontal: `or-tools` + `statsforecast` + `pymc-marketing` | **20.731** | Apache-2.0 ×3 | Push en los últimos 5 días |
+| Vertical: `revmng` | **2** | MIT | Un solo día de pushes, hace 5 meses |
+
+Un factor de **10.000×**. Y no es que el vertical sea malo: `revmng` implementa Littlewood, EMSR-a/b,
+el DP exacto, overbooking, bid prices de red y las métricas del campo, sin dependencias y con
+procedencia por resultado. **Es que el vertical es una persona.** Creado el 2026-06-16 por un autor
+individual, con CI, PyPI y validación contra ejemplos publicados — y dos estrellas.
+
+La consecuencia para una propuesta es directa y poco cómoda: en este plano Globant **no se apoya en
+una comunidad**, se apoya en una biblioteca de un autor. Se fija versión, se lee el código (es
+chico y sin dependencias, se puede) y se presupuesta mantenerla.
+
+## 38. La procedencia llegó al precio antes que la obligación de divulgar, y por accidente
+
+`revmng` emite en cada resultado la versión de la biblioteca, el *hash* de las entradas y el
+*timestamp*, serializables con `to_dict()`. Su README presenta eso como buena práctica de
+reproducibilidad —no menciona ni a Nueva York, ni a la CRD, ni a SAMR—. Pero **es exactamente el
+artefacto que las cuatro jurisdicciones de este plano necesitan**, y es la única pieza del vertical
+que lo emite de fábrica.
+
+Es el movimiento inverso al de la tendencia 26 (el modelo de referencia del vertical sin licencia de
+software, que nadie nota): acá la pieza correcta existe **por motivos técnicos** y todavía nadie la
+conectó al motivo regulatorio. El trabajo que queda no es inventar la procedencia: es **traducirla a
+la obligación local**, que es la mitad que no existe.
+
+Y hay un corolario de arquitectura que es la parte más valiosa del plano entero. El § 349-a de Nueva
+York se dispara cuando un algoritmo fija el precio **usando el dato personal del consumidor**.
+`revmng` toma tarifas, demanda, capacidad, no-shows y costos; **no toma ni un atributo de la
+persona**. Por lo tanto: *elegir revenue management por capacidad en lugar de precio personalizado
+es una postura de cumplimiento, no sólo una decisión de modelado*. Es la única respuesta
+**estructural** —en lugar de documental— que apareció en diez planos de este KB.
+
+## 39. Es el primer eje donde una región tiene el despliegue y no la norma, y es LATAM
+
+Nueve planos construyeron el mismo retrato de LATAM: **la norma existe y el código no**. El art. 14
+de la Resolución 400/2016 con sus 10 kg, el 10% de habitaciones accesibles, el Estado comprando
+turismo nacional. La conclusión repetida era que en LATAM se vende cumplimiento sobre un piso
+técnico ausente.
+
+El precio lo da vuelta:
+
+| Región | ¿Norma vigente sobre precio algorítmico? | ¿Motor de AI desplegado en operadores locales? |
+| --- | --- | --- |
+| North America | **Sí** (NY § 349-a, 2025-11-10) — y una prohibición pendiente de firma | Sí (Delta/Fetcherr, negado como personalizado) |
+| EMEA | **Sí** (CRD, deber de informar personalización) | Sí (Accor/IDeaS) |
+| APAC | **Sí**, y con multa ya aplicada (SAMR/Trip.com) | Sí (Trip.com, Fliggy) |
+| LATAM | **No.** Tres proyectos en trámite (PL 1309/2026, PL 1635/2024, PL 5441/2025) | **Sí**: Azul (Brasil, primer cliente en vivo de Fetcherr), Viva Aerobus (México, desde mayo 2024) |
+
+Lo que cambia en la propuesta comercial es el verbo. En NA, EMEA y APAC el cliente **cumple**: hay
+fecha y texto, y el trabajo es satisfacerlos. En LATAM el cliente **se anticipa**: el motor ya cobra
+precios hoy y la norma llega después, con tres proyectos apuntando todos a transparencia algorítmica
+y fiscalización por ANPD/Senacon/CADE. Quien registre la decisión desde ahora no reconstruye nada;
+quien no, va a tener que explicar retroactivamente precios ya cobrados.
+
+## 40. Las cuatro regiones piden el mismo dato y ninguna pide el mismo artefacto — y una exige una frase literal
+
+Es la cuarta vez que este KB mide esta forma (equipaje fue la tercera), pero es la primera en que una
+jurisdicción no pide un formato ni un umbral sino **texto exacto en pantalla**:
+
+| Región | Disparador | Artefacto exigido |
+| --- | --- | --- |
+| North America (NY) | Algoritmo + **dato personal del consumidor** | La frase literal **«THIS PRICE WAS SET BY AN ALGORITHM USING YOUR PERSONAL DATA»**, clara y visible |
+| EMEA | Precio **personalizado por decisión automatizada** (sin requerir dato personal identificable) | Aviso de que el precio fue personalizado. **Sin obligación de revelar parámetros** |
+| APAC (China) | Discriminación de precio **basada en dato, no divulgada**; y paridad impuesta por algoritmo | Ausencia de la conducta, demostrable; no hay texto obligatorio |
+| LATAM | — (sin norma) | — (proyectos: transparencia algorítmica y tipificación de colusión por algoritmo) |
+
+Los disparadores **no son intercambiables**, y ahí está el error de diseño que hay que evitar: una
+OTA europea que personaliza por segmento de dispositivo sin tocar dato identificable dispara la CRD
+y **no** dispara Nueva York; una cadena que personaliza por historial de estadías dispara las dos,
+con dos textos distintos; un operador en China puede no deber ningún aviso y deber, en cambio,
+**probar que no discriminó por frecuencia de cliente**. Un *flag* booleano global de «mostrar aviso
+de precio» es incorrecto en las cuatro. Receta 30.
+
+Y hay una quinta dimensión que ninguna de las cuatro regiones comparte, que es **la línea de
+producto**: la Airline Deregulation Act (49 U.S.C. § 41713) impide a los estados de EE. UU. legislar
+sobre precios de aerolíneas, *Morales* anuló el uso de estatutos estatales de consumo sobre
+publicidad de tarifas, y el propio DOT afirmó en julio de 2026 que los estados ya están *preempted*
+en ese terreno. **Ninguna fuente que alcancé aplica eso a § 349-a en particular** —la inferencia va
+marcada como tal en el mapa de mercado—, pero la consecuencia de arquitectura no depende de quién
+gane el litigio: **el interruptor de divulgación es por producto, no por estado.** Receta 29.

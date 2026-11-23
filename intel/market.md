@@ -103,6 +103,28 @@ abrir desde esta red** (`media.asianaviation.com` no resuelve): todas estas cifr
 **Por qué esta cifra ordena el plano:** USD 260 por pieza es lo que un operador paga por **no
 tener el registro**. Es el único plano de esta KB donde el valor de la custodia está publicado en
 dólares por evento, y por eso es el plano donde un caso de negocio no necesita estimarse.
+### El precio, la cifra que ordena el décimo plano (2026-11-23)
+
+No hay una «cifra de mercado del precio»: el precio no es un segmento, es la función que decide el
+ingreso de todos los segmentos ya listados arriba. Lo que sí se puede medir, y es lo que ordena el
+plano, es **la distancia entre lo que la industria despliega y lo que el código abierto ofrece**:
+
+| Medida | Valor | Cómo se midió |
+| --- | --- | --- |
+| Repos de *revenue management* específicos de viajes encontrados | **8** | `search/repositories` sobre EMSR, yield y revenue management, más el topic de GitHub |
+| De esos 8, **sin archivo de licencia** (inusables) | **5** | `curl` de LICENSE/LICENSE.md/LICENSE.txt/COPYING en `main` y `master` |
+| Estrellas de la única biblioteca de RM real y permisiva (`revmng`, MIT) | **2** | `search/repositories`, 2026-11-23 |
+| Estrellas de la capa horizontal que sí sirve (`or-tools` Apache-2.0) | **14.433** | ídem |
+| Repos de *divulgación* de precio algorítmico | **1, y no es del tema** | `algorithmic pricing disclosure` → `total_count: 1` |
+| Repos de explicación/transparencia de precio | **0** | `price explanation transparency algorithm` → `total_count: 0` |
+| Aerolíneas de EE. UU. con pedido de explicación del Congreso | **8** | Cobertura de prensa, plazo reportado 2026-08-25 |
+| Multa travel por algoritmos de precio ya aplicada (China, SAMR) | **RMB 5.200 millones** | Secundario coincidente, decisión no leída |
+
+La proporción es el hallazgo: **la industria tiene motores de precio por AI corriendo en producción
+en cuatro continentes, y el código abierto del vertical ofrece una biblioteca de 2 estrellas y cero
+herramientas de divulgación.** Es la brecha más grande medida en los diez planos de este KB.
+
+
 ## Opportunities by region
 
 ### North America
@@ -389,6 +411,60 @@ BSM y abre el expediente AHL con marca temporal, y el reloj del DOT necesita exa
 sellos de tiempo (llegada a puerta, entrega de la pieza) más el MBR. Es el mismo patrón que la
 Receta 10 (motor de derechos del pasajero con reloj) aplicado al objeto físico, y se vende solo
 con la cifra de SITA: **USD 260 por pieza**.
+
+
+#### El plano del precio — North America (2026-11-23, décima pasada)
+
+Es la región con la obligación **más literal** de todo este KB: no pide un informe ni un
+formato de dato, pide **una frase exacta en la pantalla**.
+
+| Elemento | Dato | Fuente |
+| --- | --- | --- |
+| Norma | NY General Business Law § 349-a, *Algorithmic Pricing Disclosure Act* | Múltiples firmas (Skadden, Duane Morris, Kelley Drye, WSGR) coincidentes |
+| En vigor | 2025-11-10 | Anuncio de la NY AG (Letitia James), citado por Kelley Drye y Legal 500 |
+| Qué exige | Divulgación clara y visible: **«THIS PRICE WAS SET BY AN ALGORITHM USING YOUR PERSONAL DATA»** | § 349-a subd. 2, citada textualmente por Kelley Drye y jdsupra |
+| Disparador | Precio fijado por algoritmo **usando dato personal del consumidor** | § 349-a |
+| Sanción | Hasta **USD 1.000 por violación**, aplica la AG | Skadden, Duane Morris |
+| Exentos | Aseguradoras e instituciones financieras reguladas | Mondaq, Skadden |
+| Litigio | La National Retail Federation perdió en primera instancia (SDNY); apelación **argumentada el 2026-10-19** en el Segundo Circuito, **sin fallo localizado** | Duane Morris, Lexology |
+| Lo que viene | *One Fair Price Act* (S.8623B / A.9349B), aprobada por la legislatura en **junio de 2026**: **prohíbe** el precio personalizado por historial de compra, navegación, ubicación en tiempo real, ingreso o tamaño de hogar inferido. **Pendiente de firma del gobernador, plazo 2026-12-31** | WSGR, nysenate.gov (vía buscador) |
+
+**La pregunta travel que la cobertura general no hace, y su respuesta honesta.** § 349-a es
+ley **estatal**. La Airline Deregulation Act (49 U.S.C. § 41713) impide a los estados legislar
+sobre «prices, routes or services» de una aerolínea; en *Morales* la Corte Suprema anuló el uso
+de estatutos estatales de consumo para vigilar la publicidad de tarifas; y el propio DOT, en su
+propuesta de julio de 2026 sobre publicidad de tarifas, afirma que «States are already preempted
+from regulating in this area by the Airline Deregulation Act, 49 U.S.C. 41713».
+
+> **Esto es una INFERENCIA de esta sesión, no un fallo.** Ninguna fuente que alcancé aplica la
+> preemption de la ADA a § 349-a en particular. Lo que se puede afirmar: hotel, alquiler de auto,
+> OTA, tours y actividades caen de lleno en el alcance; **la tarifa aérea es territorio disputado**.
+> La consecuencia de arquitectura es la parte sólida, y no depende de quién gane: **el interruptor
+> de divulgación es por línea de producto, no por estado.** Un motor único que sirve hotel y vuelo
+> necesita las dos ramas y el registro de cuál disparó. Receta 29.
+
+**El vector contrario, en la misma región y el mismo año.** Mientras Nueva York aprieta, el
+federal afloja: el DOT propuso en julio de 2026 *Enhancing Flexibility of Air Fare Price
+Advertising* y restauró las reglas de divulgación de cargos auxiliares previas a 2024. North
+America es la única región donde el eje regulatorio **apunta en dos direcciones a la vez**, y la
+dirección depende de si el producto es un vuelo o una habitación.
+
+**La presión no regulatoria, que llegó antes que la norma.** El Congreso envió cartas a **ocho
+aerolíneas** pidiendo explicación de sus sistemas de precios (plazo reportado: 2026-08-25); un
+subcomité del Senado (Judiciary, Crime and Counterterrorism) hizo su **primera audiencia dedicada
+a *surveillance pricing* el 2026-08-04**; los senadores Gallego, Warner y Blumenthal escribieron a
+Delta por su acuerdo con Fetcherr. Delta negó formalmente: «no fare product Delta has ever used,
+is testing or plans to use that targets customers with individualized prices based on personal
+data». **Las fechas de esta secuencia varían entre fuentes** (hay reportes que ubican la carta en
+2025) y van marcadas como tales.
+
+**Oportunidad Globant en North America, este plano:** el **interruptor de divulgación por producto
+con registro de decisión** (Receta 29). No es un modelo de precios: es la pieza de gobierno que una
+cadena hotelera o una OTA con tráfico de Nueva York necesita para responder «por qué este precio»
+sin apagar su motor. El diferenciador es que se puede auditar hacia atrás: qué rama disparó, con
+qué entradas, con qué versión de biblioteca. Y la variante defensiva —**precio desde capacidad y no
+desde la persona** (Receta 28)— es la única que contesta la pregunta del regulador de forma
+estructural en lugar de documental.
 
 ### EMEA
 
@@ -790,6 +866,55 @@ pasajero** que convierta 1.519 DEG a la moneda de la póliza en la fecha del hec
 vigente (desde dic-2024), el costo por evento es el más alto del mundo (USD 295) y el riesgo de
 implementación por defecto es **agregar por el objeto equivocado**.
 
+
+#### El plano del precio — EMEA (2026-11-23, décima pasada)
+
+EMEA es la región donde la obligación **ya existe y es vieja**, y donde lo que se discute es si
+se endurece. Es también la única donde el deber de informar **no** depende de que el precio use
+dato personal del consumidor: depende de que haya sido *personalizado por decisión automatizada*.
+
+| Elemento | Dato | Fuente |
+| --- | --- | --- |
+| Norma vigente | Consumer Rights Directive: el comerciante debe informar **que** el precio fue personalizado mediante decisión automatizada | tgndata, Checkmate Experts, CMS |
+| El límite de esa norma | **No** obliga a revelar los parámetros ni los criterios de la personalización | tgndata (explícito) |
+| Lo que se discute | *Digital Fairness Act* (DFA) | Freshfields (2026-11), A&O Shearman, CMS, Lexology |
+| Estado | **En conflicto entre fuentes.** El programa de trabajo de la Comisión para 2026 la lista para **Q4 2026**; briefings de noviembre de 2026 la describen ya presentada y con el procedimiento legislativo iniciado | Legislative Train (vía Parlamento) vs Freshfields/A&O |
+| Lo que el DFA **no** hace | **No prohíbe** el precio personalizado como tal; **no** prohíbe el precio dinámico en tickets de evento, pese al pedido de las asociaciones de consumidores | A&O Shearman, CMS |
+| Lo que **sí** prohíbe | Precio basado en *profiling* que razonablemente pueda dañar a consumidores que se sabe con certeza razonable que son **menores o vulnerables** | insideprivacy (vía buscador), A&O Shearman |
+| Transparencia de precio dinámico | Limitada a **ticketing de eventos** | A&O Shearman |
+| Excepciones en los recitales | Descuentos de estudiante y jubilado; tarificación de riesgo asegurador basada en evidencia | A&O Shearman |
+
+> **Límite de verificación declarado.** `www.insideprivacy.com`, `www.slaughterandmay.com`,
+> `www.nysenate.gov` y `newyork.public.law` **no resuelven desde esta red de ingesta**. Todo lo de
+> arriba viene de resúmenes de firmas legales coincidentes entre sí, no de texto normativo leído.
+> El estado del DFA queda **en disputa a propósito**: dos conjuntos de fuentes serias dicen cosas
+> distintas y no se elige ninguna.
+
+**Lo travel-específico, y es la diferencia que importa.** La CRD obliga a decir que el precio es
+personalizado, pero no por qué. El § 349-a de Nueva York obliga a una frase fija y sólo cuando hay
+dato personal. **Son disparadores distintos sobre el mismo evento de precio**: una OTA europea que
+personaliza por segmento de dispositivo sin tocar dato identificable dispara la CRD y **no** dispara
+Nueva York. Una cadena que personaliza por historial de estadías dispara las dos, con dos textos
+distintos. Por eso el artefacto no puede ser un *flag* booleano global.
+
+**El contexto de inversión de la región, medido.** Las startups europeas de AI en viajes levantaron
+**USD 158 millones en los primeros tres trimestres de 2026**, más del 20% del venture europeo
+divulgado del año en el vertical (Skift, cobertura del Data + AI Summit Europe). Y el obstáculo que
+los propios hoteleros declaran no es el modelo: **privacidad y seguridad del dato 46%, costo 42%,
+integración con sistemas legacy 40%** (ATM Yearbook 2026). El plano del precio toca el primero de
+los tres de frente.
+
+**Adopción del lado del viajero:** más de la mitad de los viajeros de EMEA ya usó AI para planificar
+o investigar un viaje, y el tramo de 55–64 años subió a **29% en 2026 desde 18% en 2024** (Marriott
+Bonvoy, +22.000 adultos en 11 mercados — **estudio de marca, no independiente**, y va marcado así).
+
+**Oportunidad Globant en EMEA, este plano:** el **aviso de precio personalizado como componente del
+flujo de reserva**, no como texto legal pegado al pie. Es la contracara de la Receta 19 (gate de
+accesibilidad en CI) aplicada al precio: una pieza que, dado el evento de precio, decide si hay que
+avisar, con qué texto y en qué idioma, y deja el registro. Si el DFA sale con la prohibición de
+*profiling* sobre menores y vulnerables, esa misma pieza es donde se implementa el corte — y el
+cliente que ya la tenga no rehace el motor.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -1090,6 +1215,53 @@ obligación legal, ningún open source con tracción para cumplirla, y un KPI pu
 medirse. `jetway` (MIT) aporta el modelo de mensaje y de expediente; el lector RFID y el AODB no
 existen abiertos y hay que integrarlos o construirlos — **y eso hay que decirlo en la propuesta,
 no después**.
+
+
+#### El plano del precio — APAC (2026-11-23, décima pasada)
+
+**APAC es la única región del mundo que ya multó a una empresa de viajes por sus algoritmos de
+precio.** En los nueve planos anteriores de este KB, APAC aportaba un mandato técnico (RFID de la
+CAAC) o un estándar; acá aporta jurisprudencia aplicada con cifra.
+
+| Elemento | Dato | Fuente |
+| --- | --- | --- |
+| Norma de plataforma | *Internet Platform Pricing Conduct Rules*, emitidas por tres organismos en **diciembre de 2025** | Resúmenes legales (stellagent, lome.legal) |
+| En vigor | **2026-04-10**, por un plazo de **cinco años** | ídem |
+| Qué prohíbe | Recortes de precio forzados; compromisos obligatorios de «precio más bajo de internet»; igualación automática de precio obligatoria; y **discriminación de precio basada en dato no divulgada** | ídem |
+| Medidas de comercio online | SAMR + Administración del Ciberespacio; en vigor a comienzos de **febrero de 2026**; prohíben usar big data para precio discriminatorio **contra clientes frecuentes** | Global Times |
+| Base de privacidad | PIPL **art. 24**: prohíbe la diferenciación injustificada en condiciones de transacción | Yucheng IP |
+| Enforcement travel | SAMR abre investigación antimonopolio a **Trip.com** en **enero de 2026** | SCMP |
+| La decisión | Reportada con fecha **2026-07-25** y multa de **RMB 5.200 millones**: abuso de posición dominante por **imponer exclusividad y paridad de precio a los hoteles mediante algoritmos** y herramientas de ajuste automático | Slaughter and May (título), SCMP |
+| Norma sectorial | Un aviso del mercado turístico nombra explícitamente la discriminación de precio por big data, junto con publicidad falsa y regulación de OTA | lexchina |
+
+> `www.slaughterandmay.com` **no resuelve desde esta red**; la cifra de RMB 5.200 millones y la
+> fecha del 2026-07-25 vienen del título del artículo tal como lo devolvió el buscador y de la
+> cobertura de SCMP, **no de la decisión de SAMR leída**. Se registra como secundario coincidente.
+
+**Lo que esta decisión le hace a una arquitectura, y es concreto.** La conducta sancionada no fue
+«cobrar distinto»: fue **imponer paridad de precio a los hoteles por algoritmo**. Es decir, la
+cláusula de paridad —que en EMEA ya venía cayendo por vía de competencia— en China quedó sancionada
+*como ejecución algorítmica*. Para quien construye una plataforma de distribución, el efecto es que
+la paridad deja de ser una regla de negocio configurable y pasa a ser **una conducta que el código
+ejecuta y que un regulador puede leer en el código**. El repo que monitorea paridad
+(`mtnrabi/travel-agent-skills`, MIT) deja de ser una herramienta comercial inocente y pasa a ser,
+en esta jurisdicción, un registro de conducta.
+
+**Lo que la región aporta además, y que no es regulación:** el único *skill* de precio dinámico
+permisivo y con tracción real que encontró esta pasada es de una empresa taiwanesa —
+`asgard-ai-platform/skills`, MIT, **249★**, categoría interna «WP-39 定價演算法». El precio también
+se está distribuyendo como *skill*, igual que el inventario en la tendencia 7 de este KB.
+
+**Adopción, con la cautela de siempre:** 64% de los viajeros de APAC usa AI al planificar o durante
+el viaje (Booking.com); del lado empresa, Expedia reporta 79% ya usando y 97% planeando usar
+(**ambos estudios de marca**). Trip.com reporta ~+400% interanual en volumen de órdenes asistidas
+por AI en TripGenie (dato de la propia compañía).
+
+**Oportunidad Globant en APAC, este plano:** la **aserción de no-paridad y no-discriminación como
+salida del motor**, no como política escrita. Un operador que vende en China necesita poder mostrar,
+por transacción, que el precio no se fijó por frecuencia del cliente y que no se impuso paridad al
+proveedor. Eso es un artefacto de datos derivado del mismo evento de precio que alimenta Nueva York
+y la CRD — y es la pata que convierte la Receta 30 en una sola pieza de cuatro salidas.
 
 ### LATAM
 
@@ -1438,6 +1610,64 @@ compañía fija las medidas **en su tarifa**, y la brecha entre las dos es exact
 reclama en Anac Passageiro. Con `carry-fit` (MIT) como base de medidas y el `pkg/dcs` de `jetway`
 (MIT) como lado del operador, es construible con licencias limpias — y es el único plano de esta
 región donde la obligación es **numérica y verificable** en lugar de interpretable.
+
+
+#### El plano del precio — LATAM (2026-11-23, décima pasada)
+
+**Este es el primer plano de los diez en que LATAM está dada vuelta respecto de sí misma.** En
+frontera, equipaje, accesibilidad y derechos del pasajero, el hallazgo de este KB fue siempre el
+mismo: *LATAM tiene la norma y no tiene el código* (art. 14 de la Res. 400/2016, los 10 kg; el 10%
+de habitaciones accesibles; el Estado comprando). Acá es exactamente al revés: **el motor de precio
+por AI ya está corriendo en aerolíneas de la región, y la norma que lo gobernaría no existe
+todavía.**
+
+**El despliegue, que ya ocurrió:**
+
+| Operador | País | Qué desplegó | Fecha | Fuente |
+| --- | --- | --- | --- | --- |
+| Azul | Brasil | Motor de precio generativo de Fetcherr; **primer cliente en vivo** de Fetcherr. Un post de Fetcherr de **diciembre de 2025** afirma que fue la primera aerolínea en desplegarlo **a escala completa de red** | Piloto anunciado en 2024 (PR Newswire); escala declarada dic-2025 | Fetcherr (parte interesada) |
+| Viva Aerobus | México | *Generative Pricing Engine* y *Large Market Model* de Fetcherr, para precio en tiempo real y publicación directa de tarifas | Alianza anunciada **mayo de 2024** | PhocusWire, accessnewswire |
+
+> Las dos son **declaraciones del proveedor y del cliente**, sin cifras auditadas de resultado. Lo
+> verificable es que el despliegue fue anunciado y que la región aparece en la lista de clientes de
+> Fetcherr junto con Delta, WestJet y Virgin Atlantic. `fetcherr.io` **no resuelve desde esta red**,
+> así que la lista de clientes no fue leída del sitio del proveedor.
+
+**La norma, que todavía no existe.** No localicé **ninguna ley sancionada** sobre precificación
+algorítmica en Brasil. Lo que hay son proyectos en trámite y una señal de fiscalización:
+
+| Instrumento | Qué propone | Estado localizado |
+| --- | --- | --- |
+| PL 1309/2026 (Jadyel Alencar) | Límites a la precificación algorítmica en **bienes esenciales**; altera el CDC | Apensado al PL 385/2026; **devuelto al relator** en la Comisión de Defensa del Consumidor el **2026-05-15** |
+| PL 1635/2024 | Incluir en el **art. 39 del CDC** la práctica abusiva de *colusión artificial por algoritmos de precificación* | En trámite |
+| PL 5441/2025 | «Lei de Equidade Digital e Transparência Algorítmica»; fiscalización por **Senacon, ANPD y CADE**. Un texto para discusión del Senado lo llama **el más ambicioso** de los analizados | En trámite |
+| ANPD | *Mapa de Temas Prioritários* 2026-2027, publicado en **diciembre de 2025**: la IA es uno de **cuatro ejes** de fiscalización | Vigente como plan, no como norma |
+
+> La afirmación de que la ANPD lista la precificación dinámica entre las decisiones automatizadas de
+> impacto significativo aparece **sólo en un blog sin cita de norma**, y por eso **no se afirma acá**.
+> El llamado «CDC Digital» es **propuesta, no norma vigente**, y se registra así.
+
+**La trampa de precisión de esta región, en línea con las pasadas anteriores.** Igual que la
+Resolución ANAC 813/2026 no era de equipaje (noveno plano), acá el error fácil es presentar al CDC
+como si ya resolviera el precio algorítmico. No lo hace de forma específica: lo que hay es el marco
+general de práctica abusiva y publicidad engañosa, y análisis que sostienen que el precio dinámico
+**es permitido pero encuentra límites severos** en el CDC. Afirmar más que eso es inventar la norma.
+
+**Lo que esta asimetría significa para una propuesta, y es la parte accionable.** En las otras tres
+regiones el cliente compra cumplimiento: hay una norma con fecha y el trabajo es satisfacerla. En
+LATAM el cliente compra **opcionalidad**: el motor ya está desplegado y la norma llega después, con
+tres proyectos que apuntan en la misma dirección (transparencia algorítmica, colusión por algoritmo,
+fiscalización por ANPD/Senacon/CADE). Quien hoy registre la decisión de precio —entradas, versión,
+*hash*, resultado— no tiene que reconstruir nada cuando el PL 5441/2025 o su sucesor se sancione.
+Quien no, va a tener que explicar retroactivamente precios que ya cobró.
+
+**Oportunidad Globant en LATAM, este plano:** el **registro voluntario de decisión de precio**
+montado sobre un motor que ya está en producción (Receta 28 + la cuarta salida de la Receta 30). Se
+vende hoy como gobierno de dato y defensa reputacional ante Senacon/Procon —no como cumplimiento,
+porque no hay de qué cumplir todavía— y se convierte en cumplimiento el día que la ley salga. Es el
+mismo argumento que la Receta 22 (sello de estadía verificada) pero sobre el precio: **invertir el
+problema y tener la evidencia antes de que la pidan.** Para una aerolínea de la región que ya corre
+Fetcherr, es lo único que su equipo legal no puede construir solo.
 
 ## Posicionamiento Globant
 

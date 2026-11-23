@@ -329,10 +329,10 @@ son las vigentes.
 | [wiedehopf/readsb](https://github.com/wiedehopf/readsb) (707★) y [wiedehopf/tar1090](https://github.com/wiedehopf/tar1090) (1979★) | Ambos `NOASSERTION` en GitHub, como `valhalla` y como `airportsdata` — donde esa marca escondía licencias permisivas reales | Aquí `NOASSERTION` esconde lo contrario: **GPL-3.0-or-later** y **GPL-2.0-or-later** respectivamente, leídos del archivo. **Tercera confirmación de la misma regla: `NOASSERTION` no es un veredicto en ninguna dirección — hay que abrir el archivo.** En el mismo barrido, `airportsdata` resultó MIT y estos dos resultaron GPL. |
 | [google/travel-impact-model](https://github.com/google/travel-impact-model) | Repo de Google, 195★, vivo: se lee como una librería de emisiones lista para integrar | Es **CC-BY-4.0**, licencia de **contenido**. Permite uso comercial con atribución —lo cual es bueno— pero Creative Commons desaconseja expresamente sus licencias para software. Para el modelo y sus tablas encaja; para copiar código, consultar con legales. |
 | [rsadsb/adsb_deku](https://github.com/rsadsb/adsb_deku) | MIT (1071B leídos), 732★ — el decodificador permisivo más estrellado | **Sin push desde el 2026-01-04 (~10 meses).** Licencia ideal, mantenimiento incierto. El músculo mantenido del segmento (`readsb`, `tar1090`, `ultrafeeder`) es todo GPL. |
-
 | [visa/trusted-agent-protocol](https://github.com/visa/trusted-agent-protocol) | Repo **de Visa**, 224★, "Trusted Agent Protocol": en toda búsqueda de pago agentic aparece junto a AP2, ACP y UCP, que sí son Apache-2.0. Es el nombre que más tranquiliza a un cliente de pagos | **No es open source.** El `LICENSE.md` tiene **398 bytes** y no contiene ninguna licencia: remite a los *Visa Developer Center Terms of Use* y a los *Trusted Agent Protocol Product Terms*. Leído completo el 2026-11-23. GitHub lo muestra `NOASSERTION`, y **último push 2025-10-28 (~13 meses)**. Es la trampa más peligrosa del plano de pago precisamente porque la marca da confianza: **cuarta confirmación de que `NOASSERTION` obliga a abrir el archivo.** |
 | [google-agentic-commerce/AP2](https://github.com/google-agentic-commerce/AP2) | Apache-2.0 real (11359B leídos), 3283★, de Google, y la referencia que cita toda la prensa de pago agentic | Licencia impecable, pero **sin push desde el 2026-06-17 (~5 meses)** mientras `x402` y `ucp` empujaron esta misma semana. Varias fuentes secundarias mencionan una donación a la FIDO Alliance (abr-2026) que **no se pudo corroborar** desde este entorno. Usar la **especificación** como referencia conceptual; **no** asumir que el repo es un upstream vivo. Su ecosistema propio es humo: los repos que lo implementan por nombre están todos entre 0★ y 2★. |
 | [moizkamran/ExcursioX](https://github.com/moizkamran/ExcursioX) | Buscado como "travel CRM open source", una fuente secundaria lo describe explícitamente como **MIT** y es el único resultado travel-específico de esa búsqueda | **Sin archivo de licencia** (probadas `LICENSE`, `LICENSE.md` y `license` en `main` y `master` el 2026-11-23: 404 en las seis) y **sin push desde el 2024-03-11**, con 22★. El propio README dice "we are working on this". **La fuente secundaria afirmó una licencia que el repo no tiene** — el motivo exacto por el que esta KB lee el archivo. |
+
 ## Corrección del historial de esta KB
 
 Ciclos anteriores (2026-08-01/02) registraron curvas de estrellas que no resisten medición.
@@ -658,3 +658,102 @@ ficha de accesibilidad física (Receta 20): `registrado / no registrado / regist
 La Resolución 753 de IATA da los cuatro puntos de custodia y **no obliga ninguna tecnología**:
 código de barras, escaneo manual u OCR son válidos. Por eso el dato siempre tiene una **hora de
 último escaneo**, y un agente honesto la devuelve junto con la posición. Receta 25.
+
+## Precio — el plano donde el agente puede calcular y no puede explicar
+
+Décimo plano, 2026-11-23. Ninguno de los nueve anteriores lo tocó: frontera, vuelo, pago,
+visibilidad, tierra, emisiones, accesibilidad, reseña y equipaje tratan **qué se vende y cómo se
+entrega**. Este trata **cuánto cuesta y por qué** — la única pregunta del viaje cuya respuesta
+cuatro reguladores distintos ya quieren por escrito.
+
+### La capa de agentes de este plano — lo que existe, medido
+
+| Nombre | Repo | Licencia (leída del archivo) | Stars | Último push | Descripción |
+|--------|------|------------------------------|-------|-------------|-------------|
+| revmng-mcp | [arikanatakan/revmng-mcp](https://github.com/arikanatakan/revmng-mcp) | MIT (`main/LICENSE`, «Copyright (c) 2026 Atakan Arikan») | 3 | 2026-06-17 | **El único MCP server de revenue management que existe.** Expone protección de asientos (Littlewood, EMSR-a/b, DP exacto), overbooking, pricing, grupos, length-of-stay y bid prices de red como tools. Declarado en el registro MCP como `io.github.arikanatakan/revmng-mcp`. |
+| skills — `algo-price-dynamic` | [asgard-ai-platform/skills](https://github.com/asgard-ai-platform/skills) | MIT (`main/LICENSE`, «Copyright (c) 2026 Asgard Inc. (肆佳科技股份有限公司)») | 249 | 2026-06-06 | Skill de precio dinámico con referencia de revenue management incluida (`algo-price-dynamic/references/revenue-management.md`, HTTP 200 verificado). Dispara ante «surge pricing», «real-time pricing», «demand-based price adjustment». Origen APAC (Taiwán). |
+| travel-agent-skills | [mtnrabi/travel-agent-skills](https://github.com/mtnrabi/travel-agent-skills) | MIT (`main/LICENSE`) | 4 | 2026-10-23 | Ocho skills de precio en vivo de vuelo y hotel, **incluida monitorización de paridad tarifaria**. Cada tarifa trae el veredicto `low \| typical \| high` de Google y un link reservable. **Ver la trampa de llave abajo.** |
+
+**Son tres filas porque encontré tres.** No hay una cuarta que sea de viajes, tenga licencia
+permisiva verificable y esté viva. Las búsquedas que lo confirman están escritas más abajo.
+
+### La razón de existir de `revmng-mcp`, dicha por su propio autor
+
+El README no vende el servidor como una integración más; explica un modo de falla concreto del
+agente, y conviene citarlo porque es el argumento de diseño de todo este plano:
+
+> «Agents asked to set a booking limit or evaluate a group tend to do the arithmetic themselves,
+> and the standard methods are easy to get subtly wrong: a protection level computed from the wrong
+> tail, a group accepted without costing the demand it displaces, EMSR confused with the optimum.»
+
+La conclusión que saca es la regla: **el cálculo va en una biblioteca determinista, versionada y
+validada que el agente llama; al agente le queda elegir el análisis y explicar el resultado.** Es
+la misma separación que esta KB ya adoptó para emisiones (no estimar, llamar) y para equipaje (no
+afirmar posición, devolver el registro y su hora).
+
+### ⚠️ Trampas medidas en este plano
+
+**1. `travel-agent-skills` es MIT sobre una red medida y ajena.** El código es MIT y está vivo,
+pero las ocho skills son cliente de FlightPowers vía RapidAPI: **10 búsquedas por día gratis sin
+llave**, después llave propia, después USD 10/mes por 2.500 búsquedas de vuelo o 2.000 de hotel. Es
+exactamente el patrón de la tendencia 15 de este KB —la licencia del código deja de alcanzar cuando
+el repo es cliente de una red— y acá además la monitorización de paridad tarifaria, que en China es
+*conducta sancionable* (ver mapa de mercado, APAC), queda del lado de un tercero.
+
+**2. `revmng-mcp` tiene 3 estrellas y un solo día de pushes.** Creado el 2026-06-16, último push el
+2026-06-17. Está en PyPI, tiene CI y está validado contra ejemplos publicados, pero **no tiene
+historia de mantenimiento**: cinco meses sin un commit. Se usa fijando versión, no siguiendo `main`.
+
+**3. El *skill* de Asgard es bueno y no es de viajes.** Su «IRON LAW» exige tres flujos de datos en
+tiempo real —señal de demanda, inventario, precio de competencia— y da frecuencias por industria
+(minutos en ride-sharing, horas en hotel, diario en retail). Sirve como marco; no trae ni una pieza
+de distribución aérea ni hotelera. Y advierte explícitamente cuándo **no** usar precio dinámico:
+decisiones de precio de una sola vez, y **mercados regulados**.
+
+### Lo que este plano exige y ningún agente open source hace
+
+Ninguna de las tres filas de arriba **divulga** nada. Calculan el precio; no emiten el artefacto que
+Nueva York, la CRD europea, las reglas de plataforma de China o los proyectos brasileños piden. La
+búsqueda que lo mide está abajo y devuelve cero. **El agente de este plano puede calcular y no puede
+explicar**, y esa es la frase que resume el plano entero.
+
+### Las búsquedas de este plano que devolvieron cero o casi, escritas
+
+| Consulta (`search/repositories`) | `total_count` | Lectura |
+| --- | --- | --- |
+| `price explanation transparency algorithm` | **0** | No existe la categoría. Cero, no «pocos». |
+| `algorithmic pricing disclosure` | **1** | Y el único resultado (`Rastaman4e/-1`, 83★, último push 2021-04-16, sin licencia) no es del tema. |
+| `personalized pricing audit` | **1** | `mizcausevic-dev/retail-decision-record-audit-str` — MIT, 0★, 2026-08-05. **Es de retail**, el vertical de al lado, no de viajes. |
+| `price discrimination detection` | **2** | Ambos irrelevantes (uno de 2013, uno sin licencia). |
+| `revenue management mcp server` | **7** | De los siete, **uno** es del tema: `revmng-mcp`. Los demás son AdMob, CRM y gestión de desastres. |
+
+Una búsqueda que devuelve cero es evidencia sobre el índice, no sobre el mundo — la corrección que
+ordenó el noveno plano vale igual acá, y por eso el plano se cierra clonando y leyendo, no sólo
+buscando. La diferencia con equipaje es que en equipaje la implementación **estaba** escondida
+(72.163 líneas de Go en `adamf/jetway`); acá, tras leer `revmng`, `revmng-mcp` y el skill de Asgard
+archivo por archivo, **la divulgación sigue sin aparecer en ninguno de los tres**.
+
+### La quinta colisión de palabra de industria, y la primera que pierde contra otro vertical de este KB
+
+Las cuatro anteriores fueron `trip`, `gate`, `review` y `baggage` (esa última contra la spec del
+W3C). La quinta es **`dynamic pricing`, y la gana energía**:
+
+| Repo | Stars | Último push | Licencia | De qué es realmente |
+| --- | --- | --- | --- | --- |
+| [martinarva/dynamic_energy_cost](https://github.com/martinarva/dynamic_energy_cost) | 207 | 2026-11-21 | MIT | Costo de **electricidad** en Home Assistant |
+| [corneel27/day-ahead](https://github.com/corneel27/day-ahead) | 188 | 2026-11-22 | Apache-2.0 | Optimización contra el mercado eléctrico **day-ahead** |
+| [tule2236/Airbnb-Dynamic-Pricing-Optimization](https://github.com/tule2236/Airbnb-Dynamic-Pricing-Optimization) | 243 | **2018-11-14** | **SIN LICENCIA** | Sí es de viajes, y está muerto hace 8 años |
+
+`dynamic pricing stars:>=50` devuelve **21 repos en todo GitHub**, y los dos únicos con tracción y
+mantenimiento real son de tarifas eléctricas. Peor: `pricing mcp server` devuelve **1.619 repos**, y
+la cabeza es costo de nube (`aws-samples`, Azure) y finanzas. **En su propio vocabulario, el precio
+de viajes es un error de redondeo**, y el repo de viajes más estrellado del plano no tiene licencia.
+
+### Regla de diseño de este plano
+
+El motor de precio y el motor de divulgación son **dos piezas, no una**. La primera existe, es MIT y
+es buena (`revmng`); la segunda no existe en ningún lado y hay que escribirla. Y la decisión de
+arquitectura que las une es anterior a las dos: **si el precio se calcula desde capacidad, demanda y
+tarifa —y no desde la persona— el disparador de Nueva York no se activa.** No es un truco legal: es
+elegir qué entradas tiene el modelo, y es la única respuesta *estructural* en lugar de documental
+que este plano permite. Recetas 28, 29 y 30.
