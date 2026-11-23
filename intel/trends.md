@@ -399,6 +399,98 @@ OpenTravel publica especificaciones fuera de GitHub y su trabajo de comités no 
 Lo medido es **el estado de su código público y de sus licencias**, que es lo que determina si
 podemos construir encima — no la salud del organismo.
 
+## 22. El piso open source sabe **informar** sobre un tren y no sabe **venderlo**
+
+Medido el 2026-11-23. Es la tendencia estructural del plano terrestre y la más transferible a
+otras industrias de la red.
+
+Un itinerario tiene dos mitades y el open source solo cubre una:
+
+| Capacidad | ¿Existe en open source? | Evidencia |
+|-----------|-------------------------|-----------|
+| Horario, andén, trayecto, retraso | **Sí, y sobra** | `hafas-client` ISC 372★, `public-transport-enabler` GPL-3.0 456★, `OpendataCH/Transport` MIT 269★, `navitia` AGPL-3.0 456★, 8 servidores MCP |
+| Precio **mostrado** | Parcial | los mismos clientes lo exponen cuando el operador lo publica |
+| **Oferta** (qué puedo venderte, bajo qué condición) | **No** | `osdm client implementation` → **0** |
+| **Tarificación** | **No** | `fare engine open source` → **0** |
+| **Reserva de plaza** | **No** | `train booking api stars:>=20` → **0** |
+| **Emisión** | **No** | `ticket vending machine open source` → **0** |
+| **Derechos y reembolso** | **No** | `passenger rights compensation rail` → **0** |
+
+Es la misma frontera que el KB de retail encontró en fulfilment —*"el piso open source cubre la
+matemática y se detiene en el comercio"*— pero un paso antes: aquí se detiene en **la
+información**. La explicación es la misma y vale generalizarla: **consultar es una operación
+sin contraparte; ofrecer es un compromiso.** Una oferta liga inventario, tarifa, condición de
+reembolso y responsabilidad frente al pasajero. Nadie publica un compromiso bajo licencia MIT.
+
+**Consecuencia para un engagement:** el prototipo que impresiona —"el agente te arma el viaje
+en tren por Europa"— se construye en días con código permisivo. **El 100% del riesgo y del
+presupuesto está del otro lado de la línea**, y la línea es exactamente el momento de decir
+*"esta plaza, a este precio, con esta condición"*. Presupuestar como si el prototipo fuera el
+80% es el error estructural de este plano.
+
+## 23. El estándar abierto llegó, el regulador lo respaldó, y nadie escribió el cliente
+
+**OSDM** (Open Sales and Distribution Model, UIC IRS 90918-10) está en GitHub bajo
+**Apache-2.0**, con 95 estrellas y push del 2026-11-20. Cubre oferta, tarifa, reserva y emisión
+— es decir, **exactamente las cuatro capacidades que la tendencia 22 acaba de registrar como
+inexistentes**. Suecia lo adoptó como estándar nacional de distribución en 2025. La TSI de
+telemática de la UE lo reconoce. Y:
+
+```
+search/repositories  q="osdm client implementation"   →  TOTAL = 0
+```
+
+Lo único que existe es `mainmatter/reStations` (Apache-2.0, 8★): implementa **solo la Places
+API** —el catálogo de estaciones— y no tiene push desde **2025-04-02**.
+
+Esto rompe el supuesto que esta KB venía usando para explicar el vacío del vertical. En
+distribución aérea el argumento era sólido: *no hay NDC open source porque el esquema está
+licenciado por IATA y el acceso es contractual* — **la barrera era legal**. En ferrocarril esa
+explicación no está disponible: **la especificación es Apache-2.0, pública, con concesión de
+patente, respaldada por el regulador y con un calendario de implementación 2027–2028.** No hay
+barrera legal alguna, y aun así no hay código.
+
+Queda una hipótesis, y conviene escribirla como hipótesis: **lo que falta no es permiso sino
+contraparte.** Un cliente OSDM sin un operador que exponga un servidor OSDM no sirve para nada,
+así que nadie lo escribe primero. Es un problema de arranque en dos lados, no de licencia.
+
+**Predicción falsable, para que la próxima pasada la verifique:** si la implementación de la
+TSI 2027–2028 avanza, **aparece al menos un cliente OSDM open source con ≥25 estrellas antes de
+que termine 2027**. Si en esa fecha `osdm client implementation` sigue devolviendo 0, la
+hipótesis del arranque en dos lados es insuficiente y hay que buscar otra causa. *Medir esta
+consulta exacta en cada pasada de travel.*
+
+## 24. La licencia de una especificación se decide por organismo, no por categoría
+
+El KB de retail cerró su ciclo 9 con una regla propuesta para las 12 industrias: *la licencia
+de una especificación es una licencia de documentación y arrastra restricciones que las
+licencias de código no tienen*. La evidencia era buena — beckn bajo **CC BY-NC-SA**
+(no comercial) y ONDC bajo **CC BY-ND** (sin derivados), frente a UCP/ACP/AP2/x402 todas
+Apache-2.0.
+
+**El plano terrestre de travel la contradice dentro de un solo plano**, con los archivos
+leídos:
+
+| Especificación | Organismo | Licencia (archivo leído) | Qué permite |
+|----------------|-----------|--------------------------|-------------|
+| **OSDM** | UIC (ferrocarriles) | **Apache-2.0**, 11374B | Vendorizar el esquema, con concesión de patente |
+| **GBFS** | MobilityData | **CC BY 3.0**, 19467B | Atribuir y derivar; **sin concesión de patente** |
+| **Transitland Atlas** | Interline | **CC BY 4.0**, 18657B | Es un dataset, no código |
+| **awesome-transit** | MobilityData | **CC0-1.0**, 6974B | Dominio público, sin condiciones |
+
+Cuatro artefactos del mismo ecosistema, **cuatro familias de licencia distintas**, y la más
+permisiva de todas es la del estándar comercialmente más sensible. La regla corregida:
+
+> **La licencia de una especificación no se infiere de que sea una especificación. Se lee, una
+> por una, y puede ser de código.** Lo que sí generaliza del hallazgo de retail es la parte
+> operativa: **el repo de la especificación se verifica por separado del repo de la
+> implementación**, porque no hay ninguna razón para que coincidan.
+
+Vale como corrección entre KBs, no como refutación: la observación de retail era correcta
+**sobre los artefactos que midió**. Lo que no sobrevive es la generalización a las 12
+industrias.
+
+
 ---
 *Fuentes: Phocuswright 2026, IATA Global Passenger Survey 2026, Expedia Group APAC 2026,
 Criteo, Visa 2026, Agoda, prensa especializada de travel, textos regulatorios de UE/APAC/LATAM,
@@ -412,5 +504,7 @@ y medición directa sobre la API de GitHub y sobre los archivos de licencia en
 `raw.githubusercontent.com`. Las cifras de proveedor sin informe primario
 localizable están marcadas como tales en `intel/market.md`.
 Los puntos que no pudieron leerse en su fuente primaria por restricción de red del entorno de
-ingesta (`ai-act-service-desk.ec.europa.eu`, `opensky-network.org`, `zenodo.org`) llevan la
+ingesta (`ai-act-service-desk.ec.europa.eu`, `opensky-network.org`, `zenodo.org`, y en esta
+quinta pasada `era.europa.eu` y `transport.ec.europa.eu`, que afectan al Reglamento de
+Ejecución (UE) 2026/253 y a COM(2026) 232 final) llevan la
 advertencia pegada al hallazgo, no en una nota al pie.*

@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-21
+updated: 2026-11-23
 ---
 
 # ✈️ Travel & Hospitality KB
@@ -10,7 +10,7 @@ updated: 2026-11-21
 > Concierge digital, booking agents, itinerarios verificables, servicing de disrupción,
 > revenue management.
 
-## Estado al 2026-11-21
+## Estado al 2026-11-23
 
 Reescritura completa. El contenido anterior databa del 2026-07-02 y tenía filas de ejemplo
 publicadas como datos (celdas de guión con la leyenda de pendiente), repos muertos y colisiones de keyword
@@ -27,13 +27,18 @@ del archivo de licencia**, no del badge.
    proveedores. NDC **no es obligatorio**. La neutralidad de protocolo es la habilidad vendible.
 3. **La licencia es arquitectura.** Los tres repos más grandes del vertical son copyleft
    (TREK AGPL-3.0, QloApps OSL-3.0, Kamra AGPL-3.0); lo permisivo es la infraestructura.
+4. **El tramo terrestre informa pero no vende.** (quinta pasada, 2026-11-23) Consultar un tren
+   europeo está resuelto con código ISC/MIT vivo; **vender uno no tiene una línea de open source
+   en el mundo**. El estándar de venta **OSDM es Apache-2.0** y respaldado por la TSI de
+   telemática de la UE — y `osdm client implementation` devuelve **0 repositorios**.
 
 ## Estructura
 
 ```
 travel-kb/
-├── agents/        # Agentes AI open source (21 verificados) + trampas de licencia
-├── repos/         # Repos fundacionales: ruteo, geocoding, GTFS, GDS + brechas medidas
+├── agents/        # Agentes AI open source verificados + trampas de licencia
+├── repos/         # Fundacionales: ruteo, geocoding, GTFS, GDS, identidad, vuelo,
+│                 #   pago, visibilidad, plano terrestre + brechas medidas
 ├── verticals/     # Plataformas reales customizables con AI (QloApps, Odoo, HAIP, Kamra)
 ├── intel/         # Mercado y tendencias, con oportunidades por región
 └── compose/       # 6 recetas concretas con repos nombrados

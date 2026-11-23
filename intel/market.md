@@ -188,6 +188,36 @@ defendible porque el 41,1% es un error reproducible, no una opinión.
 disponible dice lo contrario (ver `repos/foundations.md`), y un cliente de esta región
 contrasta.
 
+#### Plano terrestre — medido el 2026-11-23
+
+**Evidencia.** North America es la región que **inventó el formato de datos de transporte que
+usa todo el mundo** (GTFS, nacido en Portland con TriMet y Google) y **no tiene un solo
+servidor MCP de transporte terrestre**. De los ocho medidos globalmente, siete son EMEA y uno
+es APAC. Cero aquí.
+
+- El ecosistema de infraestructura sí es norteamericano y es fuerte: `MobilityData` (Montreal)
+  mantiene el validador canónico de GTFS (434★, Apache-2.0) y la Mobility Database (354★,
+  Apache-2.0); `OneBusAway` (Seattle) es la suite de información al pasajero de grado operador
+  (243★, Apache-2.0 por referencia). **La región exporta el estándar de datos y no consume la
+  capa agentic que se podría construir encima.**
+- Ferrocarril interurbano: no hay API oficial de Amtrak. Lo que existe son cuatro proyectos de
+  reingeniería inversa, el mayor con **26 estrellas y sin licencia** (`mgwalker/amtrak-api`,
+  sin push desde 2024-07). Uno de ellos se describe literalmente como *"reverse engineer
+  amtrak API"*. **No hay base contractual limpia para un entregable de cliente.**
+- `interline-io/transitland-lib`, la librería de procesamiento de datos de transporte más usada
+  de la región, es **GPL-3.0 con opción comercial de pago** (ver `repos/foundations.md`). Un
+  cliente que la adopte sin leer el archivo compra una obligación o una factura.
+
+**Oportunidad:** *la capa agentic sobre el estándar que la región ya mantiene*. El trabajo
+construible aquí no es un cliente ferroviario —no hay con qué— sino **un servidor MCP sobre
+GTFS + GTFS-Realtime alimentado por la Mobility Database**, que es Apache-2.0 de punta a punta
+y no toca un endpoint no autorizado. **Es el único camino del plano terrestre que es a la vez
+permisivo, vivo y contractualmente limpio**, y hoy no lo ocupa nadie en esta región.
+
+⚠️ **Lo que no hay que prometer en NA:** reserva o emisión de tren o bus. No existe open source
+que lo haga en ninguna región del mundo, y aquí ni siquiera hay API oficial de la que colgarse.
+
+
 ### EMEA
 
 **Evidencia.** *[sin verificar]* 38% de adopción de AI en travel en Europa Occidental y 42% en
@@ -364,6 +394,54 @@ entregable sirve dos veces: el JSON-LD que te hace citable y el registro fechado
 etiquetado/divulgación que te hace auditable. **Vender las dos juntas, no la segunda como
 costo.**
 
+#### Plano terrestre — medido el 2026-11-23, y es la región del plano
+
+**Evidencia — la más densa y la mejor fechada de las cuatro.** EMEA concentra **siete de los
+ocho servidores MCP de transporte terrestre del mundo**, el estándar de venta, el cuerpo
+normativo y el calendario regulatorio.
+
+- **El estándar de venta existe, es abierto y es permisivo.** OSDM (*Open Sales and
+  Distribution Model*, UIC IRS 90918-10) está publicado en GitHub bajo **Apache-2.0** (95★,
+  push 2026-11-20). Cubre oferta, tarifa, reserva de plaza y emisión, para ferrocarril y
+  multimodal. Suecia lo adoptó como estándar nacional de distribución en abril de 2025.
+- **El regulador lo respaldó con fecha.** La Comisión adoptó la **TSI de telemática** el
+  2026-02-06 como **Reglamento de Ejecución (UE) 2026/253**, en vigor desde el **2026-03-02**:
+  obliga a publicar **gratuitamente** los datos de planificación de viaje, información al
+  pasajero y *ticketing* a través de los **puntos de acceso nacionales (NAP)**, con
+  implementación esperada **2027–2028**. *[fuente: ERA y DG MOVE vía búsqueda — los dominios
+  `era.europa.eu` y `transport.ec.europa.eu` **no resuelven DNS desde este entorno de ingesta**,
+  así que el número de reglamento y las fechas están tomados de resúmenes de esas páginas y no
+  del texto oficial. **Verificar contra el DOUE antes de citarlo a un cliente.**]*
+- **Y hay un paquete legislativo encima, del 2026-05-13.** La Comisión publicó
+  **COM(2026) 232 final** sobre *rail ticketing*, anunciado en noviembre de 2025 como tres
+  instrumentos: un **Reglamento MDMS** (servicios digitales multimodales), un **Reglamento de
+  Reserva y Billete Único Digital**, y una **revisión focalizada del Reglamento de Derechos
+  del Pasajero ferroviario**. Incluye obligaciones para los *"indispensable railway online
+  ticketing service providers"* de **alojar ofertas ferroviarias de terceros**, y se declara
+  complementario de la DSA. *[mismo límite de verificación; **estado legislativo posterior al
+  2026-05-13 no comprobado en esta pasada**.]*
+- **La capa de acceso es permisiva y está viva**: `hafas-client` (ISC, 372★),
+  `db-vendo-client` (ISC, 209★), `OpendataCH/Transport` (MIT, 269★, push 2026-11-22). **Pero
+  hablan con endpoints no documentados de los operadores** — el permiso para llamarlos en
+  producción no viene con el repo (ver `repos/foundations.md`).
+- **La capa de estándar europeo trae una licencia nueva y exigente.** Los convertidores
+  NeTEx/SIRI de **Entur** (operador estatal noruego, push **hoy**) son **EUPL-1.2**, cuyo
+  gatillo incluye *"providing access to its essential functionalities"* — **más amplio que la
+  AGPL**. Se usan como proceso batch fuera del producto, nunca enlazados dentro del servicio.
+
+**Oportunidad — y es la más concreta que esta KB ha podido colocar en EMEA:** *el cliente OSDM
+que no existe*. El estándar es Apache-2.0 y vendorizable; la consulta `osdm client
+implementation` devuelve **0 repositorios**; lo único que lo toca cubre solo estaciones y está
+dormido desde abril de 2025. **Hay un estándar respaldado por el regulador, con fecha de
+implementación 2027–2028, y nadie publicó la pieza de software que lo consume.** Para un
+operador o una agencia europea eso es una ventana de dos años con el riesgo técnico ya
+resuelto por el UIC.
+
+⚠️ **Lo que no hay que prometer en EMEA:** una integración OSDM "lista". No hay código del cual
+partir; hay una especificación excelente. El presupuesto es de implementación, no de
+integración — y la diferencia entre esas dos palabras es todo el proyecto.
+
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -486,6 +564,41 @@ ley y que además escribe la herramienta.**
 de APAC necesita no es "generar descripciones": es **generar, etiquetar explícita e
 implícitamente, y dejar registro**. Construirlo sobre GEOInflow/GEORank aprovecha herramienta
 permisiva de la propia región.
+
+#### Plano terrestre — medido el 2026-11-23
+
+**Evidencia — la región con más pasajeros de tren del planeta y el piso de código más pobre.**
+
+- **India:** `irctc api stars:>=20` devuelve **0**. No hay API pública oficial de IRCTC; lo que
+  existe son *scrapers* comerciales de terceros que se promocionan explícitamente por saltear
+  la cola de aprobación de IRCTC. El único MCP ferroviario de la región,
+  `amith-vp/indian-railway-mcp` (28★), **no tiene ningún archivo de licencia** —declara MIT en
+  `package.json`, que no es una concesión— y lleva **19 meses sin push**.
+- **Japón:** `odpt tokyo transport open data` devuelve **0** repositorios con ese nombre. El
+  perfil nacional GTFS-JP sí tiene actividad reciente pero minúscula: cuatro repos, **todos con
+  0 estrellas**, el más reciente con push el 2026-11-23. Un repo del grupo mide justamente
+  *"how often Japan's open GTFS bus timetables lapse"* — es decir, el problema medible de la
+  región es la **caducidad de los feeds**, no su ausencia. Fuentes secundarias señalan además
+  que el dataset oficial de JR East **excluye el Shinkansen**, y que el MCP comunitario japonés
+  advierte en su propio README que su licencia MIT **no relicencia el dato del operador**.
+  *[no verificado contra los portales de ODPT ni de JR East: no se consultaron en esta pasada.]*
+- **Taiwán:** el repo mejor licenciado del plano terrestre de APAC es `SeanChangX/THSR-Sniper`
+  (Apache-2.0 real, 38★) y **resuelve el captcha del operador por OCR**. Licencia impecable,
+  comportamiento inadmisible en un entregable.
+- **China y Corea: no examinados en esta pasada.** Se dice en vez de omitirse — 12306 y los
+  agregadores locales son el mayor volumen ferroviario del mundo y esta medición no los tocó.
+
+**Oportunidad:** *higiene y vigencia del feed antes que agente*. En Japón el trabajo con
+demanda demostrada no es conversacional: es **monitoreo de caducidad y calidad de feeds
+GTFS-JP**, construible sobre `MobilityData/gtfs-validator` (Apache-2.0, 434★) y la Mobility
+Database (Apache-2.0, 354★). En India la oportunidad es **anterior al software**: no hay dato
+oficial al que conectarse, así que el trabajo vendible es el acuerdo de acceso, y recién
+después el agente.
+
+⚠️ **Lo que no hay que prometer en APAC:** nada construido sobre `indian-railway-mcp` (sin
+licencia) ni sobre THSR-Sniper (elude un control de acceso). Son los dos repos que un buscador
+pone primero y los dos que no se pueden entregar.
+
 
 ### LATAM
 
@@ -631,6 +744,50 @@ partida: un número que sube.**
 ⚠️ **Brecha declarada:** no se encontró ninguna herramienta de visibilidad AI en español o
 portugués, ni ningún repo del plano con autor LATAM. Las cinco piezas utilizables son de EE.UU.
 y China. **El trabajo de localización es nuestro, y hay que presupuestarlo.**
+
+#### Plano terrestre — medido el 2026-11-23, y aquí la región pierde su racha
+
+**Evidencia — y esta vez la conclusión va en contra de la narrativa que esta red de KBs viene
+registrando.** En las últimas pasadas LATAM **superó** su propia narrativa repetidamente (el KB
+de retail documentó que el paso de transportista que mide cero en el mundo está resuelto para
+seis países latinoamericanos en un solo repo MIT). **En el plano terrestre de travel no ocurre:
+LATAM es el peor medido de las cuatro regiones, y el modo afectado es justamente el dominante.**
+
+- El autobús interurbano es el medio de transporte intermunicipal principal de la región. Las
+  consultas: `onibus passagem` → 53 repos, **los seis primeros con 0–2 estrellas y ninguno con
+  licencia**, trabajos de materia; `rodoviaria passagem api` → **1 repo**, 0★, sin licencia,
+  2024; `autobus boleto api` → **1 repo**, 0★, sin licencia, 2023; `gtfs latam brasil` → **0**.
+- **La brecha no es solo regional: es global.** `bus ticketing system stars:>=100` devuelve
+  **0 repositorios en todo el mundo**. Lo que distingue a LATAM no es que le falte código que
+  otros tienen — **es que acá le falta al modo que mueve a la mayor parte de la población.**
+  En EMEA el hueco de venta cae sobre el tren, que tiene al menos un estándar abierto que lo
+  espera; acá cae sobre el bus, que **no tiene ni estándar ni código**.
+- Cero servidores MCP de transporte terrestre con autor o cobertura LATAM, de ocho medidos.
+- **Lo que sí hay es regulación, y es favorable.** En Brasil, la ANTT ya admite que los
+  billetes y tarjetas de embarque se emitan y almacenen **exclusivamente en formato
+  electrónico**, y la venta por sistema electrónico no presencial (internet, televenta) está
+  permitida con carácter **facultativo** — no obligatorio. Hay una resolución de 2026
+  (**Resolución ANTT nº 6.087, del 2026-08-14**) que modifica las condiciones generales de
+  venta. *[fuentes: portal `anttlegis` vía búsqueda; **no se leyó el texto completo de la
+  6.087/2026 en esta pasada** y su contenido sustantivo queda sin verificar. Verificar en el
+  DOU antes de citarla.]* Un fallo del TRF1 de enero de 2026 habría prohibido a las empresas
+  de fletamento vender pasajes individuales por aplicación sin autorización de la ANTT
+  *[solo titular y resumen vistos]*.
+
+**Oportunidad:** *el hueco más grande y más limpio del plano, y el que mejor encaja con la
+posición de Globant en la región*. Hay **permiso regulatorio para el billete 100% electrónico**,
+**demanda demostrada** (el crecimiento de venta digital de pasajes de ómnibus aparece en la
+prensa sectorial de varios estados brasileños) y **cero software libre que ocupe el espacio**,
+en ningún idioma. A diferencia de EMEA, acá no hay estándar que implementar: hay que **definir
+el modelo de oferta** —y GTFS-Fares v2 es el único punto de partida abierto que existe, aunque
+su validador (`TransitApp/gtfs-fares-v2-validator`, MIT) esté **archivado**.
+
+⚠️ **Brecha declarada sin maquillaje:** no se encontró **ningún** repositorio de transporte
+terrestre con autor LATAM, licencia válida y tracción mínima. En las últimas pasadas esta KB
+pudo escribir lo contrario para otros planos. **Acá no, y registrarlo así es el punto:** la
+narrativa "LATAM está más adelante de lo que se cree" es verdadera por plano, no en general, y
+el plano terrestre es donde no se sostiene.
+
 
 ## Posicionamiento Globant
 

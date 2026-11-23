@@ -569,6 +569,106 @@ de un cliente** con una semana de vida y cero adopción.
 citable; **no te conecta a ninguna OTA.** El channel manager open source permisivo sigue sin
 existir (ver `verticals/solutions.md`).
 
+## Receta 15 — Capa de consulta terrestre con corte explícito en la oferta (la receta de EMEA)
+
+**Problema del cliente:** operador ferroviario, agencia o DMO europeo que quiere que un agente
+responda *"¿cómo llego de Zúrich a Milán el jueves y qué me cuesta?"* sin montar una integración
+de distribución.
+
+**Por qué existe esta receta y por qué termina donde termina.** La medición del 2026-11-23 dice
+que **consultar un tren europeo es un problema resuelto con código permisivo y vivo**, y que
+**vender uno no tiene una sola línea de open source en el mundo** (`osdm client
+implementation` → 0; `fare engine open source` → 0). Esta receta entrega todo lo que está del
+lado resuelto y **declara el corte**, igual que la Receta 4 lo hace en el pago.
+
+**Piezas, todas con licencia leída del archivo:**
+
+| Pieza | Repo | Licencia | Rol |
+|-------|------|----------|-----|
+| Acceso multi-operador | [public-transport/hafas-client](https://github.com/public-transport/hafas-client) | ISC (727B) | Trayectos, horarios y precio mostrado en decenas de redes europeas |
+| Acceso DB actual | [public-transport/db-vendo-client](https://github.com/public-transport/db-vendo-client) | ISC (777B) | Sucesor de `db-hafas` tras la migración de Deutsche Bahn |
+| Acceso suizo | [OpendataCH/Transport](https://github.com/OpendataCH/Transport) | MIT (1060B) | API limpia, sin el problema de endpoint (abajo) |
+| Vocabulario de estándar | [malkreide/swiss-transport-mcp](https://github.com/malkreide/swiss-transport-mcp) | MIT (1069B) | Referencia de cómo exponer **OJP** por MCP, no una API propietaria |
+| Normalización de feeds | [MobilityData/gtfs-validator](https://github.com/MobilityData/gtfs-validator) | Apache-2.0 | Higiene del GTFS antes de que el modelo lo lea |
+| Catálogo de fuentes | [MobilityData/mobility-database-catalogs](https://github.com/MobilityData/mobility-database-catalogs) | Apache-2.0 | Dónde está el feed de cada operador |
+| Conversión NeTEx/SIRI | [entur/netex-gtfs-converter-java](https://github.com/entur/netex-gtfs-converter-java) | **EUPL-1.2** | **Batch fuera del producto** — ver abajo |
+
+**Cómo se cablea:**
+
+1. `mobility-database-catalogs` resuelve qué feed GTFS corresponde a cada operador del alcance.
+2. `gtfs-validator` corre en CI sobre cada feed: un feed inválido se rechaza **antes** de llegar
+   al agente, no después.
+3. Donde el operador publica NeTEx (norma europea) y no GTFS, el convertidor de Entur corre
+   como **job batch en un contenedor propio**: entra NeTEx, sale GTFS, el producto consume solo
+   el GTFS resultante. **El producto nunca enlaza el convertidor.**
+4. Las herramientas del agente son dos y solo dos: `buscar_trayecto(origen, destino, cuando)` y
+   `estado_trayecto(id)`, servidas por `hafas-client`/`db-vendo-client`/`Transport` según red.
+5. La respuesta termina con **un enlace de reserva al canal oficial del operador**, y el agente
+   lo dice con todas las letras: *no puedo reservar ni emitir*.
+
+**⚠️ Las dos condiciones que hay que poner por escrito en la propuesta:**
+
+- **EUPL-1.2 tiene gatillo de red más amplio que AGPL.** Su definición de *Communication*
+  incluye *"providing access to its essential functionalities"*. Si el convertidor de Entur
+  queda dentro del servicio que se le expone al cliente final, **dispara reciprocidad sobre ese
+  servicio**. Por eso el paso 3 es batch y aislado, y por eso está escrito como paso y no como
+  detalle de implementación.
+- **Los clientes HAFAS hablan con endpoints no documentados de los operadores.** El código es
+  ISC; **el permiso de llamada en producción no viene con el código**. Para un piloto es
+  aceptable y hay que decirlo; para producción se necesita contrato con el operador o con un
+  agregador licenciado. **`OpendataCH/Transport` es la única pieza de la tabla que no tiene este
+  problema**, y por eso Suiza es el mejor primer alcance.
+
+**Lo que se vende:** la mitad resuelta, entregada rápido y limpia, **con el límite declarado el
+día uno**. Un cliente que descubre el corte en la demo de aceptación cancela; uno que lo ve en
+la propuesta compra la fase dos.
+
+## Receta 16 — Agente de transporte terrestre contractualmente limpio (la receta de North America)
+
+**Problema del cliente:** DMO, ciudad, universidad, cadena hotelera o parque temático de EE.UU.
+o Canadá que quiere un asistente que responda sobre cómo moverse, **sin reingeniería inversa de
+ninguna API y sin una licencia que lo obligue a abrir su producto.**
+
+**Por qué esta receta es distinta de la 15.** North America **no tiene ningún MCP de transporte
+terrestre** (0 de 8 medidos) y **no tiene API oficial de Amtrak** —lo que hay son cuatro
+proyectos de reingeniería inversa, el mayor con 26 estrellas, sin licencia y sin push desde
+2024. Pero la región **mantiene el estándar de datos que usa todo el mundo**. La jugada es
+construir sobre lo que la región sí tiene, en vez de imitar la receta europea.
+
+**Piezas, todas Apache-2.0 o MIT, todas sobre feeds publicados para ser consumidos:**
+
+| Pieza | Repo | Licencia | Rol |
+|-------|------|----------|-----|
+| Catálogo de feeds | [MobilityData/mobility-database-catalogs](https://github.com/MobilityData/mobility-database-catalogs) | Apache-2.0 (11357B) | Resuelve el feed de cada agencia |
+| Validación | [MobilityData/gtfs-validator](https://github.com/MobilityData/gtfs-validator) | Apache-2.0 (11327B) | Puerta de calidad en CI |
+| Tiempo real | [MobilityData/gtfs-realtime-bindings](https://github.com/MobilityData/gtfs-realtime-bindings) | Apache-2.0 | Llegadas y alertas en vivo |
+| Transformación GTFS | [OneBusAway/onebusaway-gtfs-modules](https://github.com/OneBusAway/onebusaway-gtfs-modules) | Apache-2.0 por referencia | Lectura/escritura/transformación en Java |
+| Consulta | [BlinkTagInc/node-gtfs](https://github.com/BlinkTagInc/node-gtfs) | MIT | GTFS a SQLite/Postgres consultable |
+| Ruteo | [valhalla/valhalla](https://github.com/valhalla/valhalla) o [graphhopper/graphhopper](https://github.com/graphhopper/graphhopper) | MIT / Apache-2.0 | Isócronas y matrices para el último kilómetro |
+| Geocoding | [komoot/photon](https://github.com/komoot/photon) | Apache-2.0 | Resolver texto libre a lugar |
+
+**Cómo se cablea:** el catálogo resuelve los feeds del área → el validador los aprueba en CI →
+`node-gtfs` los deja consultables → el servidor MCP expone tres herramientas
+(`proximas_salidas`, `como_llego`, `alertas_servicio`) → `photon` resuelve los nombres de lugar
+que el usuario escribe → `valhalla` cubre el tramo a pie o en bici hasta la parada.
+
+**Las tres piezas que NO entran, y por qué, porque esto es el valor de la receta:**
+
+- **`interline-io/transitland-lib`** — se ve como la librería obvia del ecosistema y es
+  **GPL-3.0 con opción comercial de pago** (GitHub la muestra como `NOASSERTION`). Entra solo si
+  el cliente compra la licencia comercial o acepta GPL. `onebusaway-gtfs-modules` cubre lo mismo
+  bajo Apache-2.0.
+- **Cualquier cliente de Amtrak.** Los cuatro que existen son reingeniería inversa, el principal
+  sin licencia. **El tren interurbano queda fuera del alcance y se dice en la propuesta.**
+- **`osm-search/Nominatim`** (GPL-3.0) — `photon` hace el trabajo bajo Apache-2.0.
+
+**Lo que se vende, y es defendible frente a un área legal:** un asistente de movilidad
+**cuyo árbol de dependencias completo es Apache-2.0/MIT y cuyos datos vienen de feeds publicados
+para ser consumidos, con licencia de dato explícita**. En un plano donde la mitad de los repos
+visibles no tiene licencia, donde el mejor licenciado de APAC rompe un captcha y donde los
+clientes europeos llaman a endpoints no autorizados, **"contractualmente limpio" no es una
+obviedad: es el entregable.**
+
 ## Lo que NO conviene prometer
 
 | Pedido frecuente | Por qué no, hoy | Qué ofrecer en cambio |
@@ -589,6 +689,14 @@ existir (ver `verticals/solutions.md`).
 | "El AI Act nos obliga a tratar el check-in biométrico como alto riesgo" | El Anexo III punto 7 **excluye la verificación de documentos de viaje** de su literal (d): la verificación **1:1** contra el chip del propio pasaporte queda fuera; el matching **1:N** contra listas queda dentro | Separar los dos productos y presupuestarlos distinto — y confirmar el texto en EUR-Lex, que esta KB no pudo leer por restricción de red |
 | "Las obligaciones de alto riesgo del AI Act se aplazaron, hay tiempo" | El Reglamento (UE) 2026/1744 difiere el Anexo III autónomo al **2026-12-02**, pero el **Artículo 50 (transparencia) sigue aplicando desde el 2026-08-02** | Decirlo entero: es una prórroga parcial, no una derogación. Avisar que se habla con una AI y etiquetar lo generado ya es obligatorio |
 | "Predecimos el retraso con un modelo open source" | `flight delay prediction stars:>=50` devuelve **un** resultado y es un tutorial de AWS que usa retrasos como dataset de ejemplo. **No hay modelos reutilizables** | Vender el motor de derechos (Receta 10), que opera sobre el hecho ya ocurrido y tiene regla citable, en vez de una predicción sin base abierta |
+| "Integramos OSDM, el estándar ferroviario europeo, partiendo de una implementación existente" | `osdm client implementation` devuelve **0** repos. Lo único que toca OSDM (`mainmatter/reStations`, 8★) cubre **solo estaciones** y está dormido desde 2025-04 | Vender **implementación** del estándar Apache-2.0, no integración. Son dos presupuestos distintos |
+| "El agente reserva el tren / el bus" | No existe open source de oferta, tarificación, reserva de plaza ni emisión **en ninguna región del mundo** (cuatro consultas, las cuatro en 0) | Receta 15: entregar la consulta y cortar en la oferta, con enlace al canal oficial del operador |
+| "Partimos de los convertidores NeTEx de Entur dentro del producto" | Son **EUPL-1.2**, cuyo gatillo incluye *"providing access to its essential functionalities"* — **más amplio que AGPL** | Correrlos como job batch aislado: entra NeTEx, sale GTFS, el producto consume GTFS |
+| "Usamos hafas-client en producción, es ISC" | La licencia del **código** es ISC y es limpia; el cliente habla con **endpoints no documentados del operador** y ese permiso no viene con el repo | Piloto declarado sí; producción con contrato de operador o agregador. `OpendataCH/Transport` (MIT) es la pieza sin este problema |
+| "Usamos transitland-lib, es la librería estándar del ecosistema" | Es **GPL-3.0 con opción comercial de pago**; GitHub la muestra como `NOASSERTION` | `OneBusAway/onebusaway-gtfs-modules` (Apache-2.0) cubre lo mismo |
+| "Este MCP ferroviario es MIT, lo dice su package.json" | `indian-railway-mcp` y `mcp-national-rail` declaran MIT en el manifiesto y **no tienen ningún archivo de licencia** (12 variantes probadas); GitHub reporta `NONE` | Un campo de manifiesto no concede nada. Pedir al autor que agregue el archivo, o no usarlo |
+| "Arrancamos el tramo terrestre de APAC con el repo mejor licenciado que encontramos" | `SeanChangX/THSR-Sniper` es Apache-2.0 real **y resuelve el captcha del operador por OCR** | Ningún entregable. La licencia del código no dice nada sobre si la conducta del software es admisible |
+| "Hay un ecosistema de agentes de transporte terrestre del que partir" | Ocho MCP en todo el mundo, techo **64 estrellas**, cuatro sin licencia, **siete de ocho en EMEA**, cero en NA y LATAM | Construir, no adoptar. Recetas 15 y 16 |
 
 ---
 *Toda licencia citada fue verificada leyendo el archivo de licencia del repo, no el badge de

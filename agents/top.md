@@ -174,6 +174,93 @@ información; no escribirlo se parece demasiado a cobertura.**
 La asimetría está en las dos últimas filas: **14 repos horizontales con más de 100 estrellas;
 cero repos de travel con más de cero.**
 
+## Tierra — el tramo que el agente puede consultar y no puede vender
+
+Medido el 2026-11-23 (quinta pasada). Licencias **leídas del archivo**, existencia por
+`git ls-remote`, estrellas y `pushed_at` por `search/repositories`.
+
+Esta KB venía afirmando en dos archivos que el ferrocarril era un "hueco abierto" con un solo
+MCP dormido. **Medido, resultó ser media verdad:** hay siete servidores MCP de transporte
+terrestre vivos, y la mitad no tiene licencia. Lo que no existe es la venta.
+
+### Servidores MCP de transporte terrestre, todos los encontrados
+
+| Agente | Repo | Licencia (archivo) | Stars | Último push | Qué hace | Región |
+|--------|------|--------------------|-------|-------------|----------|--------|
+| ns-mcp-server | [r-huijts/ns-mcp-server](https://github.com/r-huijts/ns-mcp-server) | MIT (`LICENSE`, 1065B) | 64 | 2025-08-26 | Ferrocarril holandés (NS): viajes, precios, interrupciones. **Dormido ~15 meses.** | EMEA |
+| indian-railway-mcp | [amith-vp/indian-railway-mcp](https://github.com/amith-vp/indian-railway-mcp) | **NINGUNA** — ver trampas | 28 | 2025-04-30 | Trenes de India: búsqueda, disponibilidad de plazas, estado en vivo. **El único MCP ferroviario de APAC-India.** | APAC |
+| mcp-sncf | [Kryzo/mcp-sncf](https://github.com/Kryzo/mcp-sncf) | **NINGUNA** (12 variantes de nombre probadas) | 21 | 2025-03-20 | Wrapper de la API SNCF (Francia). **Dormido ~20 meses.** | EMEA |
+| mcp-server-public-transport | [mirodn/mcp-server-public-transport](https://github.com/mirodn/mcp-server-public-transport) | MIT (`LICENSE`, 1061B) | 9 | 2026-11-21 | Salidas y planificación de viaje en tiempo real. **El más vivo del grupo: push de anteayer.** | EMEA |
+| mcp-madrid-public-transport | [dieguezz/mcp-madrid-public-transport](https://github.com/dieguezz/mcp-madrid-public-transport) | **NINGUNA** | 9 | 2025-11-10 | ETAs en tiempo real del transporte de Madrid. | EMEA |
+| swiss-transport-mcp | [malkreide/swiss-transport-mcp](https://github.com/malkreide/swiss-transport-mcp) | MIT (`LICENSE`, 1069B) | 7 | 2026-11-01 | Planificador suizo vía **OJP (Open Journey Planner)** y tiempo real. | EMEA |
+| mcp-national-rail | [lucygoodchild/mcp-national-rail](https://github.com/lucygoodchild/mcp-national-rail) | **NINGUNA** (declara MIT en `package.json`) | 7 | 2026-09-11 | Horarios de National Rail (Reino Unido). | EMEA |
+| berlin-transport-mcp | [harshil1712/berlin-transport-mcp](https://github.com/harshil1712/berlin-transport-mcp) | **NINGUNA** | 6 | 2026-07-27 | Transporte público de Berlín. | EMEA |
+
+**Lo que la tabla dice y conviene decir en voz alta:** son ocho repos, **ninguno pasa de 64
+estrellas**, cuatro no tienen licencia, dos están dormidos más de un año, y **siete de ocho son
+EMEA**. No hay un solo MCP de transporte terrestre de North America ni de LATAM. El único de
+APAC no tiene licencia. *Esto no es un ecosistema: es un conjunto de proyectos personales sobre
+la misma región.*
+
+### Agentes ferroviarios que no son MCP
+
+| Agente | Repo | Licencia (archivo) | Stars | Último push | Qué hace |
+|--------|------|--------------------|-------|-------------|----------|
+| RailGPT | [EasonWheng/RailGPT](https://github.com/EasonWheng/RailGPT) | MIT (`LICENSE`, 1115B) | 5 | 2026-08-17 | Agente ferroviario con herramientas estructuradas y contexto. Southeast University. Es investigación, no producto. |
+| reStations | [mainmatter/reStations](https://github.com/mainmatter/reStations) | Apache-2.0 (`LICENSE-MIT` + Apache) | 8 | 2025-04-02 | **La única implementación de una API OSDM que existe**: solo Places (estaciones). Dormido ~19 meses. |
+
+### ⚠️ Trampas medidas en este plano
+
+1. **`amith-vp/indian-railway-mcp` y `lucygoodchild/mcp-national-rail` declaran `"license":
+   "MIT"` en `package.json` y no tienen ningún archivo de licencia.** Se probaron 12 variantes
+   de nombre y mayúsculas (`LICENSE`, `license`, `license.md`, `LICENCE`, `COPYING`, `NOTICE`…):
+   ninguna existe. La API de GitHub reporta `NONE` para los dos. **Un campo de manifiesto no es
+   una licencia:** no tiene titular de copyright, no tiene texto de permiso y no tiene renuncia
+   de garantía. Es una *declaración de intención del empaquetador*, y un abogado de cliente la
+   va a leer así. **Esto extiende la ley de licencias de esta KB a una cuarta forma** (después
+   de: un `LICENSE` corto es un puntero; un badge de README no es una licencia; `NOASSERTION`
+   no es un veredicto).
+
+2. **`SeanChangX/THSR-Sniper` (Apache-2.0 real, 38★, 2026-03-07) es el repo mejor licenciado
+   del plano terrestre de APAC y es inutilizable.** Es un bot de reserva automatizada del tren
+   de alta velocidad de Taiwán **con resolución de captcha por OCR**. La licencia del código es
+   impecable; lo que hace el código es **eludir deliberadamente un control de acceso del
+   operador**. No entra en un entregable de cliente bajo ninguna configuración. *Es el ejemplo
+   más limpio que esta KB tiene de que una licencia permisiva no dice nada sobre si el
+   comportamiento del software es admisible.*
+
+3. **`public-transport/hafas-client` estuvo a un paso de quedar registrado acá como "sin
+   licencia", y tiene 372 estrellas.** El archivo se llama `license.md` **en minúscula** y
+   `raw.githubusercontent.com` distingue mayúsculas. Ver la regla completa en
+   `repos/foundations.md`. Se anota del lado de los agentes también porque el error habría
+   sido *nuestro*, no del repo.
+
+4. **`interline-io/transitland-lib` se ve como infraestructura abierta y es GPL-3.0 con opción
+   comercial de pago.** GitHub dice `NOASSERTION`. Ver `repos/foundations.md`.
+
+5. **Los clientes HAFAS hablan con endpoints no públicos de los operadores.** El permiso para
+   llamarlos en producción no viene con el repositorio. Tercer paso de diligencia, en
+   `repos/foundations.md`.
+
+### La colisión de palabra de industria que casi entierra este plano
+
+Buscar agentes de ferrocarril por la palabra obvia **no devuelve ferrocarril**:
+
+| Consulta | Total | Qué devuelve en realidad |
+|----------|-------|---------------------------|
+| `rail mcp server` | 205 | **Los 8 primeros son Ruby on Rails y el PaaS railway.app.** `maquina-app/rails-mcp-server` (574★), `tidewave-ai/tidewave_rails` (476★), `railwayapp/railway-mcp-server` (191★)… **Cero ferrocarriles en la primera página.** |
+| `train mcp server` | 289 | **Entrenamiento de modelos.** `JamsusMaximus/trainingpeaks-mcp` (201★, ciclismo), `hlpun/Train-in-Silence` (104★, calculadora de VRAM para fine-tuning). El primer resultado ferroviario real aparece en la posición 2 por casualidad. |
+
+**Es la cuarta colisión de palabra de industria que la red de KBs registra** (tras `hoppers` =
+Minecraft, `returns` = sentencia de retorno, y `fulfillment` = término de Dialogflow en el KB
+de retail). Y es la peor de las cuatro: *"rail" y "train" son las dos únicas palabras naturales
+para el dominio, y las dos están tomadas por el núcleo de la industria del software.*
+
+**Lo que funciona:** consultar por **el operador o el estándar**, nunca por el modo —
+`hafas`, `osdm`, `netex`, `siri transport`, `gtfs`, `sncf`, `national rail`, `public transport`.
+Las ocho filas de la tabla de MCP de arriba salieron de `mcp public transport` y de nombres de
+operador; **ninguna salió de `rail` ni de `train`**.
+
 ## Re-medición 2026-11-23 — control anti-fabricación
 
 Dos días después del ciclo anterior, las mismas consultas sobre los mismos slugs:
@@ -193,6 +280,23 @@ Dos días después del ciclo anterior, las mismas consultas sobre los mismos slu
 Curvas planas y aburridas. **Eso es exactamente la evidencia buscada:** confirma que las
 cifras del 2026-11-21 se midieron y no se inventaron, al revés de lo que hicieron los ciclos
 de agosto (ver *Corrección del historial* al final). Las cifras de arriba son las vigentes.
+
+**Segundo control, quinta pasada (plano terrestre).** Se re-midió la capa fundacional de ruteo
+y geocoding que `repos/foundations.md` fechó el 2026-11-21, para comprobar que una pasada que
+agrega 30 repos nuevos no está además moviendo los viejos:
+
+| Repo | 2026-11-21 | 2026-11-23 | Δ |
+|------|-----------|-----------|---|
+| graphhopper/graphhopper | 6827 | 6829 | +2 |
+| valhalla/valhalla | 6475 | 6481 | +6 |
+| osm-search/Nominatim | 4573 | 4575 | +2 |
+| komoot/photon | 3203 | 3205 | +2 |
+| opentripplanner/OpenTripPlanner | 2780 | 2781 | +1 |
+| motis-project/motis | 628 | 630 | +2 |
+
+Seis repos, **+15 estrellas en total en dos días**. Un delta aburrido es un resultado
+publicable: es la prueba de que esta pasada midió en lugar de estimar. Las cifras de la derecha
+son las vigentes.
 
 ## ⚠️ Verificar antes de usar — trampas medidas este ciclo
 

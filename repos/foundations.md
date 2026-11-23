@@ -9,7 +9,7 @@ updated: 2026-11-23
 > Bases sobre las cuales construir: ruteo, geocoding, datos de transporte, acceso a GDS e
 > **identidad del viajero**. La capa fundacional de travel **no es AI** — es routing, datos
 > geoespaciales y documento. Los agentes se montan arriba.
-> Filas verificadas el 2026-11-21; la sección de identidad y las brechas nuevas, el 2026-11-23.
+> Filas verificadas el 2026-11-21; identidad, vuelo, pago, visibilidad y **plano terrestre**, el 2026-11-23.
 
 ## Ruteo y planificación multimodal
 
@@ -299,6 +299,168 @@ oferta en Schema.org y tratar a OTA/OTM como formato de integración con GDS her
 capa de descubrimiento.** La alineación con Overture es real y vale seguirla, pero a hoy es un
 anuncio con un año y tres meses, no código.
 
+## Plano terrestre — vender el tramo que no es el vuelo
+
+Agregado el 2026-11-23 (quinta pasada). Los cuatro planos anteriores de esta KB (frontera,
+vuelo, pago, visibilidad) dejaron un hueco que la propia KB venía declarando en dos archivos:
+**el tramo terrestre**. `intel/market.md` lo llamaba "hueco abierto" y `compose/patterns.md`
+decía que el único MCP ferroviario del mundo estaba dormido 15 meses. Esta pasada lo midió
+en vez de repetirlo, y **la declaración anterior era falsa por el lado del acceso y verdadera
+por el lado de la venta**.
+
+La distinción que ordena todo lo que sigue:
+
+- **Consultar** un tren (horario, andén, retraso, precio mostrado) → **existe, es permisivo,
+  está vivo y tiene más de un proveedor.**
+- **Vender** un tren (oferta, reserva de plaza, emisión, reembolso) → **no existe en open
+  source en ninguna región del mundo.** Ver las brechas al final del archivo.
+
+Es la misma ley estructural que el KB de retail formuló para fulfilment: *el piso open source
+cubre la matemática y se detiene en el comercio*. Aquí se detiene un paso antes todavía: cubre
+**la información** y se detiene en **la oferta**.
+
+### Capa de especificación — y la inversión respecto de otros verticales
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué especifica | ¿Se puede vendorizar? |
+|------|--------------------------|-------|-------------|----------------|------------------------|
+| [UnionInternationalCheminsdeFer/OSDM](https://github.com/UnionInternationalCheminsdeFer/OSDM) | **Apache-2.0** (`LICENSE`, 11374B) | 95 | 2026-11-20 | Open Sales and Distribution Model (UIC IRS 90918-10): API de oferta, tarifa, reserva de plaza y emisión para ferrocarril y multimodal. **El estándar de venta del vertical terrestre.** | **Sí** — licencia de código plena, con concesión de patente |
+| [UnionInternationalCheminsdeFer/OSDM-demo-app](https://github.com/UnionInternationalCheminsdeFer/OSDM-demo-app) | Apache-2.0 (`LICENSE`, 11357B) | 5 | 2026-03-26 | App de demostración del propio UIC sobre OSDM. | Sí — pero es demo, no producto |
+| [MobilityData/gbfs](https://github.com/MobilityData/gbfs) | **CC BY 3.0** (`LICENSE`, 19467B) | 928 | 2026-11-18 | General Bikeshare Feed Specification: micromovilidad compartida (el último kilómetro del tramo terrestre). | **No como código** — es licencia de documentación: atribución sí, concesión de patente no |
+| [transitland/transitland-atlas](https://github.com/transitland/transitland-atlas) | **CC BY 4.0** (`LICENSE.txt`, 18657B) | 200 | 2026-11-22 | Directorio abierto de feeds y operadores de movilidad. | No como código — es un dataset |
+| [MobilityData/awesome-transit](https://github.com/MobilityData/awesome-transit) | **CC0-1.0** (`LICENSE.md`, 6974B) | 1870 | 2026-11-18 | El catálogo de referencia del ecosistema de transporte. | Sí, sin condiciones — CC0 es dominio público |
+
+**Hallazgo que corrige una regla heredada de otra industria.** El KB de retail cerró su ciclo 9
+con una regla generalizada a las 12 industrias: *"la licencia de una especificación es una
+licencia de documentación y arrastra restricciones que las licencias de código no tienen"*
+(beckn = CC BY-NC-SA, **no comercial**; ONDC = CC BY-ND, **sin derivados**). **En el plano
+terrestre esa regla se invierte: el estándar de venta ferroviaria, OSDM, es Apache-2.0 —
+licencia de código, con concesión expresa de patente.** No es una excepción accidental: UIC
+la eligió explícitamente para fomentar la adopción por parte de las empresas ferroviarias.
+
+La regla correcta, entonces, no es "las especificaciones son restrictivas" sino **"la licencia
+de la especificación se decide por organismo, no por categoría, y hay que leerla una por una"**
+— y en este mismo plano conviven las dos familias: OSDM es Apache-2.0 y GBFS, del mismo
+ecosistema y con diez veces más estrellas, es CC BY 3.0. *Un cliente que quiera un perfil
+propio de GBFS puede publicarlo (CC BY permite derivados); uno que quiera vendorizar el
+esquema OSDM en su producto también puede, y además con cobertura de patente. Son permisos
+distintos y la diferencia aparece recién en el archivo.*
+
+### Capa de estándar europeo — NeTEx, SIRI, Transmodel y la licencia EUPL
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Para qué sirve | Nota de licencia |
+|------|--------------------------|-------|-------------|----------------|------------------|
+| [entur/netex-gtfs-converter-java](https://github.com/entur/netex-gtfs-converter-java) | **EUPL-1.2** (`LICENSE.txt`, 13793B) | 13 | 2026-11-23 | Convierte un dataset NeTEx a GTFS. Mantenido por Entur (operador estatal noruego). | Copyleft con cláusula de red — ver abajo |
+| [entur/kishar](https://github.com/entur/kishar) | EUPL-1.2 | 12 | 2026-11-23 | Convertidor SIRI → GTFS-Realtime. | Igual |
+| [Spillgebees/Transmodel](https://github.com/Spillgebees/Transmodel) | EUPL-1.2 (`LICENSE`, 13792B) | 3 | 2026-11-04 | Bindings C# tipados para NeTEx, SIRI y Transmodel. | Igual |
+| [dbinfrago/openstation-docs](https://github.com/dbinfrago/openstation-docs) | Apache-2.0 (`LICENSE`, 11344B) | 38 | 2026-11-16 | API OpenStation de DB InfraGO: datos de estaciones ferroviarias alemanas. | Permisiva |
+| [napcore-tools/web-awesome_napcore_tools](https://github.com/napcore-tools/web-awesome_napcore_tools) | MIT (`LICENSE`, 1130B) | 8 | 2026-11-18 | Catálogo público de herramientas de datos de movilidad para los NAP europeos. | Permisiva |
+| [enroute-mobi/ara](https://github.com/enroute-mobi/ara) | AGPL-3.0 (`LICENSE`, 34520B) | 22 | 2026-11-14 | Servidor Go de intercambio de datos en tiempo real por protocolo SIRI. | Copyleft de red — como servicio, no embebido |
+
+#### ⚠️ EUPL-1.2 es nueva para esta KB y **se comporta como AGPL, no como LGPL**
+
+Las tres primeras filas traen una familia de licencia que no había aparecido en ninguno de los
+cuatro planos anteriores. Vale la pena ser exacto, porque el nombre no lo dice: *European Union
+Public Licence* suena institucional y neutro, y es **copyleft fuerte con alcance de red**.
+Texto literal del archivo (`entur/netex-gtfs-converter-java/LICENSE.txt`, cláusula de
+definiciones):
+
+> — '**Distribution**' or '**Communication**': any act of selling, giving, lending, renting,
+> distributing, communicating, transmitting, or otherwise making available, online or offline,
+> copies of the Work **or providing access to its essential functionalities** at the disposal
+> of any other natural or legal person.
+
+"Providing access to its essential functionalities" es, textualmente, **más amplio que el
+gatillo de la AGPL-3.0**: no exige modificar el software ni siquiera distribuirlo — alcanza con
+poner sus funcionalidades esenciales a disposición de un tercero. Consecuencia operativa
+directa: **un SaaS de cliente que exponga la conversión NeTEx→GTFS de Entur como funcionalidad
+dispara la reciprocidad.** La EUPL sí trae un anexo de *licencias compatibles* (permite
+redistribuir bajo GPL/AGPL y otras listadas), lo cual ayuda a integrar, no a cerrar.
+
+**Para el estudio:** los convertidores de Entur se usan **como proceso batch fuera del producto**
+(entra NeTEx, sale GTFS, el producto consume GTFS), nunca enlazados dentro del servicio que se
+le entrega al cliente. Es exactamente la misma disciplina que esta KB ya aplica a Nominatim y
+a navitia, con un gatillo más ancho.
+
+### Capa de acceso — lo que sí existe, es permisivo y está vivo
+
+Esta es la capa que la KB daba por inexistente. **No lo es: existe, es ISC/MIT y tiene push
+reciente.** Lo que pasa es que no tiene forma de MCP, así que no aparece buscando "agente".
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué da | ¿Base para AI? |
+|------|--------------------------|-------|-------------|--------|----------------|
+| [public-transport/hafas-client](https://github.com/public-transport/hafas-client) | **ISC** (`license.md` minúscula, 727B) | 372 | 2026-08-23 | Cliente JS de las APIs HAFAS: el motor detrás de decenas de operadores europeos (DB, ÖBB, SNCB, regionales). **El repo más grande del plano terrestre de venta/consulta.** | Sí — horarios, trayectos y precios mostrados como herramienta de agente |
+| [OpendataCH/Transport](https://github.com/OpendataCH/Transport) | **MIT** (`LICENSE`, 1060B) | 269 | 2026-11-22 | API pública de transporte suizo. Push de esta semana. | Sí — y es la referencia de API limpia del segmento |
+| [public-transport/db-vendo-client](https://github.com/public-transport/db-vendo-client) | ISC (`LICENSE.md`, 777B) | 209 | 2026-09-10 | Cliente de las APIs actuales de Deutsche Bahn, sucesor de `db-hafas` tras la migración de DB. | Sí — el camino vivo a inventario ferroviario alemán |
+| [public-transport/db-hafas](https://github.com/public-transport/db-hafas) | ISC | 81 | 2025-01-17 | Cliente HAFAS de DB. **Dormido ~22 meses**; reemplazado por `db-vendo-client`. | Solo referencia histórica |
+| [schildbach/public-transport-enabler](https://github.com/schildbach/public-transport-enabler) | **GPL-3.0** (`COPYING`, 32473B) | 456 | 2026-11-22 | El equivalente Java de `hafas-client`, con más redes cubiertas. Muy vivo. | Como servicio separado — **GPL-3.0, no se embebe** |
+| [hove-io/navitia](https://github.com/hove-io/navitia) | **AGPL-3.0** (`COPYING`, 34520B) | 456 | 2026-11-10 | Motor de planificación multimodal de grado operador (el que corre Île-de-France Mobilités). | Como servicio, nunca embebido |
+| [juliuste/interrail](https://github.com/juliuste/interrail) | ISC (`license`, 730B) | 34 | 2020-10-12 | Cliente de la API Interrail/Eurail: estaciones y rutas paneuropeas. **Dormido 6 años.** | No sin reescritura — se cita por ser el único del nicho |
+
+#### ⚠️ La licencia del endpoint: un tercer paso de diligencia, no un segundo
+
+El ciclo anterior de esta KB agregó un segundo paso de diligencia a partir de
+`openskynetwork/opensky-api`: *la licencia del código no es la licencia del dato*. **El plano
+terrestre obliga a un tercero, más duro: la licencia del código no es la licencia del
+endpoint.**
+
+`hafas-client` y `public-transport-enabler` son software limpio y permisivo/GPL que habla con
+**endpoints internos de operadores ferroviarios que no están documentados ni publicados como
+API pública**. El código se puede usar; **el permiso para llamar a ese endpoint en producción,
+a escala y con fines comerciales, no viene con el repo y en general no existe.** Es el mismo
+riesgo de términos de servicio que esta KB ya anotó para `LetsFG` y para `punitarani/fli`, y
+la misma trampa que `SeanChangX/THSR-Sniper` lleva al extremo (ver `agents/top.md`).
+
+**Regla práctica para un engagement:** `hafas-client` sirve para **prototipar en días** y para
+**demostrar la forma del producto**; el contrato de distribución con el operador (o un agregador
+licenciado) es lo que lo lleva a producción. Decirlo al presupuestar, no al entregar.
+
+### Capa de datos abiertos — la que sí está contractualmente limpia
+
+Frente a lo anterior, esta capa se apoya en feeds **publicados para ser consumidos**, con
+licencia de dato explícita. Es la que se recomienda para producción cuando no hay contrato.
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué da |
+|------|--------------------------|-------|-------------|--------|
+| [MobilityData/gtfs-validator](https://github.com/MobilityData/gtfs-validator) | Apache-2.0 (`LICENSE`, 11327B) | 434 | 2026-11-19 | El validador canónico de GTFS Schedule. Higiene antes de que el agente lea. |
+| [MobilityData/mobility-database-catalogs](https://github.com/MobilityData/mobility-database-catalogs) | Apache-2.0 (`LICENSE`, 11357B) | 354 | 2026-11-19 | Catálogo de fuentes de la Mobility Database: dónde está el feed de cada operador. |
+| [OneBusAway/onebusaway-application-modules](https://github.com/OneBusAway/onebusaway-application-modules) | Apache-2.0 **por referencia** (`LICENSE.txt`, 547B) | 243 | 2026-11-18 | Suite completa de información al pasajero en tiempo real, grado operador. |
+| [OneBusAway/onebusaway-gtfs-modules](https://github.com/OneBusAway/onebusaway-gtfs-modules) | Apache-2.0 por referencia (`LICENSE.txt`, 547B) | 149 | 2026-11-17 | Librería Java de lectura/escritura/transformación de GTFS. |
+| [TransitApp/gtfs-fares-v2-validator](https://github.com/TransitApp/gtfs-fares-v2-validator) | MIT (`LICENSE`, 1068B) | 7 | 2025-03-31 | Validador de GTFS-Fares v2 — el modelo abierto de tarifas. **ARCHIVADO** (`archived: true`). |
+
+#### Dos lecturas de licencia que no se ven desde la API de GitHub
+
+1. **`interline-io/transitland-lib` es GPL-3.0 con opción comercial de pago, y GitHub dice
+   `NOASSERTION`.** El archivo (35434B) abre así: *"`transitland-lib` is released under a
+   'dual license' model: open-source for use by all under the GPLv3 license (which follows
+   below) — also available under a flexible commercial license from Interline (contact
+   info@interline.io for a quote)"*. **Esto completa la regla de `NOASSERTION` en las dos
+   direcciones:** en `valhalla` esa misma bandera escondía un MIT literal (hallazgo del ciclo
+   9 de esta KB); aquí esconde un copyleft con peaje. *`NOASSERTION` no informa nada sobre si
+   la licencia es buena o mala — solo que GitHub no pudo clasificar el archivo. Hay que
+   abrirlo siempre, y en ambos sentidos.*
+
+2. **El `LICENSE.txt` de OneBusAway es una plantilla sin expandir.** Son 547 bytes y su primera
+   línea es literalmente el token `COPYRIGHT_SECTION`, seguido del encabezado estándar
+   *"Licensed under the Apache License, Version 2.0"* con el enlace a apache.org. **La
+   concesión está por referencia y es identificable — a diferencia de un badge, que no
+   concede nada** (regla del ciclo 9 de retail). Lo que falta es el titular del copyright, y
+   eso importa en concreto: la Apache-2.0 §4(d) obliga a propagar los avisos de atribución, y
+   acá no hay aviso que propagar. **Es usable; el string de atribución se resuelve con el
+   proyecto antes de entregar, no después.**
+
+#### Método: `raw.githubusercontent.com` distingue mayúsculas, y eso casi cuesta un hallazgo
+
+Buscando el archivo de licencia de `hafas-client` por `LICENSE`, `LICENSE.md`, `LICENSE.txt` y
+`COPYING`, los cuatro dieron **404**, y el repo quedó a un paso de registrarse como "sin
+licencia" — con 372 estrellas, habría sido una afirmación grave y falsa. **El archivo existe y
+se llama `license.md`, en minúscula**: ISC literal, 727 bytes. Esta KB ya tenía el dato suelto
+(anotó que Kamra PMS publica su texto AGPL en `license.txt` minúscula) pero no la regla.
+
+**La regla, ahora explícita: la licencia es el archivo, y el archivo distingue mayúsculas.**
+Un chequeo que solo prueba `LICENSE*` produce falsos negativos silenciosos. Hay que probar
+también `license`, `license.md`, `license.txt`, `licence`, `COPYING` y `NOTICE` antes de
+escribir "no tiene licencia" sobre un repositorio ajeno.
+
 ## Brechas medidas, no silenciadas
 
 Estas consultas se corrieron sobre `search/repositories` el 2026-11-21 y devolvieron lo que
@@ -364,6 +526,40 @@ lee el documento, no se conoce la regla) y apunta a la misma conclusión comerci
 defendible está en el motor de reglas fechadas, no en el acceso al dato.** Con una diferencia
 que mejora el caso: aquí la regla **está publicada y es citable** — un reglamento del DOT, un
 reglamento de la UE—, al revés de Timatic, que además es propietaria.
+
+### Brechas del plano terrestre, medidas el 2026-11-23
+
+Consultas corridas sobre `search/repositories`. **Todas las que dan 0 son ceros reales, no
+consultas que no se hicieron.**
+
+| Consulta | Resultados | Lectura |
+|----------|-----------|---------|
+| `osdm client implementation` | **0** | **El hallazgo central del plano.** El estándar de venta ferroviaria es Apache-2.0, está publicado en GitHub y tiene 95 estrellas — y **no existe una sola implementación cliente open source**. Lo único que lo toca es `mainmatter/reStations` (Apache-2.0, 8★), que implementa **solo la Places API** —estaciones, no venta— y está **dormido desde 2025-04-02**. |
+| `train booking api stars:>=20` | **0** | Nadie publicó un cliente de reserva ferroviaria con tracción mínima, en ninguna región. |
+| `fare engine open source` | **0** | No hay motor de tarifas. Es la pieza que convierte un horario en un precio vendible. |
+| `ticket vending machine open source` | **0** | No hay emisión. |
+| `bus ticketing system stars:>=100` | **0** | Ver el bloque LATAM de `intel/market.md`: el modo dominante de la región no tiene software libre de venta en ninguna parte del mundo. |
+| `car rental booking open source stars:>=50` | **0** | El otro medio terrestre tampoco. Un itinerario puerta a puerta no se puede completar con open source en su tramo de alquiler. |
+| `mobility as a service maas open source stars:>=50` | **0** | "MaaS" es una categoría comercial, no un cuerpo de código. |
+| `intermodal itinerary agent llm` | **0** | No hay agente intermodal. Las recetas 5 y 15 de esta KB hay que construirlas, no adoptarlas. |
+| `passenger rights compensation rail` | **0** | Cero, igual que el equivalente aéreo (EU261) medido en la pasada de vuelo. La regla está publicada; el motor no existe en ninguno de los dos modos. |
+| `rail revenue management` | 9 | Los cuatro primeros tienen **0 estrellas, sin licencia** y son trabajos académicos o de curso. Equivale a cero, y confirma lo ya medido para hotelería: **el revenue management no se libera en ningún modo de transporte.** |
+| `irctc api stars:>=20` | **0** | India: sin API oficial y sin cliente con tracción. Lo que hay son scrapers de terceros. |
+| `odpt tokyo transport open data` | **0** | Japón: la plataforma ODPT existe como servicio, pero **no tiene presencia medible en GitHub con ese nombre**. |
+| `gtfs latam brasil` | **0** | Ninguna herramienta GTFS con identidad regional LATAM. |
+| `rodoviaria passagem api` | 1 | Un repo, 0 estrellas, sin licencia, 2024. |
+| `autobus boleto api` | 1 | Un repo, 0 estrellas, sin licencia, 2023. |
+| `onibus passagem` | 53 | Los seis primeros: **0–2 estrellas, ninguno con licencia**, trabajos de materia. |
+
+**Lo que estas 16 filas dicen juntas.** El tramo terrestre tiene un estándar de venta abierto
+y permisivo (OSDM, Apache-2.0) **sin ninguna implementación**, y una capa de consulta rica,
+viva y permisiva **que no puede vender**. La brecha no es de información: es de **oferta,
+inventario y emisión**. Para el estudio eso define con precisión dónde está el trabajo
+construible y dónde no hay nada que adoptar.
+
+**No examinado en esta pasada, y se dice en vez de omitirse:** China (12306 y los agregadores
+locales), Corea, metro/urbano de pago con tarjeta (EMV open loop), carga ferroviaria, y el
+estado legislativo posterior al 2026-05-13 de los tres instrumentos europeos de ticketing.
 
 ---
 *Ver también: `verticals/solutions.md` para plataformas verticales completas.*

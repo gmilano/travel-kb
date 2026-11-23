@@ -11,6 +11,39 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — quinta pasada (plano terrestre: venta y distribución del tramo no aéreo)
+
+| Repo | Licencia (archivo leído) | Stars | Push | Por qué entra |
+|------|--------------------------|-------|------|---------------|
+| [UnionInternationalCheminsdeFer/OSDM](https://github.com/UnionInternationalCheminsdeFer/OSDM) | **Apache-2.0** (11374B) | 95 | 2026-11-20 | El estándar de **venta** ferroviaria y multimodal (UIC IRS 90918-10), publicado como código. Reconocido por la TSI de telemática de la UE. **Y sin una sola implementación cliente open source.** |
+| [entur/netex-gtfs-converter-java](https://github.com/entur/netex-gtfs-converter-java) | **EUPL-1.2** (13793B) | 13 | **2026-11-23** | Push hoy. NeTEx → GTFS, mantenido por el operador estatal noruego. Trae una familia de licencia nueva para esta KB. |
+| [entur/kishar](https://github.com/entur/kishar) | EUPL-1.2 | 12 | **2026-11-23** | Push hoy. SIRI → GTFS-Realtime. |
+| [OpendataCH/Transport](https://github.com/OpendataCH/Transport) | MIT (1060B) | 269 | 2026-11-22 | API de transporte suizo, viva esta semana. La referencia de API limpia del segmento. |
+| [schildbach/public-transport-enabler](https://github.com/schildbach/public-transport-enabler) | **GPL-3.0** (32473B) | 456 | 2026-11-22 | El equivalente Java de `hafas-client`, con más redes. Muy vivo — y copyleft. |
+| [transitland/transitland-atlas](https://github.com/transitland/transitland-atlas) | CC BY 4.0 (18657B) | 200 | 2026-11-22 | Directorio abierto de feeds y operadores. Licencia de **dato**, no de código. |
+| [MobilityData/gtfs-validator](https://github.com/MobilityData/gtfs-validator) | Apache-2.0 (11327B) | 434 | 2026-11-19 | El validador canónico de GTFS. Higiene antes de que el agente lea. |
+| [MobilityData/mobility-database-catalogs](https://github.com/MobilityData/mobility-database-catalogs) | Apache-2.0 (11357B) | 354 | 2026-11-19 | Dónde está el feed de cada operador del mundo. |
+| [MobilityData/gbfs](https://github.com/MobilityData/gbfs) | **CC BY 3.0** (19467B) | 928 | 2026-11-18 | Micromovilidad compartida. La API de GitHub dice `NOASSERTION`; el archivo es Creative Commons. |
+| [dbinfrago/openstation-docs](https://github.com/dbinfrago/openstation-docs) | Apache-2.0 (11344B) | 38 | 2026-11-16 | API OpenStation de DB InfraGO: datos de estaciones alemanas. |
+| [public-transport/hafas-client](https://github.com/public-transport/hafas-client) | ISC (`license.md`, 727B) | 372 | 2026-08-23 | El cliente que habla con decenas de operadores europeos. **El repo más grande del plano.** Ver la advertencia de endpoint. |
+| [public-transport/db-vendo-client](https://github.com/public-transport/db-vendo-client) | ISC (777B) | 209 | 2026-09-10 | Sucesor de `db-hafas` tras la migración de Deutsche Bahn. |
+
+**Lo que está dormido y hay que decirlo:** `mainmatter/reStations` (Apache-2.0, 8★), **la única
+implementación de una API OSDM que existe en el mundo**, no tiene push desde **2025-04-02** — y
+además cubre solo la Places API (estaciones), no la venta. `public-transport/db-hafas` (81★)
+quedó obsoleto por `db-vendo-client`. `TransitApp/gtfs-fares-v2-validator` (MIT, 7★) está
+**archivado**: el único validador del modelo abierto de tarifas está formalmente muerto.
+
+**Dos lecturas de licencia que no se ven desde la API de GitHub, ambas registradas hoy:**
+`interline-io/transitland-lib` reporta `NOASSERTION` y es **GPL-3.0 con opción comercial de
+pago**; el `LICENSE.txt` de OneBusAway son 547 bytes cuya primera línea es el token sin
+expandir `COPYRIGHT_SECTION`. Detalle completo en `repos/foundations.md`.
+
+**El titular del plano:** el estándar de venta es Apache-2.0, está en GitHub, tiene 95
+estrellas — y `osdm client implementation` devuelve **0 repositorios**. La consulta
+`fare engine open source` también devuelve **0**. Hay con qué **consultar** un tren en Europa
+y no hay con qué **venderlo** en ninguna parte.
+
 ## 2026-11-23 — cuarta pasada (plano de visibilidad agentic)
 
 | Repo | Licencia | Stars | Push | Por qué entra |

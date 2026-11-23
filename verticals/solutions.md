@@ -157,3 +157,35 @@ source permisivo. Lo medido este ciclo: los módulos de Odoo para conectividad O
 SaaS pago**, no software libre. La conectividad de distribución sigue siendo trabajo de
 integración presupuestado, no una pieza que se adopta.
 
+
+## Lo que agregó la quinta pasada del 2026-11-23
+
+**Plano terrestre: hay plataformas desplegables, y la elección es de licencia, no de función.**
+
+Hasta esta pasada este archivo cubría hotelería (QloApps, HotelDruid, Kamra, Odoo) y un solo
+ítem de transporte (OpenFlights). El plano terrestre aporta **plataformas completas de grado
+operador** —software que ciudades y empresas ferroviarias corren hoy en producción— y las tres
+mayores son copyleft:
+
+| Plataforma | Repo | Licencia (archivo leído) | Stars | Qué es | Cómo se customiza con AI |
+|------------|------|--------------------------|-------|--------|--------------------------|
+| **OneBusAway** | [OneBusAway/onebusaway-application-modules](https://github.com/OneBusAway/onebusaway-application-modules) | **Apache-2.0 por referencia** (`LICENSE.txt`, 547B) | 243 | Suite completa de información al pasajero en tiempo real: backend, APIs, apps Android/iOS. Corre en agencias reales de EE.UU. | **La opción permisiva, y la recomendada.** Se despliega para el cliente, se le agrega un servidor MCP encima sobre sus propias APIs REST |
+| **navitia** | [hove-io/navitia](https://github.com/hove-io/navitia) | **AGPL-3.0** (`COPYING`, 34520B) | 456 | Motor de planificación multimodal de grado operador (detrás de Île-de-France Mobilités) | **Como servicio separado, nunca embebido.** El producto del cliente llama a su API HTTP |
+| **OpenTripPlanner** | [opentripplanner/OpenTripPlanner](https://github.com/opentripplanner/OpenTripPlanner) | LGPL-3.0 | 2781 | El planificador multimodal de referencia (GTFS + OSM) | LGPL permite enlazar desde software propietario, no derivar. Ya estaba en `repos/foundations.md`; se registra acá como **plataforma desplegable**, no como librería |
+| **Ara** | [enroute-mobi/ara](https://github.com/enroute-mobi/ara) | **AGPL-3.0** (`LICENSE`, 34520B) | 22 | Servidor de intercambio de datos en tiempo real por protocolo **SIRI** (el estándar CEN) | Como servicio. Es la pieza que falta cuando el cliente europeo publica SIRI y no GTFS-RT |
+
+**La regla de elección, en una línea:** para un entregable que el cliente **posee y puede
+cerrar**, la única plataforma terrestre de la tabla es **OneBusAway**. Las otras tres se
+despliegan **al lado** del producto y se consumen por API — exactamente la misma disciplina que
+este archivo ya aplica a Nominatim.
+
+⚠️ **Dos advertencias de licencia propias de este plano:**
+
+1. El `LICENSE.txt` de OneBusAway son **547 bytes** cuya primera línea es el token sin expandir
+   `COPYRIGHT_SECTION`. La concesión Apache-2.0 está por referencia y es identificable —no es
+   un badge vacío— pero **falta el titular del copyright**, y la Apache-2.0 §4(d) obliga a
+   propagar avisos de atribución. **Resolver ese string con el proyecto antes de entregar.**
+2. **No existe una plataforma vertical de *venta* terrestre, de ninguna licencia.** Las cuatro
+   de arriba informan, planifican y distribuyen datos; **ninguna emite un billete.** Para
+   hotelería este archivo tiene PMS completos; para tierra no hay equivalente, y la diferencia
+   hay que decirla en la primera reunión.

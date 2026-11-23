@@ -12,6 +12,37 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — quinta pasada (plano terrestre: tren, bus y transporte público)
+
+**Qué se midió:** el tramo que esta KB venía declarando "hueco abierto" en `intel/market.md`
+y en `compose/patterns.md` sin haberlo medido nunca. **La declaración era media verdad:** hay
+ocho servidores MCP de transporte terrestre vivos, no uno — y ninguno vende nada.
+
+**Lo que está vivo esta semana, verificado:**
+
+| Agente | Licencia (archivo) | Stars | Push | Por qué entra |
+|--------|--------------------|-------|------|---------------|
+| [mirodn/mcp-server-public-transport](https://github.com/mirodn/mcp-server-public-transport) | MIT (1061B) | 9 | **2026-11-21** | El MCP de transporte terrestre con push más reciente del mundo. Salidas y planificación en tiempo real. |
+| [malkreide/swiss-transport-mcp](https://github.com/malkreide/swiss-transport-mcp) | MIT (1069B) | 7 | 2026-11-01 | Primer MCP del plano que habla **OJP (Open Journey Planner)**, el estándar CEN, en vez de una API propietaria de operador. |
+| [lucygoodchild/mcp-national-rail](https://github.com/lucygoodchild/mcp-national-rail) | **NINGUNA** (declara MIT en `package.json`) | 7 | 2026-09-11 | Entra como advertencia, no como recomendación. |
+| [EasonWheng/RailGPT](https://github.com/EasonWheng/RailGPT) | MIT (1115B) | 5 | 2026-08-17 | Agente ferroviario con herramientas estructuradas (Southeast University). Investigación. |
+| [SeanChangX/THSR-Sniper](https://github.com/SeanChangX/THSR-Sniper) | Apache-2.0 (11363B) | 38 | 2026-03-07 | **Entra como trampa:** licencia impecable, y resuelve el captcha del operador taiwanés por OCR. Inutilizable en un entregable. |
+
+**Lo que se apagó, con fecha:** `r-huijts/ns-mcp-server` (64★, el que esta KB citaba como "el
+único MCP ferroviario") lleva **15 meses sin push**; `Kryzo/mcp-sncf` (21★), **20 meses**;
+`amith-vp/indian-railway-mcp` (28★, el único de APAC), **19 meses**.
+
+**El dato que ordena la sección:** ocho MCP terrestres, **siete son EMEA**, ninguno de North
+America ni de LATAM, **cuatro sin ningún archivo de licencia**, y el techo del plano son 64
+estrellas. No es un ecosistema; son proyectos personales sobre una sola región.
+
+**Hallazgo de método de esta pasada:** `rail mcp server` devuelve **Ruby on Rails** y el PaaS
+`railway.app` en sus ocho primeros resultados; `train mcp server` devuelve **entrenamiento de
+modelos**. Cuarta colisión de palabra de industria de la red de KBs, y la peor: las dos
+palabras naturales del dominio están tomadas por el núcleo de la industria del software. Se
+busca por operador o por estándar (`hafas`, `osdm`, `netex`, `public transport`), nunca por
+modo.
+
 ## 2026-11-23 — cuarta pasada (plano de visibilidad agentic)
 
 **Qué se midió:** la capa que decide si un proveedor de travel es **encontrado y citado** por
