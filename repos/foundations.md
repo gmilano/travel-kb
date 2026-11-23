@@ -157,6 +157,55 @@ La misma distinción, en dos casos más de esta sección:
 licencia. En el plano de datos de vuelo hay que abrir **dos** documentos: la licencia del
 código **y** los términos del dato. Esta KB solo puede garantizar hoy la primera.
 
+## Plano de pago agentic
+
+Agregado en la **tercera pasada del 2026-11-23**. Es la capa de **especificación** que hay
+debajo de las herramientas listadas en `agents/top.md` → *Pago agentic*. Todas las licencias
+fueron leídas del archivo; todos los slugs verificados vivos por `git ls-remote`.
+
+**El hallazgo del plano, dicho primero:** en travel la regla medida durante cuatro ciclos fue
+*plataforma copyleft, infraestructura permisiva* (`intel/trends.md` → 8). **El plano de pago
+rompe esa regla: es Apache-2.0 de punta a punta.** No por generosidad, sino porque es una
+**guerra de estándares entre consorcios** — Google, OpenAI+Stripe, la Linux Foundation y
+Shopify necesitan adopción, y una licencia restrictiva la impediría. La consecuencia práctica
+para Globant es directa: **en esta capa la pregunta deja de ser "¿podemos usarlo?" y pasa a ser
+"¿cuál va a sobrevivir?"**.
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué es |
+|------|--------------------------|-------|-------------|--------|
+| [x402-foundation/x402](https://github.com/x402-foundation/x402) | Apache-2.0 (11324B) | 6822 | 2026-11-20 | Protocolo de pago sobre HTTP: revive el código de estado **402 Payment Required**. Es la capa que **mueve el dinero**. El más estrellado y el más activo del plano. |
+| [Universal-Commerce-Protocol/ucp](https://github.com/Universal-Commerce-Protocol/ucp) | Apache-2.0 (11358B) | 3517 | 2026-11-21 | Especificación de UCP. Relevante para travel por una razón concreta: su diseño declarado **deja al comercio como merchant of record**, que es exactamente la restricción que las aerolíneas imponen. |
+| [google-agentic-commerce/AP2](https://github.com/google-agentic-commerce/AP2) | Apache-2.0 (11359B) | 3283 | **2026-06-17** | Agent Payments Protocol: capa de **autorización** — probar que el usuario autorizó la compra, vía *mandatos* firmados. Conceptualmente es la pieza central del corte en el pago. **Repo estancado hace ~5 meses — ver advertencia en `agents/top.md`.** |
+| [agentic-commerce-protocol/agentic-commerce-protocol](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol) | Apache-2.0 (10947B) | 1609 | **2026-07-18** | ACP: modelo de interacción comprador ↔ agente ↔ comercio. **Mantenido por OpenAI y Stripe**, lo que le da la distribución que a AP2 le sobra en prensa y le falta en commits. También ~4 meses sin push. |
+| [forter/trusted-agentic-commerce-protocol](https://github.com/forter/trusted-agentic-commerce-protocol) | MIT (1062B) | 180 | 2026-07-08 | Autenticación y cifrado de datos entre agente, comercio y proveedores del comercio. **La única pieza MIT de la capa de especificación** y la que se ocupa del problema que a travel más le importa: *¿este agente es quien dice ser?* |
+
+**La asimetría que conviene mirar antes de elegir.** Las dos especificaciones que la prensa
+cita como centrales —**AP2 y ACP**— llevan **cuatro y cinco meses sin un commit**. Las dos que
+están moviéndose esta misma semana —**x402 y UCP**— son las de **rieles y comercio**, no las de
+autorización. Dicho de una vez: **la especificación se congeló; los rieles se mueven.** Para un
+engagement eso significa no comprometer una arquitectura "AP2-native" sin antes confirmar el
+upstream, y tratar la capa de autorización como **diseño propio informado por AP2**, que es
+además donde Globant puede poner IP.
+
+### Brechas del plano de pago, medidas el 2026-11-23
+
+Mismo método: `search/repositories`, consultas nuevas. **El contraste es, por tercera vez, el
+hallazgo:** el mecanismo horizontal es robusto y permisivo; su aterrizaje en travel no existe.
+
+| Consulta | Resultados | Lectura |
+|----------|-----------|---------|
+| `airline payment agent protocol stars:>=5` | **0** | Ninguna aerolínea publicó integración agentic de pago. Coherente con la postura medida: las aerolíneas **ceden el agente, no el cobro**. |
+| `hotel booking payment mandate stars:>=5` | **0** | Cero implementaciones del concepto de *mandato* (la primitiva central de AP2) aplicadas a hotelería. |
+| `AP2 mandate implementation stars:>=20` | **0** | **El protocolo más citado del plano no tiene una sola implementación con tracción.** Los repos que lo nombran están entre 0★ y 2★. |
+| `travel refund chargeback agent stars:>=5` | **0** | Nada sobre contracargo o reembolso agentic — el riesgo que un cliente de travel pregunta primero. |
+| `travel agentic payment stars:>=5` | 3, **0 utilizables** | `Prism-Shadow/travel-agent` (Apache-2.0, 52★) ya está en `agents/top.md` y **su gracia es justamente detenerse antes de pagar**; `EntNaol/Online-transportation-booking` (10★, sin licencia, muerto desde 2022-08-04); `EGABO-TECH/ExFlo` (6★, **sin licencia**, pagos con MiniPay para mercados emergentes — la idea correcta, sin permiso de uso). |
+
+**La forma de esta brecha:** el open source de pago agentic **sabe cómo cobrar en general, y
+nada sobre cobrar un viaje en particular.** Las reglas que hacen distinto al pago de travel
+—ticketing con plazo, cobro fraccionado entre aerolínea y OTA, contracargo a 180 días,
+reembolso regulado (US DOT, EU261)— **no están en ninguno de estos protocolos**, y es el
+mismo lugar donde esta KB ya ubicó la IP defendible del vertical.
+
 ## Brechas medidas, no silenciadas
 
 Estas consultas se corrieron sobre `search/repositories` el 2026-11-21 y devolvieron lo que

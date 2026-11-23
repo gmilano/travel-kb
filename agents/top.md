@@ -11,6 +11,10 @@ updated: 2026-11-23
 > `search/repositories`, y **licencia leyendo el archivo de licencia**, no el badge de GitHub.
 > Cero filas de ejemplo.
 >
+> **Tercera pasada 2026-11-23:** se agrega el **plano de pago agentic** — la capa que esta
+> KB venía nombrando en cada receta ("corte en el pago", "merchant of record") sin una sola
+> fila de código.
+>
 > **Ciclo 2026-11-23:** se re-midieron las filas principales del 2026-11-21 (ver
 > *Re-medición* abajo) y se agregó una sección nueva: **identidad y documento de viaje**,
 > el plano que esta KB venía nombrando (biometría, visado) sin ninguna fila de código.
@@ -85,6 +89,36 @@ debe al pasajero por ese retraso: esa regla no existe en open source en ninguna 
 (ver `repos/foundations.md` → brechas del plano operativo). Es la **misma forma** que el plano
 de frontera: se lee el hecho, no se conoce la regla.
 
+## Pago agentic — quién puede cobrar, y con qué permiso
+
+Agregada en la **tercera pasada del 2026-11-23**. Esta KB viene diciendo desde el primer ciclo
+que **"el agente planifica; el humano todavía paga"** (`intel/trends.md` → 1) y que **el
+merchant of record es la decisión de arquitectura** (→ 2). Las once recetas cortan en el pago.
+Ninguna decía **con qué se construye ese corte**. Este es el plano que lo cierra, y es el
+primero del vertical donde **la licencia no es el problema**: todo lo utilizable es Apache-2.0
+o MIT. Licencias leídas del archivo el 2026-11-23; la capa de especificación está en
+`repos/foundations.md` → *Plano de pago agentic*.
+
+| Nombre | Repo | Licencia (archivo leído) | Stars | Último push | Descripción |
+|--------|------|--------------------------|-------|-------------|-------------|
+| a2a-x402 | [google-agentic-commerce/a2a-x402](https://github.com/google-agentic-commerce/a2a-x402) | Apache-2.0 (`LICENSE`, 11357B) | 572 | 2026-11-11 | Extensión de pago para el protocolo **A2A** (agente-a-agente): revive el HTTP 402 para que un agente le pague a otro agente por un servicio. La pieza para **pagarle al proveedor**, no al viajero. |
+| paypal/agent-toolkit | [paypal/agent-toolkit](https://github.com/paypal/agent-toolkit) | Apache-2.0 (`LICENSE`, 10753B) | 199 | 2026-09-01 | Toolkit de agente de PayPal. **Es el único repo de este plano con una contraparte directa en un hito real de travel:** PayPal es el que cobra en el lanzamiento Sabre + Mindtrip (ver `intel/market.md`). |
+| Retail-Agentic-Commerce | [NVIDIA-AI-Blueprints/Retail-Agentic-Commerce](https://github.com/NVIDIA-AI-Blueprints/Retail-Agentic-Commerce) | Apache-2.0 (`LICENSE`, 11348B) | 89 | 2026-11-23 | Implementación de referencia de **ACP + UCP** con checkout negociado **manteniendo el control del merchant**. Push el mismo día de este ciclo. Es retail, no travel: se usa como arquitectura de referencia, no como producto. |
+| ucp-cli | [Shopify/ucp-cli](https://github.com/Shopify/ucp-cli) | MIT (`LICENSE`, 1061B) | 84 | 2026-11-09 | Skill de compra para agentes sobre UCP, de Shopify. El ejemplo más limpio de **"el inventario se distribuye como skill"** (`intel/trends.md` → 7) aplicado a la capa de pago. |
+
+**Lo que esto habilita y lo que no.** Habilita que un agente presente una intención de compra
+firmada, que el comercio la verifique y que el cobro lo ejecute quien ya es merchant of record.
+**No** habilita que el agente sea el merchant of record, ni resuelve quién responde por un
+contracargo de un vuelo que el pasajero no reconoce. Es la **tercera vez consecutiva** que esta
+KB mide la misma forma: se tiene el **mecanismo**, no la **regla** — igual que el plano de
+frontera (lee el documento, no conoce la regla de admisión) y el plano de vuelo (sabe dónde
+está el avión, no sabe qué se le debe al pasajero).
+
+**Y la brecha travel-específica está medida:** `airline payment agent protocol`, `hotel booking
+payment mandate`, `AP2 mandate implementation` y `travel refund chargeback agent` devuelven
+**0 repositorios** (detalle en `repos/foundations.md`). El plano de pago agentic es
+**horizontal y robusto; su aterrizaje en travel no existe todavía en abierto.**
+
 ## Re-medición 2026-11-23 — control anti-fabricación
 
 Dos días después del ciclo anterior, las mismas consultas sobre los mismos slugs:
@@ -127,6 +161,9 @@ de agosto (ver *Corrección del historial* al final). Las cifras de arriba son l
 | [google/travel-impact-model](https://github.com/google/travel-impact-model) | Repo de Google, 195★, vivo: se lee como una librería de emisiones lista para integrar | Es **CC-BY-4.0**, licencia de **contenido**. Permite uso comercial con atribución —lo cual es bueno— pero Creative Commons desaconseja expresamente sus licencias para software. Para el modelo y sus tablas encaja; para copiar código, consultar con legales. |
 | [rsadsb/adsb_deku](https://github.com/rsadsb/adsb_deku) | MIT (1071B leídos), 732★ — el decodificador permisivo más estrellado | **Sin push desde el 2026-01-04 (~10 meses).** Licencia ideal, mantenimiento incierto. El músculo mantenido del segmento (`readsb`, `tar1090`, `ultrafeeder`) es todo GPL. |
 
+| [visa/trusted-agent-protocol](https://github.com/visa/trusted-agent-protocol) | Repo **de Visa**, 224★, "Trusted Agent Protocol": en toda búsqueda de pago agentic aparece junto a AP2, ACP y UCP, que sí son Apache-2.0. Es el nombre que más tranquiliza a un cliente de pagos | **No es open source.** El `LICENSE.md` tiene **398 bytes** y no contiene ninguna licencia: remite a los *Visa Developer Center Terms of Use* y a los *Trusted Agent Protocol Product Terms*. Leído completo el 2026-11-23. GitHub lo muestra `NOASSERTION`, y **último push 2025-10-28 (~13 meses)**. Es la trampa más peligrosa del plano de pago precisamente porque la marca da confianza: **cuarta confirmación de que `NOASSERTION` obliga a abrir el archivo.** |
+| [google-agentic-commerce/AP2](https://github.com/google-agentic-commerce/AP2) | Apache-2.0 real (11359B leídos), 3283★, de Google, y la referencia que cita toda la prensa de pago agentic | Licencia impecable, pero **sin push desde el 2026-06-17 (~5 meses)** mientras `x402` y `ucp` empujaron esta misma semana. Varias fuentes secundarias mencionan una donación a la FIDO Alliance (abr-2026) que **no se pudo corroborar** desde este entorno. Usar la **especificación** como referencia conceptual; **no** asumir que el repo es un upstream vivo. Su ecosistema propio es humo: los repos que lo implementan por nombre están todos entre 0★ y 2★. |
+| [moizkamran/ExcursioX](https://github.com/moizkamran/ExcursioX) | Buscado como "travel CRM open source", una fuente secundaria lo describe explícitamente como **MIT** y es el único resultado travel-específico de esa búsqueda | **Sin archivo de licencia** (probadas `LICENSE`, `LICENSE.md` y `license` en `main` y `master` el 2026-11-23: 404 en las seis) y **sin push desde el 2024-03-11**, con 22★. El propio README dice "we are working on this". **La fuente secundaria afirmó una licencia que el repo no tiene** — el motivo exacto por el que esta KB lee el archivo. |
 ## Corrección del historial de esta KB
 
 Ciclos anteriores (2026-08-01/02) registraron curvas de estrellas que no resisten medición.

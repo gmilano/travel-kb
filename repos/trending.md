@@ -11,6 +11,39 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — tercera pasada (plano de pago agentic)
+
+Tercer ciclo del mismo día; las dos secciones anteriores quedan intactas debajo. **El hallazgo
+de esta pasada es una inversión de la regla que esta KB venía midiendo hace cuatro ciclos.**
+
+En travel la regla era *plataforma copyleft, infraestructura permisiva*. El plano de pago
+agentic **no tiene una sola pieza copyleft**: las cinco especificaciones con tracción son
+Apache-2.0 o MIT. La causa es estructural —es una guerra de estándares entre consorcios, y ahí
+la licencia restrictiva es una desventaja— y la consecuencia es que **en esta capa la pregunta
+deja de ser legal y pasa a ser de apuesta de arquitectura**.
+
+| Repo | Licencia (leída) | Stars | Último push |
+|------|------------------|-------|-------------|
+| [x402-foundation/x402](https://github.com/x402-foundation/x402) | Apache-2.0 (11324B) | 6822 | 2026-11-20 |
+| [Universal-Commerce-Protocol/ucp](https://github.com/Universal-Commerce-Protocol/ucp) | Apache-2.0 (11358B) | 3517 | 2026-11-21 |
+| [google-agentic-commerce/AP2](https://github.com/google-agentic-commerce/AP2) | Apache-2.0 (11359B) | 3283 | **2026-06-17** |
+| [agentic-commerce-protocol/agentic-commerce-protocol](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol) | Apache-2.0 (10947B) | 1609 | **2026-07-18** |
+| [forter/trusted-agentic-commerce-protocol](https://github.com/forter/trusted-agentic-commerce-protocol) | MIT (1062B) | 180 | 2026-07-08 |
+
+### La capa que la prensa llama central es la que está quieta
+
+Las dos especificaciones de **autorización e interacción** (AP2, ACP) llevan cuatro y cinco
+meses sin commit. Las dos de **rieles y comercio** (x402, UCP) empujaron esta semana. Es el
+mismo tipo de hallazgo que la segunda pasada registró con las licencias de dato: **lo que se
+cita no siempre es lo que se mantiene.** Detalle y cautelas en `intel/trends.md` → 18.
+
+### Brecha travel medida en la misma pasada
+
+`airline payment agent protocol`, `hotel booking payment mandate`, `AP2 mandate implementation`
+y `travel refund chargeback agent`: **0 resultados cada una**. El plano de pago es horizontal y
+sólido; **su aterrizaje en travel no existe en abierto** (`repos/foundations.md` → *Brechas del
+plano de pago*).
+
 ## 2026-11-23 — segunda pasada (plano operativo de vuelo)
 
 Segundo ciclo del mismo día; la sección de la mañana queda intacta debajo. **El hallazgo de

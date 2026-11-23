@@ -12,6 +12,38 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — tercera pasada (plano de pago agentic)
+
+Tercer ciclo del mismo día. **No reemplaza a las dos pasadas anteriores**: las secciones de la
+mañana (frontera) y de la tarde (vuelo) quedan intactas debajo. Foco: **con qué se construye el
+corte en el pago** que las once recetas de esta KB venían nombrando sin instrumentar.
+Verificación: 9/9 slugs nuevos vivos por `git ls-remote`, licencias **leídas del archivo**,
+métricas por `search/repositories`.
+
+**Lo que entra** (detalle en `agents/top.md` → *Pago agentic*):
+
+| Repo | Licencia | Stars | Push | Nota |
+|------|----------|-------|------|------|
+| [google-agentic-commerce/a2a-x402](https://github.com/google-agentic-commerce/a2a-x402) | Apache-2.0 | 572 | 2026-11-11 | Pago agente-a-agente sobre A2A. |
+| [paypal/agent-toolkit](https://github.com/paypal/agent-toolkit) | Apache-2.0 | 199 | 2026-09-01 | El único con contraparte en un hito real de travel (Sabre + Mindtrip). |
+| [NVIDIA-AI-Blueprints/Retail-Agentic-Commerce](https://github.com/NVIDIA-AI-Blueprints/Retail-Agentic-Commerce) | Apache-2.0 | 89 | 2026-11-23 | ACP + UCP con control del merchant. Push el mismo día. |
+| [Shopify/ucp-cli](https://github.com/Shopify/ucp-cli) | MIT | 84 | 2026-11-09 | Skill de compra para agentes. |
+
+**Las tres trampas de esta pasada** (detalle en `agents/top.md` → *Verificar antes de usar*):
+
+1. **`visa/trusted-agent-protocol` no es open source.** 224★, marca Visa, y un `LICENSE.md` de
+   **398 bytes** que remite a los términos comerciales del Visa Developer Center. Es la cuarta
+   vez en tres pasadas que `NOASSERTION` obliga a abrir el archivo, y la primera en que el
+   nombre del titular es justamente lo que desarma la sospecha.
+2. **`google-agentic-commerce/AP2` tiene licencia impecable y el repo quieto** desde el
+   2026-06-17.
+3. **`moizkamran/ExcursioX` fue descrito como MIT por una fuente secundaria y no tiene archivo
+   de licencia** (404 en las seis rutas probadas), ni push desde 2024.
+
+**El dato que ordena la pasada:** `AP2 mandate implementation stars:>=20` devuelve **0**. El
+protocolo más citado del pago agentic no tiene implementación con tracción — ver
+`intel/trends.md` → 18.
+
 ## 2026-11-23 — segunda pasada (plano operativo de vuelo)
 
 Segundo ciclo del mismo día. **No reemplaza a la pasada anterior**: la sección de la mañana

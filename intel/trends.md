@@ -280,6 +280,55 @@ una propuesta hay que abrir el Anexo III del Reglamento (UE) 2024/1689 y el Regl
 hallazgo sin su límite es exactamente como se fabrican los datos que esta KB pasó noviembre
 corrigiendo.
 
+## 17. El plano de pago agentic es el primero del vertical donde la licencia no es el problema
+
+Medido el 2026-11-23 (tercera pasada). Durante cuatro ciclos la regla de esta KB fue
+**plataforma copyleft, infraestructura permisiva** (→ 8), y el plano de frontera se registró
+como *la excepción permisiva* (→ 11). El plano de pago no es una excepción más: es una
+**inversión completa**. Las cinco especificaciones con tracción son **Apache-2.0 o MIT**, sin
+una sola pieza copyleft, y las cuatro herramientas utilizables también.
+
+La causa no es cultural, es estructural: **es una guerra de estándares entre consorcios**
+—Google (AP2, a2a-x402), OpenAI + Stripe (ACP), la fundación x402, Shopify y UCP—, y en una
+guerra de estándares la licencia restrictiva es una desventaja competitiva. Nadie cobra por el
+protocolo; se cobra por el riel.
+
+**Qué cambia para un engagement.** En todos los demás planos de travel la primera pregunta es
+"¿podemos construir sobre esto?". Acá esa pregunta ya está contestada que sí, y la primera
+pregunta pasa a ser **"¿cuál de estos sobrevive a 2027?"** — que es una apuesta de arquitectura,
+no un problema legal. La respuesta defensiva es la de siempre en esta KB: **neutralidad de
+protocolo**, con la capa de autorización como adaptador propio.
+
+## 18. La especificación se congeló; los rieles se mueven
+
+El dato que ordena el plano de pago, medido sobre `pushed_at` el 2026-11-23:
+
+| Capa | Repo | Stars | Último push |
+|------|------|-------|-------------|
+| Rieles (mover dinero) | `x402-foundation/x402` | 6822 | 2026-11-20 |
+| Comercio (merchant of record) | `Universal-Commerce-Protocol/ucp` | 3517 | 2026-11-21 |
+| **Autorización (¿el usuario consintió?)** | `google-agentic-commerce/AP2` | 3283 | **2026-06-17** |
+| **Interacción comprador-agente-comercio** | `agentic-commerce-protocol/...` | 1609 | **2026-07-18** |
+
+Las dos capas que la prensa trata como el corazón del pago agentic —**autorización e
+interacción**— llevan **cuatro y cinco meses sin un commit**, mientras las de rieles y comercio
+empujaron **esta semana**. Y `AP2 mandate implementation stars:>=20` devuelve **0**: el
+protocolo más citado no tiene implementación con tracción.
+
+**La lectura, que es incómoda y por eso se registra:** la prensa del sector —y los ciclos
+anteriores de esta KB, que hablaban del "corte en el pago" como si hubiera infraestructura
+detrás— está adelantada respecto del código. **El mandato firmado, que es la primitiva de la
+que depende todo el discurso de "el agente compra por vos", es hoy una especificación quieta.**
+Para travel eso no es malo: confirma que el entregable honesto sigue terminando en el merchant
+of record, y que **la capa de autorización es un lugar donde construir IP, no una dependencia
+que se adopta.**
+
+⚠️ **Cautela explícita:** un repo quieto no es un estándar muerto. AP2 puede haberse movido a
+otra gobernanza —varias fuentes secundarias mencionan la FIDO Alliance en abril de 2026, y
+**no se pudo corroborar desde este entorno**—. Lo que está medido es el `pushed_at` del repo
+canónico, no el destino del estándar. Antes de descartarlo en una propuesta, verificar dónde
+vive hoy.
+
 ---
 *Fuentes: Phocuswright 2026, IATA Global Passenger Survey 2026, Expedia Group APAC 2026,
 Criteo, Visa 2026, Agoda, prensa especializada de travel, textos regulatorios de UE/APAC/LATAM,

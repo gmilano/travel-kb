@@ -150,6 +150,20 @@ ley** — se registra así porque un ciclo anterior lo arrastró sin poder verif
    OpenSky, cuyos términos de dato son no comerciales (ver `repos/foundations.md`). Receta en
    `compose/patterns.md` → Receta 10.
 
+
+7. **El pago agentic ya ocurrió acá, y conviene saber exactamente qué ocurrió.** El hito es
+   **Sabre + PayPal + Mindtrip**: reserva de vuelo dentro del chat, lanzada en 2026
+   (*Mindtrip Flights*; la prensa difiere entre el anuncio de febrero/marzo y el lanzamiento
+   del 6 de mayo — **citar "2026" y no un día**). Lo que importa no es que "un agente
+   reservó": es **cómo se repartió**. Mindtrip conversa, **Sabre** pone inventario, ticketing
+   y servicing, y **PayPal** cobra y verifica identidad. **El agente no es el merchant of
+   record en ninguna parte del flujo** — es la confirmación comercial de la tendencia 2, y el
+   argumento más fuerte que Globant tiene para decirle a un cliente que el entregable honesto
+   no incluye cobrar. Se suma el movimiento de distribución: **Marriott integró Google AI Mode
+   para reserva directa**, y Google declaró que **no es merchant of record**. North America es
+   hoy la **única región con un flujo agentic de punta a punta en producción**, y la pieza que
+   falta para construirlo es la capa de mandato, que no existe en abierto (`AP2 mandate
+   implementation stars:>=20` → 0). Receta en `compose/patterns.md` → Receta 12.
 ### EMEA
 
 **Evidencia.** *[sin verificar]* 38% de adopción de AI en travel en Europa Occidental y 42% en
@@ -258,6 +272,47 @@ agencia vía NDC (solo su negocio de agencia).
    el Reglamento (UE) 2026/1744 en la fuente oficial. Receta en `compose/patterns.md` →
    Receta 11.
 
+
+**Agregado en la tercera pasada del 2026-11-23 — el pago agentic es, en EMEA, un problema de
+autenticación, no de protocolo.**
+
+Es la diferencia regional más accionable que esta KB midió sobre el plano de pago. **PSD2 no
+tiene régimen específico para agentes**: las fuentes consultadas coinciden en que la directiva
+es tecnológicamente neutra y por lo tanto **alcanza al agente que inicia un pago**, sin
+excepción ni puerta especial. El choque es con la **SCA (autenticación reforzada)**, cuyo
+diseño de dos factores —conocimiento, posesión, inherencia— **presupone un pagador humano
+presente**. Un agente que paga solo no encaja en esa estructura, y las fuentes señalan que el
+**Reglamento de Servicios de Pago (PSR) en trámite tampoco aborda expresamente la ejecución
+agentic**.
+
+Dos consecuencias prácticas, dichas como se le dicen a un cliente:
+
+1. **Entregar credenciales al agente traslada el riesgo al consumidor.** Al menos una fuente
+   lo ata al artículo 69 de PSD2 y a los términos del banco. Un diseño que guarde credenciales
+   del viajero para que el agente pague **es, en EMEA, un pasivo** — y es exactamente el
+   diseño que un cliente pide cuando dice "que reserve solo".
+2. **El mandato no cubre el error.** Un agente puede comprar lo equivocado **sin salirse** del
+   mandato aprobado; esa disputa puede no calificar como fraude, y entonces no hay a quién
+   reclamarle. Es el hueco que ningún protocolo del plano resuelve.
+
+**Señal de mercado:** se reportan **Santander y Mastercard** con pagos de punta a punta
+ejecutados por un agente en Europa (1-mar-2026), y transacciones agentic autenticadas de
+Mastercard en Polonia — descritos como **pilotos con topes de gasto y autenticación por
+compra**, no como producto abierto. El patrón coincide con lo que recomienda la Receta 12:
+mandato acotado, vencible y auditable.
+
+⚠️ **Límite de verificación.** Todo este bloque proviene de **análisis de estudios jurídicos y
+prensa de pagos concordantes entre sí**, no de EUR-Lex: no se leyeron PSD2, sus RTS de SCA ni
+el borrador de PSR en la fuente oficial desde este entorno. Las fuentes además **difieren en
+fechas** y tratan la posición europea como **no resuelta**. Antes de comprometer un diseño de
+pago agentic en una propuesta EMEA, esto lo valida el equipo legal del cliente, no esta KB.
+
+**Nota de corroboración:** la mención de que **AP2 pasó a la FIDO Alliance**, que la tercera
+pasada registró como no corroborada en `agents/top.md`, aparece **por segunda vez y en una
+fuente independiente** (análisis de pagos), que describe un grupo de trabajo desarrollando
+especificaciones de comercio iniciado por agentes. **Sigue sin confirmarse en fuente primaria**,
+pero ya son dos fuentes independientes: es la explicación más probable del repo quieto desde
+junio (`intel/trends.md` → 18).
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -332,6 +387,27 @@ entorno. Verificar antes de prometer.)*
    (`repos/foundations.md`) es de origen europeo y norteamericano, y en APAC hay que asumir
    cobertura ADS-B de terceros o acuerdo con el operador local.
 
+
+**Agregado en la tercera pasada del 2026-11-23 — el plano de pago agentic no mira a APAC, y eso
+se registra como brecha, no como silencio.**
+
+Se buscó específicamente cómo aterriza el pago agentic en los rieles domésticos que dominan la
+región —el tipo de riel donde realmente se paga un viaje en China o India— y **no se encontró
+ninguna fuente que lo trate**. Las cinco especificaciones del plano (`repos/foundations.md` →
+*Plano de pago agentic*) son de origen estadounidense y están escritas alrededor de tarjeta y
+stablecoin. **Ninguna documenta integración con los rieles de pago domésticos de APAC.**
+
+**Por qué importa más acá que en ninguna otra región:** APAC es, por lejos, la región con mayor
+adopción declarada de AI en travel de esta KB (**79% de las empresas de travel ya usan AI y 97%
+planea hacerlo**, Expedia 2026). Es decir: **la región que más rápido va a pedir checkout
+agentic es la que menos cubierta está por los protocolos que lo definen.** Para un engagement
+APAC hay que asumir **integración con el proveedor de pago local como trabajo propio**, no como
+algo que el protocolo resuelve — y presupuestarlo.
+
+⚠️ **Esto es una brecha de búsqueda, no un hecho probado.** Significa "no se encontró
+documentación", no "no existe". La verificación pendiente de mayor valor para APAC en el
+próximo ciclo es ir a la documentación de los proveedores de pago dominantes de la región y
+ver si publicaron soporte agentic.
 ### LATAM
 
 **Evidencia — y aquí la narrativa ha ido por delante de los datos durante tres industrias
@@ -424,6 +500,26 @@ español.** Eso no es una carencia de la región: es el hueco más claro del ver
    comercialmente — algo que ni North America ni EMEA tienen hoy (ver la advertencia sobre
    OpenSky en `repos/foundations.md`).
 
+
+**Agregado en la tercera pasada del 2026-11-23 — pago agentic en LATAM: la misma brecha que
+APAC, con una asimetría a favor.**
+
+Igual que en APAC, **no se encontró ninguna fuente que trate cómo aterriza el pago agentic en
+los rieles domésticos de la región**. Las especificaciones del plano no documentan integración
+con rieles locales. Se registra explícitamente como brecha medida.
+
+**La asimetría a favor, y es la única región donde aparece.** LATAM es, en esta KB, la región
+donde **el Estado compra** (`intel/trends.md` → 9): Peru.travel, la Chile Travel App de
+Sernatur y el planificador de Visit Argentina son asistentes **oficiales de turismo nacional**.
+Ese comprador **no necesita el plano de pago en absoluto**: un asistente de turismo estatal
+informa, recomienda y deriva — **no cobra**. Es decir que la región cuyo comprador principal
+está menos cubierto por los protocolos de pago es también **la que menos los necesita para su
+caso de uso dominante** (`compose/patterns.md` → Receta 6).
+
+**La lectura comercial:** no vender pago agentic en LATAM como la punta de lanza. La punta es
+el asistente de turismo nacional —que ya tiene tres precedentes de compra estatal— y el pago
+entra después, con el operador privado, y con integración local presupuestada como trabajo
+propio.
 ## Posicionamiento Globant
 
 1. **Vender la brecha planificación→compra, no "un agente que reserva".** 52/2 en EE.UU.,

@@ -425,6 +425,67 @@ calculadoras de huella de viaje con más de 30★ no reciben push desde 2021 y 2
 licencia del código y los términos del dato— y escrita en el documento del proyecto, en vez de
 una dependencia barata que alguien tiene que arrancar tres días antes de entregar.
 
+## Receta 12 — Checkout agentic sin tocar el merchant of record (la receta transversal de pago)
+
+Agregada en la **tercera pasada del 2026-11-23**. Las once recetas anteriores terminan con la
+frase *"corte en el pago"* o *"se entrega al merchant of record"* y **ninguna dice con qué**.
+Esta la cierra. Es transversal: aplica a las cuatro regiones, porque el protocolo es
+horizontal y lo regional es el **riel de cobro**, no el diseño.
+
+**El problema real.** El cliente pide "que el agente reserve". Las aerolíneas no ceden el
+cobro (`intel/market.md` → Players; United quiere humano en la compra). El agente, entonces,
+tiene que poder **probar que el viajero autorizó esta compra concreta** sin ser él quien cobra.
+Eso es un problema de *autorización*, no de *pagos*.
+
+**Las piezas, con su licencia leída:**
+
+| Capa | Pieza | Licencia | Por qué esta |
+|------|-------|----------|--------------|
+| Modelo de autorización | [`google-agentic-commerce/AP2`](https://github.com/google-agentic-commerce/AP2) | Apache-2.0 | Se toma **la especificación de mandatos**, no el repo como dependencia: está quieto desde 2026-06-17 (`intel/trends.md` → 18). |
+| Identidad del agente | [`forter/trusted-agentic-commerce-protocol`](https://github.com/forter/trusted-agentic-commerce-protocol) | MIT | Responde *¿este agente es quien dice ser?*, que es la pregunta que hace el fraud team del cliente, no la que hace el CTO. |
+| Comercio / merchant of record | [`Universal-Commerce-Protocol/ucp`](https://github.com/Universal-Commerce-Protocol/ucp) | Apache-2.0 | Es la única especificación del plano cuyo diseño declarado **deja al comercio como merchant of record** — la restricción no negociable de travel. |
+| Arquitectura de referencia | [`NVIDIA-AI-Blueprints/Retail-Agentic-Commerce`](https://github.com/NVIDIA-AI-Blueprints/Retail-Agentic-Commerce) | Apache-2.0 | ACP + UCP funcionando con control del merchant. **Es retail**: se lee la arquitectura, no se despliega el producto. |
+| Riel (solo si aplica) | [`x402-foundation/x402`](https://github.com/x402-foundation/x402) | Apache-2.0 | Para **pagarle a un proveedor**, no para cobrarle al viajero. Ver la advertencia de abajo. |
+| Inventario y cobro reales | Sabre / Travelport / PayPal vía contrato | — | El dinero lo mueve quien ya tiene licencia para moverlo. |
+
+**El cableado, en orden:**
+
+1. **El agente arma el carrito** con las piezas que ya están en esta KB (`punitarani/fli` para
+   vuelo, `RollingGo-AI/RollingGo-Hotel-MCP-Global` para hotel).
+2. **El viajero firma un mandato acotado** — destino, rango de fechas, tope de gasto, vigencia.
+   Se implementa con el **modelo** de AP2 sobre firma propia; el mandato se guarda con su hash
+   y su vencimiento. **Esta es la pieza de IP:** no hay implementación abierta con tracción
+   (`AP2 mandate implementation stars:>=20` → **0**).
+3. **El comercio verifica dos cosas distintas**: que el mandato cubre *esta* compra, y que el
+   agente es quien dice ser (TACP). Son dos verificaciones separadas y conviene que lo sigan
+   siendo: la primera la audita legales, la segunda la audita el equipo de fraude.
+4. **El cobro lo ejecuta el merchant of record** — aerolínea, hotel o GDS. El agente nunca
+   toca el dinero del viajero. El hito real que valida esto es **Sabre + PayPal + Mindtrip**
+   (vuelos, 2026): Mindtrip conversa, Sabre tiene el inventario y **PayPal cobra**. Tres
+   actores, y el agente no es ninguno de los que cobra.
+5. **Todo mandato se archiva con su vencimiento**, porque la pregunta del contracargo llega
+   meses después y la respuesta es el mandato firmado, no el log del chat.
+
+**Lo que esta receta NO resuelve, dicho antes de que lo pregunte el cliente:**
+
+- **El contracargo.** `travel refund chargeback agent stars:>=5` → **0**. Ninguno de estos
+  protocolos dice quién responde si el pasajero desconoce el cargo. Es contrato, no código.
+- **El reembolso regulado.** Los plazos del US DOT y de EU261 no están en ningún protocolo de
+  pago. Eso vive en la **Receta 10**, y se conecta acá: el mandato dice *qué se autorizó*; el
+  motor de derechos dice *qué se debe devolver*. Son dos relojes distintos.
+- **El pago en cripto como respuesta al cobro del viajero.** `x402` mueve stablecoins y es la
+  pieza más viva del plano, pero **un viajero que reclama un vuelo quiere su tarjeta de vuelta,
+  no un token**. Usarlo para liquidar entre agentes y proveedores; no proponerlo como checkout
+  de consumidor en un engagement de travel sin un motivo muy explícito.
+- **El ticketing con plazo.** Un PNR vence; un mandato vence; no vencen juntos. Ninguna
+  especificación del plano modela esa doble vigencia — **y es exactamente donde se rompen
+  estas integraciones en producción.**
+
+**Qué prometer.** "El viajero autoriza una vez, con límites explícitos y auditables; el agente
+opera dentro de esos límites; el cobro lo hace quien hoy ya cobra." Eso es cierto, es
+construible con licencias permisivas verificadas, y **no requiere que la aerolínea ceda nada**
+— que es la razón por la que es vendible.
+
 ## Lo que NO conviene prometer
 
 | Pedido frecuente | Por qué no, hoy | Qué ofrecer en cambio |

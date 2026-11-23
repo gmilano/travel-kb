@@ -33,6 +33,7 @@ updated: 2026-11-23
 | [antonkarasbiz/qloapps-hotel-booking](https://github.com/antonkarasbiz/qloapps-hotel-booking) | 59★, aparece **primero** al buscar "open source hotel PMS booking engine" y se describe igual que el original | Es un **fork** de QloApps, no el upstream. Último push 2026-09-13 frente al 2026-11-20 del original. Partir del fork es heredar el mantenimiento de otro. |
 | [digital-druid/hoteldruid](https://github.com/digital-druid/hoteldruid) | Citado en todo listado de "mejores PMS open source 2026" | Mirror de GitHub **sin push desde 2018-07-01** (19★). El proyecto upstream sigue vivo fuera de GitHub, pero este repo no es un punto de partida. Además es AGPL-3.0 y solo back-office: no trae booking engine público. |
 
+| [moizkamran/ExcursioX](https://github.com/moizkamran/ExcursioX) | Es **el único resultado travel-específico** al buscar "travel CRM open source", y una fuente secundaria lo describe explícitamente como **MIT**: CRM de viajes con ticketing, booking y gestión hotelera sobre MERN | **No tiene archivo de licencia.** Probadas `LICENSE`, `LICENSE.md` y `license` en `main` y `master` el 2026-11-23: **404 en las seis**. 22★ y **sin push desde el 2024-03-11**; el propio README dice "we are working on this, please be patient". La fuente secundaria **afirmó una licencia que el repo no tiene** — el motivo exacto por el que esta KB lee el archivo en vez del listado. El hueco de "CRM/back-office de agencia open source" **sigue vacío**, y se cubre con Odoo (LGPL-3.0) + módulos propietarios, como ya indica la tabla de arriba. |
 ## Cómo customizar con AI
 
 El patrón que funciona con estas plataformas, en orden:
@@ -76,6 +77,7 @@ comprometer una licencia en una propuesta hay que volver a abrirlo.**
 
 ## Lo que agregó la segunda pasada del 2026-11-23
 
+
 Una plataforma (**OpenFlights**, AGPL-3.0) y **una advertencia que cambia el checklist de
 diligencia** de todas las demás.
 
@@ -94,6 +96,25 @@ La diligencia, entonces, pasa a tener dos pasos y no uno:
    leer, el componente es apto para prototipo interno y **no** para un entregable facturable,
    y así hay que decirlo en la propuesta.
 
+## Lo que agregó la tercera pasada del 2026-11-23
+
+**Ninguna plataforma nueva, y el hallazgo es ese.** La pasada se dedicó al **plano de pago
+agentic** (`repos/foundations.md` → *Plano de pago agentic*), y el resultado para este archivo
+es negativo y conviene dejarlo escrito: **ninguna de las plataformas verticales de arriba
+—QloApps, Odoo, Kamra PMS, HAIP, TREK— documenta soporte para ninguno de los protocolos de
+pago agentic** (AP2, ACP, UCP, x402).
+
+Eso no es una falla de las plataformas: es **la distancia real entre las dos capas**. El
+discurso de "el agente reserva y paga" supone que el PMS o el motor de reserva sabe recibir un
+mandato firmado, y **hoy ninguno sabe**. Para un piloto eso significa que la integración de
+pago agentic sobre una de estas plataformas es **desarrollo a medida completo**, no
+configuración — y es una de las pocas cosas de esta KB que conviene decir en la primera
+reunión, no en la tercera.
+
+La única excepción adyacente es [`Shopify/ucp-cli`](https://github.com/Shopify/ucp-cli) (MIT,
+84★), que es el patrón correcto —el comercio expone su inventario como *skill* para agentes—
+pero es retail y no travel. **Sirve como referencia de arquitectura para envolver QloApps o
+Kamra PMS; no como pieza a desplegar.**
 ---
 *Ver también: `repos/foundations.md` (ruteo, datos e identidad) y `compose/patterns.md`
 (recetas concretas).*
