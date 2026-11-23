@@ -1,13 +1,14 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-21
+updated: 2026-11-23
 ---
 
 # 📡 Tendencias — Travel & Hospitality
 
-> Estado del vertical al 2026-11-21. Cada tendencia lleva la evidencia que la sostiene y,
-> cuando la evidencia es débil, lo dice.
+> Estado del vertical al 2026-11-23. Cada tendencia lleva la evidencia que la sostiene y,
+> cuando la evidencia es débil, lo dice. Las tendencias 1–10 se establecieron el 2026-11-21;
+> las 11–13 se agregaron el 2026-11-23 al abrir el **plano de frontera e identidad**.
 
 ## 1. El agente planifica; el humano todavía paga
 
@@ -120,8 +121,71 @@ de alquiler vacacional, reservas de restaurante y SDKs de GDS con comunidad. El 
 **La escasez nunca es el agente: es el acceso tipado y transaccional al dominio.** Es el cuarto
 vertical consecutivo de esta red de KBs donde la medición da ese mismo resultado.
 
+Ampliado el 2026-11-23 con seis consultas más, todas del plano de frontera: APIS, PNR, ETIAS,
+biometría de embarque, chequeo de documento tipo Timatic y API de requisitos de visado.
+**Cero útiles en las seis.**
+
+## 11. El plano de frontera es la excepción permisiva de todo el vertical
+
+En travel, la regla medida durante cuatro ciclos es que **la plataforma es copyleft y la
+infraestructura es permisiva** (TREK AGPL-3.0, QloApps OSL-3.0 frente a graphhopper, photon,
+motis). El documento de viaje rompe la regla: **todo el segmento es permisivo y está vivo.**
+
+[`AndyQ/NFCPassportReader`](https://github.com/AndyQ/NFCPassportReader) (MIT, 867★, push
+2026-11-16) lee el chip ICAO 9303; [`konstantint/PassportEye`](https://github.com/konstantint/PassportEye)
+(MIT, 471★) y [`sivakumar-mahalingam/fastmrz`](https://github.com/sivakumar-mahalingam/fastmrz)
+(Apache-2.0, 174★, push el 2026-11-23) parsean la MRZ;
+[`zkpassport/circuits`](https://github.com/zkpassport/circuits) (Apache-2.0) y
+[`rarimo/passport-zk-circuits`](https://github.com/rarimo/passport-zk-circuits) (MIT) prueban
+atributos sin revelar el documento; y el verificador del **EU Digital Identity Wallet** es
+Apache-2.0, mantenido por la Comisión Europea. **Hay dos implementaciones independientes de
+cada problema**, que es la señal de un segmento sano y no de un proyecto solitario.
+
+**Por qué pasa esto y no en otros planos:** la identidad documental es un estándar público
+(ICAO 9303) y no un contrato comercial. Donde la especificación es pública, el open source
+crece. Donde la especificación es contractual (NDC, Timatic, PNR), no hay nada. **Esa es la
+regla predictiva del vertical: el piso open source existe exactamente donde el estándar es
+público, y en ningún otro lado.**
+
+## 12. El open source de frontera lee el documento pero no conoce la regla
+
+El complemento exacto de la tendencia 1. Allá, el agente planifica y no paga. Acá, **el
+software identifica y no decide.** Entre "sé quién sos" y "podés entrar" hay un dato —la regla
+de admisión por par pasaporte×destino con su fecha de vigencia— que no existe en abierto.
+
+La única fuente abierta es una cadena de dos repos: [`ilyankou/passport-index-dataset`](https://github.com/ilyankou/passport-index-dataset)
+(MIT, 310★) **archivado desde enero-2025**, que apunta como sucesor a
+[`imorte/passport-index-data`](https://github.com/imorte/passport-index-data) (MIT, 88★), que
+se declara *"updated regularly"* y cuyo dato lleva **nueve meses sin actualizar** (README:
+"Last updated: 17 February 2026"; último push 2026-03-01). Su taxonomía es excelente; sus
+valores no sirven para decirle a nadie si puede volar.
+
+El dato vigente vive en **Timatic (IATA)**, de acceso contractual. Es el monopolio de datos
+más limpio que esta red de KBs midió en cualquier industria: `timatic travel document check
+stars:>=20` devuelve **0**.
+
+## 13. Un estándar de identidad en el que el regulador escribe el código
+
+Nuevo y específico de EMEA: la Comisión Europea no publica solo la norma, **publica la
+implementación**, y la estratifica por licencia a propósito — especificación **CC BY 4.0**,
+apps de referencia **EUPL-1.2**, librerías y servicios **Apache-2.0**.
+
+Esto invierte el hallazgo que la KB de retail registró el mismo mes sobre beckn/ONDC, donde la
+especificación era la pieza *restrictiva* (CC BY-NC-SA, NonCommercial) y las implementaciones
+eran permisivas. **La licencia de una especificación y la de su implementación son variables
+independientes: hay que leer las dos y no se puede predecir una desde la otra.** La regla ya
+se verificó en las dos direcciones, en dos industrias, en el mismo mes.
+
+**Corolario de método, el más caro de este ciclo:** [`Kamra-PMS/kamra-pms`](https://github.com/Kamra-PMS/kamra-pms)
+pasó de AGPL-3.0 a Apache-2.0 el **2026-11-21** (commit `ce8dec8`), el mismo día en que el
+ciclo anterior leyó el archivo y registró AGPL-3.0 correctamente. **Una licencia verificada no
+es un hecho permanente: es una medición con fecha.** Desde este ciclo, toda licencia citada en
+esta KB lleva la fecha de lectura del archivo.
+
 ---
 *Fuentes: Phocuswright 2026, IATA Global Passenger Survey 2026, Expedia Group APAC 2026,
 Criteo, Visa 2026, Agoda, prensa especializada de travel, textos regulatorios de UE/APAC/LATAM,
-y medición directa sobre la API de GitHub. Las cifras de proveedor sin informe primario
+Skift Data + AI Summit Europe (oct-2026), ICAO FALP14 (abr-2026),
+y medición directa sobre la API de GitHub y sobre los archivos de licencia en
+`raw.githubusercontent.com`. Las cifras de proveedor sin informe primario
 localizable están marcadas como tales en `intel/market.md`.*

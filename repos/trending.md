@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-21
+updated: 2026-11-23
 ---
 
 # 📈 Repos trending — Travel & Hospitality
@@ -10,6 +10,50 @@ updated: 2026-11-21
 > Este archivo sigue **repos de infraestructura y plataforma**. Para agentes y skills ver
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
+
+## 2026-11-23
+
+**El hallazgo del ciclo es un cambio de licencia, no un repo nuevo.**
+
+| Repo | Licencia | Stars | Último push | Qué cambió |
+|------|----------|-------|-------------|------------|
+| [Kamra-PMS/kamra-pms](https://github.com/Kamra-PMS/kamra-pms) | **Apache-2.0** (era AGPL-3.0) | 113 | 2026-11-23 | **Relicenciado de AGPL-3.0 a Apache-2.0.** Commit `ce8dec8`, *"chore: relicense Kamra core to Apache-2.0 (#591) (#631)"*, fechado **2026-11-21** — el mismo día en que el ciclo anterior leyó el archivo y encontró AGPL-3.0. Verificado hoy clonando el repo y siguiendo el historial de `license.txt` (11358B, texto Apache completo, en `main` y en `master`). Convierte al único PMS diseñado para ser operado por agentes en **el PMS permisivo más grande del vertical**. |
+| [eu-digital-identity-wallet](https://github.com/eu-digital-identity-wallet) (org) | **tres licencias distintas, a propósito** | 780 / 309 / 243 / 66 / 64 / 47 / 43 | 2026-11-17 … 2026-11-23 | Entra a la KB por primera vez. Ver *Estratificación de licencia* abajo: la especificación, las apps de referencia y las librerías **no comparten licencia**, y la diferencia decide la arquitectura. |
+| [sivakumar-mahalingam/fastmrz](https://github.com/sivakumar-mahalingam/fastmrz) | Apache-2.0 | 174 | 2026-11-23 | Push hoy. Infraestructura de lectura de documento bajo licencia permisiva. |
+| [liketrek/TREK](https://github.com/liketrek/TREK) | AGPL-3.0 | 15881 | 2026-11-22 | +39★ en dos días. Sigue siendo el repo de travel más grande y sigue siendo copyleft de red. |
+| [Qloapps/QloApps](https://github.com/Qloapps/QloApps) | OSL-3.0 / AFL-3.0 | 14509 | 2026-11-20 | +9★. Estable. |
+| [headwaymaps/headway](https://github.com/headwaymaps/headway) | Apache-2.0 | 3022 | 2026-11-22 | Sin cambio de estrellas en dos días, push activo. |
+| [motis-project/motis](https://github.com/motis-project/motis) | MIT | 630 | 2026-11-21 | +2★. |
+
+### Estratificación de licencia del EU Digital Identity Wallet
+
+Leídos los archivos de licencia el 2026-11-23, la organización oficial de la Comisión Europea
+usa **tres licencias según la capa**, y esto no es desprolijidad, es diseño:
+
+| Capa | Repos | Licencia (archivo leído) | Qué implica para un engagement |
+|------|-------|--------------------------|-------------------------------|
+| Especificación (ARF) | [`eudi-doc-architecture-and-reference-framework`](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework) (780★) | **CC BY 4.0** (`LICENCE`, 249B) | Documentación con atribución. **Se puede citar, derivar y usar comercialmente.** GitHub la reporta como `NOASSERTION`. |
+| Apps de referencia | [`eudi-app-android-wallet-ui`](https://github.com/eu-digital-identity-wallet/eudi-app-android-wallet-ui) (243★), [`eudi-app-ios-wallet-ui`](https://github.com/eu-digital-identity-wallet/eudi-app-ios-wallet-ui) (93★), [`av-app-android-wallet-ui`](https://github.com/eu-digital-identity-wallet/av-app-android-wallet-ui) (309★) | **EUPL-1.2** (`LICENSE.txt`, 13961B) | Copyleft europeo con cláusula de compatibilidad. **Forkear la app arrastra la obligación al producto del cliente.** |
+| Librerías y servicios | [`eudi-lib-android-wallet-core`](https://github.com/eu-digital-identity-wallet/eudi-lib-android-wallet-core) (64★), [`eudi-srv-pid-issuer`](https://github.com/eu-digital-identity-wallet/eudi-srv-pid-issuer) (43★), [`eudi-srv-verifier-endpoint`](https://github.com/eu-digital-identity-wallet/eudi-srv-verifier-endpoint) (66★), [`eudi-lib-jvm-openid4vci-kt`](https://github.com/eu-digital-identity-wallet/eudi-lib-jvm-openid4vci-kt) (47★), [`eudi-lib-ios-wallet-kit`](https://github.com/eu-digital-identity-wallet/eudi-lib-ios-wallet-kit) (43★) | **Apache-2.0** (`LICENSE`, 9425–11357B) | Permisivas. **Acá se construye.** |
+
+**Regla operativa, en una línea: integrar contra las librerías y servicios Apache-2.0; tratar
+las apps EUPL-1.2 como referencia de UX para leer, no como base para forkear.**
+
+Esto **invierte** el hallazgo que la KB de retail registró el mismo mes sobre beckn/ONDC, donde
+la especificación era la pieza restrictiva (CC BY-NC-SA, *NonCommercial*) y las
+implementaciones eran permisivas. Acá la especificación es la pieza **más** libre de las tres.
+La lección generaliza a las 12 industrias y ya se cumplió en las dos direcciones:
+**la licencia de una especificación y la de su implementación son variables independientes —
+hay que leer las dos, y no se puede predecir una desde la otra.**
+
+**Nota de método, la más cara de este ciclo.** El ciclo anterior leyó el archivo de licencia de
+Kamra correctamente, y **48 horas después el dato era falso**. No fue un error de medición: fue
+una medición con fecha de vencimiento. De acá en más, **toda licencia citada en esta KB lleva
+la fecha en que se leyó el archivo**, y una licencia verificada hace más de una semana se
+vuelve a verificar antes de comprometerla en una propuesta. Un repo puede relicenciarse entre
+el kickoff y la firma.
+
+---
 
 ## 2026-11-21
 

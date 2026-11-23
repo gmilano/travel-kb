@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-21
+updated: 2026-11-23
 ---
 
 # 🗺️ Mapa de mercado — Travel & Hospitality
@@ -11,6 +11,13 @@ updated: 2026-11-21
 > **Convención de evidencia:** cada cifra lleva su fuente. Lo que solo aparece en blogs de
 > proveedor se marca **[sin verificar]** en lugar de presentarse como dato. Ciclos anteriores
 > de esta KB citaron cifras de proveedor como hechos establecidos; eso se corrige aquí.
+>
+> **Límite del entorno de ingesta, declarado (2026-11-23):** los dominios oficiales de la UE
+> (`travel-europe.europa.eu`, `home-affairs.ec.europa.eu`) **no son alcanzables desde este
+> entorno** por política de red. Todo lo que sigue sobre EES y ETIAS es de **fuente
+> secundaria** y está marcado como tal. **Antes de comprometer una fecha de EES o ETIAS con
+> un cliente hay que confirmarla contra el sitio oficial.** Se deja escrito en lugar de
+> omitirlo: un límite declarado es información; el silencio parece cobertura.
 
 ## El hecho que ordena todo el vertical
 
@@ -74,9 +81,25 @@ datos (IATA 2026). Las **reglas de visado disuaden al 43% de los viajeros** (IAT
 *[sin verificar]* 45% de los asesores de viaje de NA usan herramientas AI frente a <15% de las
 agencias a nivel global (agregador).
 
+*Agregado el 2026-11-23:*
+- **La misma casa publica 52% y 56%.** Phocuswright da 52% en los datos de su conferencia 2026
+  y **56%** para viajeros activos de EE.UU. en el 1S-2026 (y 39% en el 2S-2025). No es
+  contradicción: son ventanas y definiciones distintas. **Citar el rango y la fecha, nunca un
+  número suelto** — un cliente que compare dos presentaciones nuestras con cifras distintas
+  deja de creernos las dos.
+- *[fuente única]* 54% de los viajeros de EE.UU. usa AI para planificar, pero **solo 22% de
+  las organizaciones de destino ofrece planificación con AI**. Si se sostiene, es la brecha
+  oferta-demanda más explotable de la región, y es el mismo patrón que LATAM ya resolvió por
+  el lado de la compra estatal.
+
 **Regulación.** No hay estatuto federal de AI; la obligación vinculante viene de las
-legislaturas estatales. Nada específico de travel: aplica derecho de consumidor, privacidad y
-seguridad de datos. Canadá opera con un marco de confianza y estándares. El **"AI AGENT Act"
+legislaturas estatales: **cinco leyes estatales de AI vinculaban a empresas a agosto-2026**,
+entre ellas la ley de modelos frontera de California y **TRAIGA en Texas**. Nada específico de
+travel: aplica derecho de consumidor, privacidad y seguridad de datos. **Canadá** no tiene
+estatuto de AI, pero su ley federal de privacidad y la **Ley 25 de Quebec** ya alcanzan a
+cualquier sistema de AI que trate datos personales — que es exactamente lo que hace un flujo
+de identidad del viajero. **México** no tiene ley general de AI; hay proyectos en trámite.
+Canadá opera además con un marco de confianza y estándares. El **"AI AGENT Act"
 del senador Warner, que cubre agentes de cara al consumidor, es un borrador de discusión, no
 ley** — se registra así porque un ciclo anterior lo arrastró sin poder verificarlo.
 
@@ -93,6 +116,16 @@ ley** — se registra así porque un ciclo anterior lo arrastró sin poder verif
 4. **Merchant of record como requisito de arquitectura.** El hito de Travelport funciona
    porque la aerolínea cobra. Cualquier diseño que asuma que el agente cobra choca con la
    postura de las aerolíneas.
+5. **Identidad verificada sin pasivo de datos — la oportunidad que une las dos cifras de NA.**
+   La región tiene a la vez la adopción biométrica más alta del mundo y la mayor preocupación
+   por brechas de datos. No son públicos distintos: es el mismo viajero. El entregable que
+   resuelve ambas es **verificar el documento en el dispositivo y no guardarlo**:
+   [`AndyQ/NFCPassportReader`](https://github.com/AndyQ/NFCPassportReader) (MIT) para leer el
+   chip, [`zkpassport/circuits`](https://github.com/zkpassport/circuits) (Apache-2.0) o
+   [`rarimo/passport-zk-circuits`](https://github.com/rarimo/passport-zk-circuits) (MIT) para
+   probar el atributo sin revelarlo. Con la Ley 25 de Quebec y las leyes estatales encima,
+   "no almacenamos el documento" es defensa legal, no marketing. Receta en
+   `compose/patterns.md` → Receta 7.
 
 ### EMEA
 
@@ -102,6 +135,15 @@ Medio Oriente, con la transformación digital liderada por el Estado como motor 
 *sugiera* opciones — de nuevo, sugerir sí, comprar no. Lufthansa Group: >50% de ventas de
 agencia vía NDC (solo su negocio de agencia).
 
+*Agregado el 2026-11-23 — Skift Data + AI Summit Europe, 13-oct-2026:*
+- **Amex GBT evaluó ~139 casos de uso de AI en el último año, contra 13 el año anterior**:
+  un orden de magnitud en doce meses. Es el mejor indicador publicado de que el corporate
+  travel europeo pasó de pilotos sueltos a cartera.
+- **Kayak y Skyscanner nombran los dos frenos y no son los que se suponen:** confianza y
+  **verificación de precio**. El segundo es un problema de ingeniería resoluble, no de
+  percepción — un agente que muestra un precio que no se sostiene al clic destruye la
+  confianza una vez y para siempre.
+
 **Regulación — la región más densa, y con una contradicción sin resolver.**
 - El **Digital Omnibus on AI, Regulation (EU) 2026/1744**, refina el AI Act.
 - Los requisitos de alto riesgo para sistemas **Annex III stand-alone** se corrieron de
@@ -110,6 +152,9 @@ agencia vía NDC (solo su negocio de agencia).
   transitorio del **Art. 50 el 2026-12-02**. Son provisiones distintas con fechas parecidas y
   años distintos. **No conflacionarlas, y confirmar contra el texto oficial antes de
   comprometer un plazo con un cliente.**
+- ⚠️ **Claim que circula y NO se pudo confirmar:** que la revisión del reglamento de derechos
+  de los pasajeros aéreos obligue a asistentes de accesibilidad con AI desde enero-2026.
+  **Aparece en una sola fuente y no se verificó.** Registrado como trampa, no como dato.
 - Lectura específica de travel: la mayoría de las herramientas de cara al huésped
   **probablemente no califican como alto riesgo**, así que la postergación importa menos de lo
   que sugiere el titular. Lo que sí aplica siempre es transparencia y GDPR.
@@ -117,6 +162,19 @@ agencia vía NDC (solo su negocio de agencia).
   horizontal integral de AI**. La norma vinculante más cercana es la **Regulation 10 de las
   DIFC Data Protection Regulations**, que gobierna datos personales procesados por sistemas
   autónomos y semiautónomos en el DIFC de Dubái. En Arabia Saudita el organismo clave es SDAIA.
+
+**Frontera y entrada — el calendario que ningún ciclo anterior de esta KB registró.**
+*Todo este bloque es de fuente secundaria: ver el límite de entorno declarado arriba.*
+- **EES (Entry/Exit System):** despliegue progresivo iniciado el **2025-10-12** y con cierre
+  previsto el **2026-04-09**. Las fuentes secundarias lo dan por completado.
+- **ETIAS: a fines de noviembre de 2026 NO hay fecha oficial anunciada.** Las fuentes más
+  recientes indican que el objetivo "4T-2026" fue retirado del sitio oficial en julio-2026 y
+  que la expectativa se corrió a 2027. La Comisión se comprometió a anunciar la fecha con
+  varios meses de anticipación. **Las fuentes de mediados de 2026 todavía dicen "4T-2026":
+  están desactualizadas.** Si un cliente planifica contra el 4T-2026, el dato es viejo.
+- **La lectura comercial es la misma en los dos casos:** un requisito de entrada nuevo que
+  afecta a cientos de millones de viajeros, con fecha incierta, es exactamente la clase de
+  evento que rompe itinerarios ya vendidos. Quien tenga el *servicing* resuelto gana el ciclo.
 
 **Oportunidades.**
 1. **NDC es un activo europeo.** Lufthansa es el caso más avanzado de NDC en agencias. Un
@@ -130,6 +188,19 @@ agencia vía NDC (solo su negocio de agencia).
    del planeta y su capa agentic no existe. Con `motis` (MIT) y OTP (LGPL) las piezas están.
 4. **Ventaja de procedencia de datos.** Bajo el AI Act, el stack self-hosted deja de ser
    preferencia y pasa a ser facilitador de cumplimiento.
+5. **El EU Digital Identity Wallet es infraestructura pública y está lista para integrar.**
+   La Comisión mantiene su verificador y sus librerías bajo **Apache-2.0**
+   ([`eudi-srv-verifier-endpoint`](https://github.com/eu-digital-identity-wallet/eudi-srv-verifier-endpoint),
+   [`eudi-lib-jvm-openid4vci-kt`](https://github.com/eu-digital-identity-wallet/eudi-lib-jvm-openid4vci-kt)),
+   mientras las apps de referencia son **EUPL-1.2** y la especificación es **CC BY 4.0**.
+   Un check-in de hotel o un flujo de embarque que acepta la credencial del wallet se construye
+   sobre la capa permisiva sin tocar la copyleft. **Es la única capa de identidad del viajero,
+   en cualquier región del mundo, mantenida por un regulador y publicada bajo licencia
+   permisiva.** Detalle de las tres capas en `repos/trending.md`; receta en
+   `compose/patterns.md` → Receta 8.
+6. **EES/ETIAS como producto de servicing, no de cumplimiento.** El valor no está en "informar
+   el requisito" — eso lo hace una página web. Está en reacomodar lo ya vendido cuando el
+   requisito cambia de fecha, que es precisamente lo que ETIAS viene haciendo desde 2024.
 
 ### APAC
 
@@ -157,6 +228,19 @@ agencia vía NDC (solo su negocio de agencia).
 - **Malasia:** el National AI Office publicó el 10-jul-2026 un paper de consulta pública sobre
   un AI Governance Bill.
 
+**Frontera y entrada — APAC ya normalizó la declaración digital, y eso cambia el punto de
+entrega del agente.** *(Fuentes secundarias: no se alcanzaron portales oficiales desde este
+entorno. Verificar antes de prometer.)*
+- **Singapur: la SG Arrival Card es obligatoria** y debe presentarse **dentro de los 3 días
+  previos** a la entrada por aire, mar o tierra. Reemplazó la tarjeta de papel.
+- **Japón: Visit Japan Web es opcional.** Unifica desembarque y declaración de aduana en un
+  QR, y **el formulario de papel sigue siendo válido**. Un ciclo encontró el claim de que hay
+  que registrarse 72 horas antes: **no se pudo corroborar**, tratarlo como no verificado.
+- **La consecuencia de diseño:** donde la declaración es obligatoria y tiene ventana (Singapur,
+  3 días), el itinerario deja de ser un documento y pasa a ser **una secuencia con vencimientos
+  propios**. Un agente de viaje en APAC que no modele "esta tarea vence 3 días antes de volar"
+  entrega un itinerario incompleto, por bonito que sea el PDF.
+
 **Oportunidades.**
 1. **APAC es donde está el open source de travel.** El cluster regional es el más fuerte del
    mundo: [`jianhao-travel-planner`](https://github.com/awangwang123/jianhao-travel-planner)
@@ -170,6 +254,13 @@ agencia vía NDC (solo su negocio de agencia).
    Thrust Carbon) marcan dónde está la demanda.
 4. **Singapur como sede de gobernanza agentic.** Con el marco de IMDA, es la jurisdicción
    donde un diseño de delegación de agentes se puede defender ante un comité de riesgo.
+5. **El itinerario con obligaciones vencibles es un producto APAC.** Tarjeta de llegada
+   obligatoria con ventana (Singapur), opcional con QR (Japón), e-visa y permisos según
+   mercado: la región tiene la mayor densidad de trámites previos con fecha. Un planificador
+   que emite **tareas fechadas además del itinerario** es diferenciación real, y se arma sobre
+   la taxonomía de [`imorte/passport-index-data`](https://github.com/imorte/passport-index-data)
+   (MIT) — **usando su esquema, no sus valores**, que llevan nueve meses sin actualizar
+   (ver `repos/foundations.md`). Receta en `compose/patterns.md` → Receta 9.
 
 ### LATAM
 
@@ -189,9 +280,19 @@ Lo que está documentado y es verificable:
   la ausencia, es el problema.
 - Brasil: marco de AI en trámite legislativo, de inspiración europea; **acuerdo Brasil–UE de
   regulación de AI y tecnología (jun-2026)**. Argentina: desregulación bajo Milei. Chile:
-  proyecto basado en riesgo. Perú: ley de AI de 2023, actualizada en 2025. Colombia:
-  **CONPES 4144** (feb-2025) hasta 2030, orientado a capacidades y adopción más que a
-  obligaciones horizontales inmediatas.
+  proyecto basado en riesgo, **con su ley de protección de datos y su marco de ciberseguridad
+  ya modernizados** — la infraestructura regulatoria previa a la AI es la más sólida de la
+  región. Perú: ley de AI de 2023, actualizada en 2025, **y un agravante penal por uso de AI**
+  en su código penal. Colombia: **CONPES 4144** (feb-2025) hasta 2030, orientado a capacidades
+  y adopción más que a obligaciones horizontales inmediatas. **Uruguay firmó el convenio marco
+  del Consejo de Europa sobre AI** — el único país de la región atado a un instrumento
+  internacional vinculante, lo que lo vuelve la jurisdicción más predecible para un piloto
+  regional.
+- **Frontera: no se encontró tarjeta de llegada digital en Brasil.** Las fuentes consultadas
+  solo registran e-visa para nacionalidades que antes requerían visa consular. **Se escribe la
+  ausencia en lugar de omitirla:** a diferencia de APAC, el trámite previo digital todavía no
+  es la norma en la región, así que la receta de "itinerario con tareas vencibles" tiene aquí
+  menos superficie — por ahora.
 
 Lo que circula y **no** se pudo verificar:
 - *[sin verificar]* 54% de viajeros que ya usó AI para planificar (una sola encuesta citada por
@@ -220,6 +321,16 @@ español.** Eso no es una carencia de la región: es el hueco más claro del ver
 4. **Restricción real a diseñar alrededor:** las herramientas AI con precio en USD son caras
    para pymes con moneda devaluada. Un stack self-hosted (`photon`, `motis`, `headway`,
    modelo local) no es ideología: es la diferencia entre viable e inviable.
+5. **La ventana del español se está cerrando, y hay fecha.** El 2026-11-21 esta KB midió que
+   el ecosistema open source de travel no habla español. Dos días después,
+   [`JourniOne-ai/JourniOne-Planning-Skills`](https://github.com/JourniOne-ai/JourniOne-Planning-Skills)
+   llegó a **1189★ desde septiembre** con README en siete idiomas, **español entre los de
+   lanzamiento**. Es un proyecto asiático que trata al español como mercado, no como
+   traducción tardía. Dos lecturas, las dos accionables: (a) **la ventana sigue abierta** —
+   ese repo **no tiene archivo de licencia**, así que nadie puede construir sobre él todavía;
+   (b) **la ventana tiene fecha de cierre** — el argumento "no hay competencia en español"
+   tenía 24 meses de vida en agosto y hoy tiene menos. Publicar el skill de itinerario en
+   español bajo MIT **este trimestre** vale más que hacerlo el próximo.
 
 ## Posicionamiento Globant
 
@@ -236,9 +347,23 @@ español.** Eso no es una carencia de la región: es el hueco más claro del ver
    Plataforma copyleft como servicio separado + lógica propietaria del cliente en los
    componentes permisivos. Esto se decide el día uno o se paga en la auditoría legal.
 5. **Donde no hay open source, hay producto.** Cero resultados medidos en revenue management,
-   NDC, ERP de agencia, predicción de demoras y alquiler vacacional. Ahí pertenece la IP
-   propietaria de Globant, con la evidencia de la brecha como argumento de venta.
+   NDC, ERP de agencia, predicción de demoras, alquiler vacacional **y ahora también APIS,
+   PNR, ETIAS, biometría de embarque y reglas de admisión** (medido el 2026-11-23, ver
+   `repos/foundations.md`). Ahí pertenece la IP propietaria de Globant, con la evidencia de la
+   brecha como argumento de venta.
+6. **El plano de frontera es la excepción permisiva del vertical, y conviene entrar por ahí.**
+   En todo travel, la plataforma es copyleft y la infraestructura permisiva. El documento de
+   viaje rompe el patrón: **lectura de chip (MIT), MRZ (MIT y Apache-2.0), pruebas ZK (MIT y
+   Apache-2.0) y el verificador del wallet europeo (Apache-2.0)**. Es el único lugar donde se
+   puede armar una capacidad completa sin una sola línea de copyleft, con un regulador
+   manteniendo parte del código. Para un primer engagement con restricción de licencia dura,
+   es la entrada de menor fricción legal del vertical.
+7. **Toda licencia lleva fecha.** Kamra PMS pasó de AGPL-3.0 a Apache-2.0 en 48 horas, entre
+   dos ciclos de esta KB. Una licencia verificada no es un hecho permanente: es una medición.
+   Esto vale para las 12 industrias de esta red, no solo para travel.
 
 ---
-*Investigado globalmente y una vez por región el 2026-11-21. Las cifras sin fuente primaria
-localizable están marcadas **[sin verificar]** a propósito.*
+*Investigado globalmente y una vez por región el 2026-11-21; ampliado con el plano de frontera
+e identidad, también una vez por región, el 2026-11-23. Las cifras sin fuente primaria
+localizable están marcadas **[sin verificar]** a propósito, y los límites de alcance del
+entorno de ingesta están declarados arriba en lugar de omitidos.*

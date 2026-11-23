@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-21
+updated: 2026-11-23
 ---
 
 # 🧩 Patrones de composición — Travel & Hospitality
@@ -210,6 +210,123 @@ cambia son los datos y el idioma.
 
 ---
 
+## Receta 7 — Identidad verificada sin pasivo de datos (la receta de North America)
+
+**Problema del cliente.** Un hotel, aerolínea o alquiler vacacional necesita verificar
+identidad o edad en el check-in digital, y a la vez no quiere ser responsable de custodiar
+pasaportes. North America es la región con **la adopción biométrica más alta del mundo y la
+preocupación más alta por brechas de datos** (IATA 2026): es el mismo cliente pidiendo las dos
+cosas.
+
+**Piezas (todas permisivas, licencias leídas el 2026-11-23):**
+
+| Paso | Componente | Licencia |
+|------|-----------|----------|
+| Leer el chip del pasaporte en iOS | [`AndyQ/NFCPassportReader`](https://github.com/AndyQ/NFCPassportReader) | MIT |
+| Leer la MRZ cuando no hay NFC (visas, documentos viejos, escaneo) | [`konstantint/PassportEye`](https://github.com/konstantint/PassportEye) o [`sivakumar-mahalingam/fastmrz`](https://github.com/sivakumar-mahalingam/fastmrz) | MIT / Apache-2.0 |
+| Probar un atributo sin revelar el documento | [`zkpassport/circuits`](https://github.com/zkpassport/circuits) o [`rarimo/passport-zk-circuits`](https://github.com/rarimo/passport-zk-circuits) | Apache-2.0 / MIT |
+| PMS donde aterriza el huésped verificado | [`Kamra-PMS/kamra-pms`](https://github.com/Kamra-PMS/kamra-pms) (Apache-2.0 desde el 2026-11-21) o [`TelivityAI/haip`](https://github.com/TelivityAI/haip) | Apache-2.0 |
+
+**Cómo se conecta.**
+1. El huésped apoya el pasaporte en el teléfono. `NFCPassportReader` hace BAC/secure messaging
+   y autenticación pasiva **en el dispositivo**. Si no hay chip, `fastmrz` saca la MRZ de una
+   foto, también en el dispositivo.
+2. La app deriva **solo el atributo que la regla pide** — `mayor_de_18: true`,
+   `nacionalidad_elegible: true`, `documento_vigente_al: 2027-03-01` — y **descarta el
+   documento**. Si el atributo tampoco debe salir del teléfono, se emite como prueba ZK.
+3. El backend recibe el atributo firmado, nunca el pasaporte, y lo escribe en el PMS vía su
+   tool MCP tipada (`register_guest`), no por SQL.
+4. El agente conversacional opera **sobre el atributo**, no sobre el documento. Nunca tiene el
+   pasaporte en contexto, lo que además evita que termine en un log de prompts.
+
+**La frase que vende la receta, y es literal:** *el documento nunca llega al servidor.* Con la
+Ley 25 de Quebec, las cinco leyes estatales de AI vigentes a agosto-2026 y el GDPR si el
+cliente opera también en EMEA, eso es una posición defendible, no un argumento de marketing.
+
+**Esfuerzo:** 5–7 semanas para el flujo de lectura y atributos; +3–4 si se agrega la capa ZK.
+
+**Límite honesto:** esto verifica **quién es** el viajero. **No** dice si puede entrar a un
+país — ver Receta 9 y la brecha medida en `repos/foundations.md`.
+
+---
+
+## Receta 8 — Check-in que acepta la credencial del wallet europeo (la receta de EMEA)
+
+**Problema del cliente.** Un operador en EMEA quiere aceptar el **EU Digital Identity Wallet**
+en check-in o embarque sin convertirse en integrador de identidad, y sin heredar copyleft.
+
+**La decisión que define la receta — y es puramente de licencia.** La organización oficial de
+la Comisión publica en **tres licencias distintas**, verificadas leyendo cada archivo el
+2026-11-23:
+
+| Capa | Qué tomar | Licencia |
+|------|-----------|----------|
+| Especificación (ARF) | leer y citar libremente | **CC BY 4.0** (`LICENCE`, 249B) |
+| Apps de referencia (`eudi-app-android-wallet-ui`, `eudi-app-ios-wallet-ui`) | **leer como referencia de UX; NO forkear** | **EUPL-1.2** (13961B) |
+| Librerías y servicios (`eudi-srv-verifier-endpoint`, `eudi-lib-jvm-openid4vci-kt`, `eudi-lib-android-wallet-core`, `eudi-lib-ios-wallet-kit`) | **construir acá** | **Apache-2.0** |
+
+**Cómo se conecta.**
+1. Desplegar [`eudi-srv-verifier-endpoint`](https://github.com/eu-digital-identity-wallet/eudi-srv-verifier-endpoint)
+   (Apache-2.0) como el Relying Party del cliente. Es el servicio que pide la credencial y
+   valida la respuesta.
+2. Integrar la app del cliente con [`eudi-lib-android-wallet-core`](https://github.com/eu-digital-identity-wallet/eudi-lib-android-wallet-core)
+   / [`eudi-lib-ios-wallet-kit`](https://github.com/eu-digital-identity-wallet/eudi-lib-ios-wallet-kit)
+   (Apache-2.0), **no copiando la app EUPL-1.2**.
+3. Pedir **presentación selectiva**: solo los claims que el flujo necesita.
+4. El resultado entra al PMS por tool MCP tipada, igual que en la Receta 7. Las dos recetas
+   comparten backend: cambia **de dónde viene** el atributo verificado, no qué se hace con él.
+
+**Control de CI que vale la pena escribir (3 líneas, evita una auditoría legal entera):**
+fallar el build si un archivo bajo `vendor/` o `third_party/` contiene la cadena
+`EUROPEAN UNION PUBLIC LICENCE`. Es la forma barata de garantizar que nadie copió la app de
+referencia dentro del producto del cliente seis meses después de arrancar.
+
+**Esfuerzo:** 6–8 semanas. El riesgo no es técnico sino de calendario: la disponibilidad real
+de wallets por Estado miembro es desigual. **Diseñar el flujo con fallback a Receta 7.**
+
+---
+
+## Receta 9 — Itinerario con obligaciones vencibles (la receta de APAC, y la que llega a EMEA)
+
+**Problema del cliente.** Un itinerario moderno no es solo "vuelo, hotel, actividad": arrastra
+trámites con **fecha de vencimiento propia**. La SG Arrival Card de Singapur debe presentarse
+**dentro de los 3 días previos** a la entrada. Japón tiene Visit Japan Web (opcional). EMEA
+sumará **ETIAS** cuando se anuncie la fecha. Un PDF bonito que no modela esto está incompleto.
+
+**Piezas.**
+
+| Paso | Componente | Licencia |
+|------|-----------|----------|
+| Esquema de requisito de entrada | taxonomía de [`imorte/passport-index-data`](https://github.com/imorte/passport-index-data) (`eta` / `e-visa` / `visa on arrival` / `visa free` / `visa required` / `no admission`) | MIT |
+| Ruteo y tiempos del viaje | [`motis-project/motis`](https://github.com/motis-project/motis) o [`valhalla/valhalla`](https://github.com/valhalla/valhalla) | MIT |
+| Resolución de lugares desde texto libre | [`komoot/photon`](https://github.com/komoot/photon) | Apache-2.0 |
+| Entrega offline del itinerario | patrón de [`zexuanw958-svg/travel-plan-viz`](https://github.com/zexuanw958-svg/travel-plan-viz) | MIT |
+
+**Cómo se conecta.**
+1. Del itinerario se derivan los **pares pasaporte×destino** con su fecha de cruce.
+2. Para cada par se emite una **tarea fechada**, no un párrafo de texto:
+   `{tramite, pais, abre: fecha_cruce - 3d, vence: fecha_cruce, estado}`. La ventana de
+   apertura importa tanto como el vencimiento: la tarjeta de Singapur **no se puede presentar
+   antes** de los 3 días.
+3. El agente vigila las tareas y avisa; **no las completa.** Igual que en el pago, el corte es
+   deliberado: presentar una declaración migratoria en nombre de otro tiene consecuencias
+   distintas a reservar un hotel en nombre de otro.
+4. El itinerario se entrega como HTML offline de un archivo, con las tareas incluidas. El
+   viajero que más necesita el dato suele estar sin señal.
+
+**⚠️ La advertencia que hay que leer antes de implementar esto.** Se usa la **taxonomía** de
+`passport-index-data`, **nunca sus valores**: su propio README declara el dato al
+**17-feb-2026** y el repo no recibe push desde el **2026-03-01**. Son nueve meses, y las
+reglas de entrada cambiaron varias veces en 2026. Los valores vigentes salen de **Timatic
+(IATA)** por contrato, o del portal consular, o de una curaduría propia del cliente con su
+fecha de revisión visible. **Un itinerario que afirma "no necesitás visa" con dato de nueve
+meses es un pasivo, no una feature.**
+
+**Esfuerzo:** 4–6 semanas sobre un planificador existente. La fuente de datos de requisitos es
+**decisión del cliente y su contrato**, no nuestra.
+
+---
+
 ## Lo que NO conviene prometer
 
 | Pedido frecuente | Por qué no, hoy | Qué ofrecer en cambio |
@@ -219,6 +336,11 @@ cambia son los datos y el idioma.
 | "Integración NDC open source" | **Cero** repos medidos. NDC es XML con esquema licenciado por IATA y acceso contractual | Integración contractual + capa MCP propia encima |
 | "Predicción de demoras con un modelo abierto" | **Cero** repos medidos ≥50★ | Modelo propio sobre datos públicos |
 | "Partimos del SDK de Amadeus" | [`amadeus4dev/amadeus-python`](https://github.com/amadeus4dev/amadeus-python) está **archivado** desde 2025 | Usar su esquema como referencia; integrar por API |
+| "El agente le dice al viajero si necesita visa" | El dato abierto está **nueve meses desatrasado** y Timatic no tiene alternativa open source (`timatic travel document check stars:>=20` → **0**) | Receta 9 con dato contractual del cliente y fecha de revisión visible en pantalla |
+| "Integramos APIS / PNR con una librería open source" | **Cero** repos medidos en ambas consultas el 2026-11-23 | Integración contractual; la capa agentic va encima |
+| "Preparamos el producto para ETIAS con fecha cierta" | A fines de nov-2026 **no hay fecha oficial anunciada**; el objetivo 4T-2026 fue retirado y se espera 2027 | Vender el *servicing* del cambio de requisito, no la fecha |
+| "Usamos el lector de pasaporte Android más popular" | [`tananaev/passport-reader`](https://github.com/tananaev/passport-reader) (458★) **no tiene archivo de licencia** | Portar desde `NFCPassportReader` (MIT) o construir sobre JMRTD |
+| "Partimos del wallet de identidad europeo" | Las **apps** de referencia son **EUPL-1.2**: forkearlas arrastra copyleft al producto del cliente | Receta 8: construir sobre las librerías y servicios **Apache-2.0** de la misma organización |
 
 ---
 *Toda licencia citada fue verificada leyendo el archivo de licencia del repo, no el badge de

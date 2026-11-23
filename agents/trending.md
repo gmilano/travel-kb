@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-21
+updated: 2026-11-23
 ---
 
 # 📈 Agentes trending — Travel & Hospitality
@@ -11,6 +11,42 @@ updated: 2026-11-21
 > para registrar.
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
+
+## 2026-11-23
+
+Ciclo enfocado en el **plano de frontera e identidad del viajero**. Todas las filas
+verificadas hoy: existencia y métricas por `search/repositories`, licencia **leyendo el
+archivo** por `raw.githubusercontent.com`.
+
+| Nombre | Repo | Licencia | Stars | Creado | Último push | Qué cambió |
+|--------|------|----------|-------|--------|-------------|------------|
+| JourniOne Planning Skills | [JourniOne-ai/JourniOne-Planning-Skills](https://github.com/JourniOne-ai/JourniOne-Planning-Skills) | **NINGUNA** | 1189 | 2026-09-16 | 2026-10-28 | **1189★ en nueve semanas** — el crecimiento más rápido del vertical este año, y **sin archivo de licencia**. README en 7 idiomas (en, zh-CN, ja, es, ko, fr, ar): el primer proyecto de travel que trata el español como idioma de lanzamiento, no de traducción tardía. Inutilizable hasta que publiquen licencia. **Vale la pena volver a mirarlo el próximo ciclo: si licencia MIT, pasa directo a `agents/top.md`.** |
+| fastmrz | [sivakumar-mahalingam/fastmrz](https://github.com/sivakumar-mahalingam/fastmrz) | Apache-2.0 | 174 | — | 2026-11-23 | Push **hoy**. Extracción de MRZ desde imagen bajo Apache-2.0: la salida permisiva frente a `Arg0s1080/mrz` (GPL-3.0, 395★), que es lo que devuelve primero toda búsqueda de MRZ. |
+| NFCPassportReader | [AndyQ/NFCPassportReader](https://github.com/AndyQ/NFCPassportReader) | MIT | 867 | — | 2026-11-16 | El lector de pasaporte electrónico de referencia en iOS, vivo y MIT. Entra a la KB por primera vez: el plano de identidad nunca se había mirado. |
+| PassportEye | [konstantint/PassportEye](https://github.com/konstantint/PassportEye) | MIT | 471 | — | 2026-11-22 | Push anteayer tras años de madurez. Parser de MRZ en Python, MIT. |
+| zkpassport/circuits | [zkpassport/circuits](https://github.com/zkpassport/circuits) | Apache-2.0 | 94 | — | 2026-11-18 | Pruebas de atributo de pasaporte sin revelar el documento. El único mecanismo medido que permite "verificar sin almacenar". |
+| passport-zk-circuits | [rarimo/passport-zk-circuits](https://github.com/rarimo/passport-zk-circuits) | MIT | 94 | — | 2026-11-05 | Mismo problema, bajo MIT. Dos implementaciones independientes con 94★ cada una: el segmento ZK-identidad tiene competencia real, no un único proyecto.|
+
+**Observación del ciclo — el espejo de la observación anterior.** El 2026-11-21 esta KB
+registró que *de los agentes nuevos con tracción, ninguno reserva*. Hoy, mirando un plano
+distinto: **de todo lo que sí tiene código permisivo y vivo en travel, nada decide.** Los
+repos de identidad leen el documento (NFC, MRZ) y prueban atributos (ZK), pero **ninguno
+responde "¿este viajero puede entrar a este país?"**. Igual que en el pago, el open source
+llega hasta el borde de la decisión y se detiene. La diferencia es que acá el borde no lo
+puso la desconfianza del consumidor: lo puso que la regla de admisión es un contrato
+comercial (Timatic) y una competencia soberana.
+
+**Trampa de keyword re-medida, y empeoró.** La consulta
+`travel OR trip OR itinerary OR hotel OR flight created:>2026-10-01 stars:>=25` devuelve hoy
+25 repos y **ninguno es de la industria travel**: un simulador de vuelo vibe-codeado (367★),
+una guía de leveling de WoW (351★), un fix de rendimiento de Oblivion (507★), geolocalización
+Doppler de ADS-B (696★), arte de drones y un proxy. Novedad de este ciclo: **ahora contamina
+también el boom de tooling agentic** — `scasella/claude-flightdeck` (339★, un dashboard para
+Claude Code) y `globalmpc/vibe-preflight` (74★, un chequeo pre-deploy) entran en los primeros
+puestos por las palabras *flight* y *preflight*. La contaminación de keyword no es estática:
+crece con cada moda que tome prestado el vocabulario de la aviación.
+
+---
 
 ## 2026-11-21
 
