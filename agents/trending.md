@@ -12,6 +12,46 @@ updated: 2026-11-23
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-23 — undécima pasada (plano del comprobante: una familia de 12 MCP por jurisdicción)
+
+**Lo nuevo de la semana, y por una vez es grande:** apareció una **familia completa de servidores
+MCP de facturación electrónica, uno por jurisdicción, toda Apache-2.0** — y **diez de los doce
+tienen push en los últimos siete días** (2026-11-16 al 2026-11-22). Es el primer plano de esta KB
+donde lo nuevo de la semana no es un repo: es una **grilla regulatoria entera** publicada de golpe.
+
+| Novedad | Licencia (archivo leído) | Stars | Último push | Por qué entra |
+| --- | --- | --- | --- | --- |
+| [cmendezs/mcp-einvoicing-ae](https://github.com/cmendezs/mcp-einvoicing-ae) | Apache-2.0 | 3 | **2026-11-22** | PINT AE / Peppol 5-corner. El mandato de EAU es de 2026 |
+| [cmendezs/mcp-invoicenow-sg](https://github.com/cmendezs/mcp-invoicenow-sg) | Apache-2.0 | 0 | **2026-11-22** | InvoiceNow / PINT-SG. IRAS arrancó el 2026-04-01 con los nuevos registrados voluntarios |
+| [cmendezs/mcp-einvoicing-de](https://github.com/cmendezs/mcp-einvoicing-de) | Apache-2.0 | 2 | **2026-11-22** | ZUGFeRD 2.x / XRechnung 3.x — y en Alemania **la factura de hotel entra al mandato y el pasaje de avión y de tren no** |
+| [cmendezs/mcp-nfe-br](https://github.com/cmendezs/mcp-nfe-br) | Apache-2.0 | 1 | **2026-11-21** | NF-e / NFC-e modelo 55/65 schema 4.0, en el año de prueba de CBS/IBS |
+| [cmendezs/mcp-cfdi-mx](https://github.com/cmendezs/mcp-cfdi-mx) | Apache-2.0 | 0 | **2026-11-21** | CFDI 4.0 + Complemento de Pagos 2.0 |
+| [cmendezs/mcp-einvoicing-in](https://github.com/cmendezs/mcp-einvoicing-in) | Apache-2.0 | 1 | **2026-11-21** | GST INV-01 v1.1 / IRP-IRN. **Sin IRN válido no hay crédito fiscal** en India |
+| [cmendezs/mcp-facturacion-electronica-es](https://github.com/cmendezs/mcp-facturacion-electronica-es) | Apache-2.0 | 3 | **2026-11-21** | El más estrellado de la familia, empatado con PL y AE |
+| [cmendezs/mcp-einvoicing-core](https://github.com/cmendezs/mcp-einvoicing-core) | Apache-2.0 | 0 | **2026-11-21** | La base. Declara que **las llaves de firma se quedan con el cliente** |
+| [cmendezs/mcp-ksef-pl](https://github.com/cmendezs/mcp-ksef-pl) | Apache-2.0 | 3 | **2026-11-16** | KSeF / FA(2). `ksef faktura` como búsqueda de repos devuelve **0**: este MCP es lo único |
+| [cmendezs/mcp-einvoicing-be](https://github.com/cmendezs/mcp-einvoicing-be) | Apache-2.0 | 0 | **2026-11-16** | Peppol BIS 3.0 / Mercurius. Bélgica obliga desde el **2026-01-01** |
+| [OrtaMarco/mx-fiscal-mcp-server](https://github.com/OrtaMarco/mx-fiscal-mcp-server) | MIT | 1 | **2026-11-21** | Valida RFC/CURP/CLABE y lee CFDI. El RFC es **el campo que tiene que estar en la reserva** |
+| [phax/phive-rules](https://github.com/phax/phive-rules) | Apache-2.0 (`master/LICENSE`) | 55 | **2026-11-23** | Reglas de validación de e-invoice **multi-jurisdicción**, push de hoy. La API dice `NOASSERTION` y es falso |
+
+**La señal de la pasada, en una línea:** los doce **emiten** y **ninguno reserva**. La identidad
+fiscal del comprador —RFC, CUIT, VAT ID, GSTIN— **no existe como campo en ningún agente de reserva
+de viaje de esta KB**, y es el único dato que, si falta en el momento de reservar, no se puede
+agregar después.
+
+**El hueco que esta pasada deja escrito, y está en North America.** La familia tiene doce
+jurisdicciones y **no tiene `mcp-einvoicing-us`**. No es un olvido del autor: **EE. UU. no tiene
+mandato federal de facturación electrónica B2B** (sin propuesta en trámite a septiembre de 2026),
+y la red DBNAlliance es voluntaria. `dbnalliance` como búsqueda de repos devuelve **1 resultado**,
+de 2023, sin licencia y sin código de biblioteca. **La ausencia del servidor de EE. UU. es la
+medición correcta del mercado de EE. UU., no una falta de la familia.**
+
+**La trampa de la pasada, y es la más grave de las once.** Dos repos de `causa-prima-ai` se
+describen como *«free, AI-native EN 16931-compliant e-invoicing»*, tienen archivo `LICENSE`, y ese
+archivo dice **«All rights reserved… No license is granted»**. Uno de los dos
+([scribo-skill](https://github.com/causa-prima-ai/scribo-skill), 7★) **se distribuye como skill de
+Claude/Codex** — el formato que se copia a un agente sin que nadie abra el LICENSE. Es propietario.
+
 ## 2026-11-23 — décima pasada (plano del precio: el agente calcula y no explica)
 
 **Lo nuevo de la semana en agentes de precio, y son tres.** Primera pasada de este KB sobre el

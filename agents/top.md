@@ -757,3 +757,114 @@ arquitectura que las une es anterior a las dos: **si el precio se calcula desde 
 tarifa —y no desde la persona— el disparador de Nueva York no se activa.** No es un truco legal: es
 elegir qué entradas tiene el modelo, y es la única respuesta *estructural* en lugar de documental
 que este plano permite. Recetas 28, 29 y 30.
+
+## Comprobante fiscal — el plano donde el agente reserva y no puede facturar
+
+**Undécima pasada, 2026-11-23.** Ninguno de los diez planos anteriores tocó el comprobante.
+El plano existe porque el viaje corporativo tiene **dos documentos, no uno**: la confirmación de
+la reserva, que el agente ya sabe producir, y el **comprobante fiscal**, que es el único que
+recupera el IVA. No son el mismo artefacto y en 2026 ya no son el mismo régimen legal.
+
+### El modo de falla que define el plano, y es nuevo y es agentic
+
+La regla operativa, coincidente en toda la cobertura de viaje corporativo de 2026: **si el número
+de IVA del comprador no llega al hotel en el momento de la reserva, el hotel emite un recibo de
+consumidor y el IVA de esa estadía ya no se recupera.** No se arregla después. No lo arregla el
+área de gastos. El dato tenía que viajar con la reserva.
+
+Eso convierte al agente de reserva en el punto donde el IVA se pierde: **un agente que reserva
+bien y no pasa la identidad fiscal del comprador destruye la recuperación antes del check-in.**
+Es el primer plano de esta KB donde el daño lo causa una omisión del agente en el *happy path* —
+no un error, no una alucinación: una reserva correcta sin un campo.
+
+### La capa de agentes de este plano — lo que existe, medido
+
+El hallazgo del plano es una **familia de servidores MCP por jurisdicción**, de un solo autor
+(`cmendezs`), toda Apache-2.0, y **diez de los doce con push en los últimos siete días**.
+Licencia leída de `main/LICENSE` en los doce casos, no del campo de la API.
+
+| Servidor MCP | Licencia (archivo leído) | Stars | Último push | Jurisdicción y esquema | Región |
+| --- | --- | --- | --- | --- | --- |
+| [cmendezs/mcp-einvoicing-core](https://github.com/cmendezs/mcp-einvoicing-core) | Apache-2.0 | 0 | 2026-11-21 | Paquete base de los demás. Su propia descripción: *compliance logic and signing keys stay with you* | Global |
+| [cmendezs/mcp-nfe-br](https://github.com/cmendezs/mcp-nfe-br) | Apache-2.0 | 1 | 2026-11-21 | NF-e / NFC-e, modelo 55/65, schema 4.0 | LATAM |
+| [cmendezs/mcp-cfdi-mx](https://github.com/cmendezs/mcp-cfdi-mx) | Apache-2.0 | 0 | 2026-11-21 | CFDI 4.0 + Complemento de Pagos 2.0 | LATAM |
+| [cmendezs/mcp-einvoicing-de](https://github.com/cmendezs/mcp-einvoicing-de) | Apache-2.0 | 2 | 2026-11-22 | ZUGFeRD 2.x / XRechnung 3.x | EMEA |
+| [cmendezs/mcp-facturacion-electronica-es](https://github.com/cmendezs/mcp-facturacion-electronica-es) | Apache-2.0 | 3 | 2026-11-21 | Facturación electrónica española | EMEA |
+| [cmendezs/mcp-ksef-pl](https://github.com/cmendezs/mcp-ksef-pl) | Apache-2.0 | 3 | 2026-11-16 | KSeF / FA(2) | EMEA |
+| [cmendezs/mcp-einvoicing-be](https://github.com/cmendezs/mcp-einvoicing-be) | Apache-2.0 | 0 | 2026-11-16 | Peppol BIS 3.0 / PINT-BE / Mercurius | EMEA |
+| [cmendezs/mcp-fattura-elettronica-it](https://github.com/cmendezs/mcp-fattura-elettronica-it) | Apache-2.0 | 2 | 2026-09-12 | FatturaPA / SDI | EMEA |
+| [cmendezs/mcp-facture-electronique-fr](https://github.com/cmendezs/mcp-facture-electronique-fr) | Apache-2.0 | 1 | 2026-09-12 | NF XP Z12-013 | EMEA |
+| [cmendezs/mcp-einvoicing-ae](https://github.com/cmendezs/mcp-einvoicing-ae) | Apache-2.0 | 3 | 2026-11-22 | PINT AE / Peppol 5-corner | EMEA |
+| [cmendezs/mcp-einvoicing-in](https://github.com/cmendezs/mcp-einvoicing-in) | Apache-2.0 | 1 | 2026-11-21 | FORM GST INV-01 v1.1 / IRP-IRN | APAC |
+| [cmendezs/mcp-invoicenow-sg](https://github.com/cmendezs/mcp-invoicenow-sg) | Apache-2.0 | 0 | 2026-11-22 | InvoiceNow / PINT-SG / Peppol 5-corner | APAC |
+
+> ⚠️ **Las estrellas son las reales: entre 0 y 3.** Esta KB corrigió en el ciclo 9 curvas de
+> estrellas fabricadas de pasadas anteriores, y no se repite el error. Esta familia **no tiene
+> adopción medible**: su valor es la cobertura jurisdiccional y la licencia, no la madurez.
+> Doce repos de un solo autor, el más viejo de septiembre de 2026, son **riesgo de autor único**.
+> Se recomiendan como *referencia de esquema y punto de partida*, no como dependencia de producción.
+
+**Otros MCP del plano, verificados uno por uno:**
+
+| Servidor | Licencia (archivo leído) | Stars | Último push | Qué hace | Región |
+| --- | --- | --- | --- | --- | --- |
+| [Timbrix/mcp](https://github.com/Timbrix/mcp) | MIT | 0 | 2026-09-18 | Timbra, cancela y consulta CFDI 4.0 desde un agente. **Timbrar es el acto legal**, no el PDF | LATAM |
+| [OrtaMarco/mx-fiscal-mcp-server](https://github.com/OrtaMarco/mx-fiscal-mcp-server) | MIT | 1 | 2026-11-21 | Valida RFC, CURP, CLABE, NSS y lee CFDI. **El RFC del comprador es el campo que hay que tener en la reserva** | LATAM |
+| [BrasilNFe/brasilnfe-mcp](https://github.com/BrasilNFe/brasilnfe-mcp) | MIT (`master/LICENSE`) | 0 | 2026-06-12 | NF-e, NFC-e, NFS-e, CT-e, MDF-e, DC-e en lenguaje natural | LATAM |
+| [DoubleH10/zatca-mcp](https://github.com/DoubleH10/zatca-mcp) | Apache-2.0 (`main/LICENSE`) | 5 | 2026-03-03 | ZATCA Arabia Saudita — el más estrellado del plano | EMEA |
+| [Haresh-16/receipt-parsing-mcp](https://github.com/Haresh-16/receipt-parsing-mcp) | MIT | 0 | 2025-12-18 | Parseo de recibo y extracción de gasto | Global |
+| [AuxiLabs-Auxiliobits/auxilab-mcp-expense-mgmt](https://github.com/AuxiLabs-Auxiliobits/auxilab-mcp-expense-mgmt) | MIT | 0 | 2026-08-05 | Política de gasto, parseo de recibo, clasificación y duplicados | Global |
+| [MiniCodeTeam/askais-mcp](https://github.com/MiniCodeTeam/askais-mcp) | MIT | 1 | 2026-07-21 | Genera PDF de recibo. **Genera un PDF, no un comprobante fiscal** — la distinción del plano | Global |
+
+### ⚠️ Trampas medidas en este plano
+
+**La peor de las once pasadas: un repo que dice «free» y cuya licencia dice lo contrario.**
+
+| Repo | Lo que dice de sí mismo | Lo que dice su archivo LICENSE | Consecuencia |
+| --- | --- | --- | --- |
+| [causa-prima-ai/scribo-mcp](https://github.com/causa-prima-ai/scribo-mcp) (7★) | «free, AI-native EN 16931-compliant e-invoicing» | *«All rights reserved… proprietary and confidential. No license is granted to use, copy, modify, or distribute»* | **Inusable.** Tiene archivo LICENSE, está en GitHub, y es propietario explícito |
+| [causa-prima-ai/scribo-skill](https://github.com/causa-prima-ai/scribo-skill) (7★) | Skill de e-invoicing para Claude/Codex, misma descripción «free» | Mismo texto: *All rights reserved* | **Peor que el anterior**: se distribuye con la forma de un skill, el formato que se copia a un agente sin leer la licencia |
+| [gflohr/e-invoice-eu](https://github.com/gflohr/e-invoice-eu) (383★, push 2026-11-23) | Generador EN 16931 (Factur-X/ZUGFeRD, UBL) | **WTFPL v2** | Libre en los hechos y **no aprobada por OSI**: varias áreas legales de cliente la rechazan por política, no por alcance. Hay que preguntar antes de proponerla |
+
+**La trampa inversa de este plano, y se repitió cinco veces.** El campo `license` de la API de
+GitHub **subdeclaró** la licencia en cinco repos de este plano y la **sobredeclaró en cero**:
+
+| Repo | Lo que dice la API | Lo que dice el archivo |
+| --- | --- | --- |
+| `phax/phive-rules` | `NOASSERTION` | Apache-2.0 (`master/LICENSE`) |
+| `Quittio/quittio` | `NOASSERTION` | MIT (`master/LICENSE` — **404 en `main`**) |
+| `TadaSoftware/PyNFe` | `NOASSERTION` | LGPL-3.0 |
+| `BrasilNFe/brasilnfe-mcp` | `NOASSERTION` | MIT (`master/LICENSE`) |
+| `DoubleH10/zatca-mcp` | `NOASSERTION` | Apache-2.0 |
+
+El patrón es el inverso del de la pasada octava, donde la trampa era un badge que **afirmaba** una
+licencia inexistente. Acá descartar por `NOASSERTION` habría tirado cinco repos usables, cuatro de
+ellos permisivos. **La causa medida: el archivo está en `master` y no en `main`, o empieza con una
+línea de encabezado (`====`, copyright) antes del nombre de la licencia.**
+
+### Las búsquedas de este plano que devolvieron cero o casi, escritas
+
+| Búsqueda (`search/repositories`) | Total | Lectura |
+| --- | --- | --- |
+| `travel agency invoice billing system` | **2** | Uno GPL-3.0 de **2017** con 0★ (`karlomanson/tour-invoices`), uno sin licencia. **La capa vertical de facturación de viaje no existe** |
+| `hotel folio invoice` | **5** | Cuatro sin licencia; el único con licencia son **plantillas** GST para hoteles indios (`roomnexa-official/hotel-gst-invoice-template`, MIT, 0★), no software |
+| `per diem allowance calculator` | **0** | La categoría no existe en GitHub |
+| `airline ticket invoice receipt api` | **0** | Ídem |
+| `ksef faktura krajowy system` | **0** | El mandato polaco entró en febrero de 2026 y **no hay biblioteca en polaco** indexada por este término; sólo el MCP de `cmendezs` |
+| `peppol access point client library` | **0** | No hay cliente de Access Point open source bajo ese nombre |
+| `dbnalliance` | **1** | Y es un repo de transferencia de archivos de 2023, sin licencia. **La red de EE. UU. no tiene capa open source** |
+| `travel expense report management` | **30** | Revisados los 8 primeros por estrellas: **siete sin licencia, 0–1★**. Nada usable |
+
+### Regla de diseño de este plano
+
+1. **El campo fiscal del comprador es parte del payload de la reserva, no del gasto.** Si el
+   agente no lo tiene al momento de reservar, la recuperación del IVA ya se perdió. Va en el mismo
+   objeto que las fechas y el nombre.
+2. **Separar «recibo» de «comprobante fiscal» en el modelo de datos, con dos campos distintos.**
+   Una confirmación de pago de hotel no es una factura: sirve para deducir el gasto y **no** para
+   recuperar el IVA.
+3. **El agente no firma.** La lógica de cumplimiento y las llaves de firma se quedan del lado del
+   cliente — es literalmente lo que declara `mcp-einvoicing-core`, y es la postura correcta:
+   timbrar, firmar o transmitir a la autoridad es un acto legal con responsable humano.
+4. **Un agente no puede decir «ya facturado» sin el acuse de la autoridad.** Igual que en el plano
+   del equipaje: tres estados, no dos — *emitido*, *aceptado por la autoridad*, *no se sabe*.

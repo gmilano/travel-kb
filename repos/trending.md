@@ -11,6 +11,56 @@ updated: 2026-11-23
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-23 — undécima pasada (plano del comprobante: 770★ brasileños contra un repo de 2017)
+
+**La medición de la pasada.** Por primera vez en once planos, **el repo más estrellado de la capa
+horizontal es de LATAM** (`wmixvideo/nfe`, 770★, Apache-2.0, push de hoy), y por primera vez la
+capa horizontal **es el artefacto que el regulador publica**, no una reimplementación.
+
+| Capa | Repos | Estrellas | Licencias | Estado |
+| --- | --- | --- | --- | --- |
+| Horizontal fiscal (emisión y validación) | `nfe`, `mustangproject`, `e-invoice-eu`, `nfewizard-io`, `eInvoicing-EN16931`, `factur-x`, `phive-rules`, `quittio`, `e-invoice-validator`, `verifactu-php`, `esj` | **770 + 497 + 383 + 330 + 271 + 154 + 55 + 47 + 21 + 9 + 4** | Apache-2.0 ×5, MIT ×3, EUPL-1.2, GPL-3.0, WTFPL | Cuatro con push del 2026-11-23 |
+| Normativa oficial (artefactos de la Comisión Europea) | `eInvoicing-EN16931` | 271 | **EUPL-1.2** | Viva (2026-10-26). ⚠️ copyleft recíproco |
+| MCP por jurisdicción | 12 repos de `cmendezs` + 5 de otros autores | **0–5 cada uno** | **Apache-2.0 ×12**, MIT ×4 | **10 de 12 con push en los últimos 7 días** |
+| **Vertical de viaje** | `tour-invoices` | **0** | GPL-3.0 | **Último push 2017-02-27** |
+| Red de EE. UU. (DBNAlliance) | 1 repo de transferencia de archivos | 0 | **ninguna** | De 2023. **No hay biblioteca** |
+
+### Lo nuevo y usable de esta pasada
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué aporta |
+| --- | --- | --- | --- | --- |
+| [wmixvideo/nfe](https://github.com/wmixvideo/nfe) | Apache-2.0 (`master/LICENSE`) | 770 | **2026-11-23** | NF-e en Java. El más estrellado del plano y el más permisivo de los grandes |
+| [ZUGFeRD/mustangproject](https://github.com/ZUGFeRD/mustangproject) | Apache-2.0 (`master/LICENSE`) | 497 | **2026-11-23** | Factur-X/ZUGFeRD/CII/XRechnung: biblioteca, validador y CLI en una |
+| [phax/phive-rules](https://github.com/phax/phive-rules) | Apache-2.0 (`master/LICENSE`) | 55 | **2026-11-23** | Reglas de validación de muchas jurisdicciones para un solo motor |
+| [bsnsoft/esj](https://github.com/bsnsoft/esj) | Apache-2.0 (`main/LICENSE`) | 4 | **2026-11-22** | EN 16931 como **JSON por paths**: la forma en que un agente puede leer y escribir una factura sin XML |
+| [atgp/factur-x](https://github.com/atgp/factur-x) | MIT (texto leído) | 154 | 2026-08-18 | Incrusta y extrae el XML dentro del PDF — el PDF/A-3 es el entregable que el huésped ve |
+| [backoffice-plus/e-invoice-validator](https://github.com/backoffice-plus/e-invoice-validator) | Apache-2.0 | 21 | 2026-10-20 | Validador para usar como gate de CI |
+| [NemonInvocash/verifactu-php](https://github.com/NemonInvocash/verifactu-php) | MIT | 9 | 2026-07-09 | Verifactu + TicketBAI. Lo único permisivo del régimen español |
+| [OCA/l10n-brazil](https://github.com/OCA/l10n-brazil) | **AGPL-3.0** | 376 | **2026-11-23** | Localización fiscal brasileña de Odoo, mantenida por la OCA. ⚠️ AGPL: el patrón de módulo de la pasada cuarta |
+| [OCA/l10n-mexico](https://github.com/OCA/l10n-mexico) | **AGPL-3.0** | 20 | 2026-11-09 | Ídem para México. 20★ contra 376★: **la brecha BR–MX dentro de LATAM, medida** |
+
+### La trampa de licencia de esta pasada: dos repos que dicen «free» y son propietarios
+
+No es un badge que miente ni un archivo ausente —las trampas de las pasadas octava y décima.
+Acá **el archivo existe, se leyó, y dice lo contrario de la descripción del repo**:
+
+| Repo | Stars | Descripción propia | Texto del LICENSE |
+| --- | --- | --- | --- |
+| [causa-prima-ai/scribo](https://github.com/causa-prima-ai/scribo) | 18 | «**free**, AI-native EN 16931-compliant e-invoicing» | *All rights reserved… proprietary and confidential* |
+| [causa-prima-ai/scribo-mcp](https://github.com/causa-prima-ai/scribo-mcp) | 7 | Servidor MCP, misma descripción | Ídem |
+| [causa-prima-ai/scribo-skill](https://github.com/causa-prima-ai/scribo-skill) | 7 | **Skill de Claude/Codex**, misma descripción | Ídem |
+
+El tercero es el peligroso: **un skill propietario tiene la forma de un archivo que se copia a un
+agente**, y nadie abre el LICENSE de un skill.
+
+### Y la trampa inversa, que apareció cinco veces en esta sola pasada
+
+`phive-rules`, `quittio`, `PyNFe`, `brasilnfe-mcp` y `zatca-mcp`: la API de GitHub dice
+`NOASSERTION` en los cinco y **los cinco tienen archivo de licencia** (Apache-2.0, MIT, LGPL-3.0,
+MIT, Apache-2.0). Causa medida: el archivo está en `master` y no en `main`, o arranca con una línea
+de encabezado antes del nombre de la licencia. **Sobredeclaraciones: cero.** Filtrar por el campo
+de la API en este plano descarta cuatro repos permisivos usables.
+
 ## 2026-11-23 — décima pasada (plano del precio: 20.000★ horizontales contra 2★ verticales)
 
 **La medición de la pasada, y es la brecha más grande de los diez planos de este KB:**

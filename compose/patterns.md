@@ -1426,3 +1426,130 @@ sola prueba de matriz** — exactamente la forma de la Receta 27, y la cuarta ve
 encuentra. A esta altura conviene decirlo como regla y no como hallazgo: **en este vertical, la
 divergencia regulatoria es de artefacto, no de modelo. Modelar el evento una vez y proyectar es,
 hasta ahora, siempre correcto.**
+
+## Receta 31 — Identidad fiscal del comprador en el momento de la reserva (la receta base del plano)
+
+**El problema, en una frase.** Si el identificador fiscal del comprador no llega al proveedor **con
+la reserva**, el proveedor emite un recibo de consumidor y el IVA de ese consumo **no se recupera
+nunca**. No lo arregla el área de gastos, no lo arregla una nota de crédito, no lo arregla el
+viajero con una foto del ticket. El dato tenía que viajar con la reserva.
+
+**Por qué es una receta y no una línea de código.** Porque el campo no existe en ningún agente de
+reserva de viaje catalogado en los once planos de esta KB, y porque la decisión que hay que tomar
+cuando el canal **no** tiene el campo es de producto, no de ingeniería.
+
+**Piezas, todas verificadas el 2026-11-23:**
+
+| Pieza | Licencia (archivo leído) | Rol en la receta |
+| --- | --- | --- |
+| [OrtaMarco/mx-fiscal-mcp-server](https://github.com/OrtaMarco/mx-fiscal-mcp-server) (MIT, 1★) | MIT | Valida **RFC** mexicano antes de confirmar la reserva |
+| [cmendezs/mcp-einvoicing-core](https://github.com/cmendezs/mcp-einvoicing-core) (Apache-2.0, 0★) | Apache-2.0 | Modelo de datos común del comprador entre jurisdicciones. **Declara que las llaves de firma se quedan del lado del cliente** |
+| [QloApps](https://github.com/Qloapps/QloApps) (OSL-3.0) | OSL-3.0 | El PMS donde el folio ya existe y donde hay que agregar el campo |
+| [bsnsoft/esj](https://github.com/bsnsoft/esj) (Apache-2.0, 4★) | Apache-2.0 | EN 16931 **como JSON por paths**: la forma en que un agente escribe y lee la factura sin tocar XML |
+
+**El cableado, en cinco pasos:**
+
+1. **Extender el payload de reserva con un objeto `fiscal_identity`** —`{scheme, id, legal_name,
+   address}`— donde `scheme` es cerrado: `VAT-EU`, `RFC-MX`, `CUIT-AR`, `GSTIN-IN`, `NIF-ES`,
+   `CNPJ-BR`. Va **al lado de las fechas y del nombre**, no en un campo de notas.
+2. **Validar antes de confirmar.** RFC con `mx-fiscal-mcp-server`; VAT ID de la UE contra el
+   servicio de validación del país. Un identificador inválido es un error de la reserva, no del
+   cierre de mes.
+3. **Propagar al canal** en el campo que el proveedor usa para decidir factura vs. recibo. En un
+   PMS open source, eso es una columna nueva en el folio y un campo en el motor de reserva.
+4. **Si el canal no tiene el campo, decirlo antes de confirmar.** Literal, en la respuesta del
+   agente: *«este proveedor no acepta identidad fiscal en la reserva; el IVA de esta estadía no va
+   a ser recuperable»*. Es un hecho de costo que el comprador tiene derecho a saber **antes**, y es
+   la diferencia entre una herramienta y un agente que destruye valor en silencio.
+5. **Registrar la decisión.** `fiscal_identity_sent: true|false|unsupported`, con timestamp y canal.
+   Es la evidencia de por qué una estadía no se pudo recuperar.
+
+**Lo que esta receta NO hace:** no emite, no firma, no timbra. Sólo garantiza que el dato esté donde
+tiene que estar cuando todavía sirve.
+
+**Dónde vale el caso de negocio sin estimarse:** en **India**, una factura B2B sin IRN válido **no
+es un incumplimiento formal, es crédito fiscal (ITC) negado**. El GSTIN que el agente no pasó se
+paga en impuesto. Igual que los USD 260 por pieza del plano del equipaje: es aritmética, no
+proyección.
+
+## Receta 32 — Emisión multi-jurisdicción con tres estados, no dos (la receta de EMEA y APAC)
+
+**La regla de diseño que la ordena, y es la misma del plano del equipaje:** un agente **no puede
+decir «ya facturado»** con un booleano. Son **tres estados**: *emitido*, *aceptado por la
+autoridad*, *no se sabe*. En los regímenes de *clearance* —Polonia KSeF, India IRP, Malasia MyInvois
+con validación en tiempo real— el documento **no existe legalmente hasta el acuse**, y un agente
+que colapse los tres estados en dos va a afirmar que facturó algo que la autoridad rechazó.
+
+**Piezas, todas Apache-2.0 salvo donde se indica, verificadas el 2026-11-23:**
+
+| Pieza | Licencia (archivo leído) | Stars | Rol |
+| --- | --- | --- | --- |
+| [ZUGFeRD/mustangproject](https://github.com/ZUGFeRD/mustangproject) | Apache-2.0 (`master/LICENSE`) | 497 | Emite y valida Factur-X/ZUGFeRD/XRechnung/CII. Trae CLI, así que entra en CI |
+| [phax/phive-rules](https://github.com/phax/phive-rules) | Apache-2.0 (`master/LICENSE`) | 55 | **Reglas de validación de muchas jurisdicciones en un solo motor.** La pieza que evita escribir un validador por país |
+| [backoffice-plus/e-invoice-validator](https://github.com/backoffice-plus/e-invoice-validator) | Apache-2.0 | 21 | Gate de validación alemán |
+| [cmendezs/mcp-ksef-pl](https://github.com/cmendezs/mcp-ksef-pl) · [`-de`](https://github.com/cmendezs/mcp-einvoicing-de) · [`-be`](https://github.com/cmendezs/mcp-einvoicing-be) · [`-fr`](https://github.com/cmendezs/mcp-facture-electronique-fr) · [`-es`](https://github.com/cmendezs/mcp-facturacion-electronica-es) · [`-it`](https://github.com/cmendezs/mcp-fattura-elettronica-it) · [`-in`](https://github.com/cmendezs/mcp-einvoicing-in) · [`-invoicenow-sg`](https://github.com/cmendezs/mcp-invoicenow-sg) · [`-ae`](https://github.com/cmendezs/mcp-einvoicing-ae) | Apache-2.0 ×9 | La superficie MCP por jurisdicción. **0–3★ cada uno: referencia de esquema, no dependencia de producción** |
+| [atgp/factur-x](https://github.com/atgp/factur-x) | MIT | 154 | Incrusta el XML en el PDF/A-3 — el artefacto que el huésped ve |
+| [Speicherstadt/belegt](https://github.com/Speicherstadt/belegt) | **AGPL-3.0** | 8 | Archivo con modo **GoBD**: el lado de retención, que ningún agente cubre |
+
+**El cableado:**
+
+1. **Mapear el folio a EN 16931 una sola vez**, con `esj` o con el modelo de `mustangproject`:
+   línea de habitación, desayuno, *city tax*, IVA por tasa. **Ese mapeo es el activo**; las
+   jurisdicciones son serializaciones distintas del mismo mapeo.
+2. **Validar con `phive-rules` antes de transmitir**, en el pipeline, no en producción.
+3. **Transmitir por el adaptador de la jurisdicción** (MCP o biblioteca nativa), y **esperar el
+   acuse**. Los MCP son la superficie de herramienta; la biblioteca madura
+   (`mustangproject`, `nfe`) es el motor.
+4. **Guardar el acuse como el documento**, no el PDF. En un régimen de *clearance*, el acuse es la
+   prueba.
+5. **Exponer al agente una herramienta de tres valores**: `invoice_status → cleared | submitted |
+   unknown`. Nunca un booleano.
+6. **Archivar con requisitos de retención** (`belegt`, AGPL-3.0 — se corre como servicio, no se
+   empaqueta en el entregable cerrado).
+
+⚠️ **Dos licencias que hay que mirar antes de proponer esta receta:** los artefactos oficiales de
+validación de la Comisión (`ConnectingEurope/eInvoicing-EN16931`, 271★) son **EUPL-1.2, copyleft
+recíproco** —limpios como gate de CI, contaminantes dentro de un entregable cerrado— y
+`gflohr/e-invoice-eu` (383★) es **WTFPL**, no aprobada por OSI, que varias áreas legales de cliente
+rechazan por política y no por alcance.
+
+## Receta 33 — Recibir y conciliar comprobantes de seis regímenes ajenos (la receta de North America)
+
+**Por qué North America necesita una receta distinta.** EE. UU. **no tiene mandato federal de
+facturación electrónica B2B** y la red DBNAlliance es voluntaria, así que a un cliente
+norteamericano **no se le puede vender compliance propio**. Pero sus empleados viajan: una empresa
+de EE. UU. que manda gente a Bélgica, Polonia, Francia, India, Singapur, Brasil o México **recibe
+facturas bajo seis regímenes distintos y nunca tuvo un mandato que la obligara a construir la
+capacidad de leerlas**. Eso es el engagement: **no emitir — recibir, validar y conciliar.**
+
+**Piezas:**
+
+| Pieza | Licencia (archivo leído) | Rol |
+| --- | --- | --- |
+| [phax/phive-rules](https://github.com/phax/phive-rules) (Apache-2.0, 55★) | Apache-2.0 | **El corazón de la receta**: valida un documento entrante contra las reglas del país que lo emitió, sin un validador por país |
+| [ZUGFeRD/mustangproject](https://github.com/ZUGFeRD/mustangproject) (Apache-2.0, 497★) | Apache-2.0 | Lee CII/UBL/Factur-X y extrae el XML del PDF entrante |
+| [atgp/factur-x](https://github.com/atgp/factur-x) (MIT, 154★) | MIT | Extrae el XML incrustado cuando lo que llega es un PDF |
+| [wmixvideo/nfe](https://github.com/wmixvideo/nfe) (Apache-2.0, 770★) | Apache-2.0 | Lado brasileño: parsea NF-e/NFS-e |
+| [bsnsoft/esj](https://github.com/bsnsoft/esj) (Apache-2.0, 4★) | Apache-2.0 | Normaliza todo a un **JSON por paths** común, que es lo que el agente consulta |
+| [Haresh-16/receipt-parsing-mcp](https://github.com/Haresh-16/receipt-parsing-mcp) (MIT, 0★) | MIT | Último recurso para lo que llegó como recibo y no como factura |
+
+**El cableado:**
+
+1. **Un buzón, seis parsers, un esquema.** Todo documento entrante se normaliza a EN 16931 en JSON
+   (`esj`) con su jurisdicción de origen como atributo.
+2. **Validar con `phive-rules` según el país emisor**, y **clasificar**: factura fiscal válida /
+   recibo / documento ilegible. Esa clasificación es el entregable: **sólo la primera categoría
+   recupera IVA**.
+3. **Conciliar contra el itinerario**, no contra el extracto de la tarjeta. La unidad de
+   conciliación es el tramo del viaje: una estadía, un pasaje, un traslado.
+4. **Marcar las líneas exentas.** En Alemania, el alojamiento entra al mandato y **el pasaje de
+   avión y de tren están exentos** (⚠️ dato de guía de proveedor, no del BMF: confirmar con el
+   área fiscal del cliente). Un documento exento ausente **no es un hallazgo**, y tratarlo como tal
+   genera trabajo falso para el equipo de gastos.
+5. **Cerrar el ciclo con la Receta 31.** Toda estadía que llegó como recibo y no como factura
+   vuelve como regla de reserva: a ese proveedor hay que pasarle la identidad fiscal la próxima vez.
+   **La conciliación es el diagnóstico; la Receta 31 es la cura.**
+
+**Lo que esta receta promete y lo que no.** Promete decir, por tramo, si el comprobante recupera IVA
+y por qué no. **No** promete recuperarlo: la recuperación transfronteriza es un trámite con plazos y
+agentes por país, y esta pieza produce el expediente, no el reembolso.

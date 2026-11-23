@@ -35,6 +35,12 @@ del archivo de licencia**, no del badge.
    flujo de reserva contra la EAA tiene herramientas Apache vivas; responder "¿puedo entrar en
    silla de ruedas?" tiene **0 agentes open source**, y schema.org **no tiene término** para eso
    en un lugar. El vocabulario de la industria (OpenTravel) existe y **no tiene licencia**.
+6. **El agente reserva y no puede facturar — y si no pasa la identidad fiscal del comprador
+   en la reserva, el IVA se pierde para siempre.** (undécima pasada, 2026-11-23) Es el primer
+   plano donde la pieza cara ya existe y es permisiva (`wmixvideo/nfe` 770★ Apache-2.0,
+   `mustangproject` 497★ Apache-2.0, los dos con push de hoy) y lo que falta es **un campo**.
+   Y es el primer plano donde **la capa open source más fuerte es de LATAM**, porque Brasil
+   obliga desde 2008.
 
 ## Estructura
 
@@ -45,7 +51,7 @@ travel-kb/
 │                 #   pago, visibilidad, plano terrestre + brechas medidas
 ├── verticals/     # Plataformas reales customizables con AI (QloApps, Odoo, HAIP, Kamra)
 ├── intel/         # Mercado y tendencias, con oportunidades por región
-└── compose/       # 6 recetas concretas con repos nombrados
+└── compose/       # 33 recetas concretas con repos nombrados
 ```
 
 ## Uso

@@ -873,3 +873,114 @@ publicidad de tarifas, y el propio DOT afirmó en julio de 2026 que los estados 
 en ese terreno. **Ninguna fuente que alcancé aplica eso a § 349-a en particular** —la inferencia va
 marcada como tal en el mapa de mercado—, pero la consecuencia de arquitectura no depende de quién
 gane el litigio: **el interruptor de divulgación es por producto, no por estado.** Receta 29.
+
+## 41. El primer plano donde la pieza cara ya está resuelta y lo que falta es un campo
+
+En los diez planos anteriores de esta KB la conclusión fue siempre alguna variante de *falta el
+motor*: no hay calculadora de emisiones usable comercialmente, no hay detector de reseña falsa, no
+hay biblioteca de revenue management más allá de 2 estrellas, no hay cliente del estándar abierto.
+**El plano del comprobante rompe la serie.** El motor existe, es grande, es permisivo y está vivo:
+`wmixvideo/nfe` (770★, Apache-2.0, push 2026-11-23), `ZUGFeRD/mustangproject` (497★, Apache-2.0,
+push 2026-11-23), `phax/phive-rules` (55★, Apache-2.0, push 2026-11-23).
+
+Lo que falta es **un campo**: la identidad fiscal del comprador —VAT ID, RFC, CUIT, GSTIN, NIF—
+pasada **en el momento de la reserva**. La regla operativa, coincidente en toda la cobertura de
+viaje corporativo de 2026: si ese dato no llega al hotel con la reserva, el hotel emite recibo de
+consumidor y el IVA de esa estadía **no se recupera nunca**.
+
+Es el modo de falla más barato de arreglar y el más caro de ignorar de los once planos, y es
+**estructuralmente agentic**: el daño no lo causa una alucinación ni un error de ejecución. Lo causa
+**una reserva correcta a la que le falta un campo**. Es el primer plano donde el agente rompe algo
+ejecutando bien.
+
+## 42. En este plano el error de licencia de la API tiene una sola dirección, y es la inversa de la octava pasada
+
+La tendencia 34 de esta KB registró que *«el error de licencia tiene dos direcciones»*, con el caso
+del badge que **afirma** una licencia inexistente. En el plano del comprobante la dirección fue
+**una sola y fue la contraria, cinco veces de cinco**:
+
+| Repo | Campo `license` de la API | Archivo leído | Causa medida |
+| --- | --- | --- | --- |
+| `phax/phive-rules` (55★) | `NOASSERTION` | Apache-2.0 | Encabezado `====` + copyright antes del nombre |
+| `Quittio/quittio` (47★) | `NOASSERTION` | MIT | Está en `master`; **404 en `main`** |
+| `TadaSoftware/PyNFe` (599★) | `NOASSERTION` | LGPL-3.0 | Texto sin encabezado SPDX |
+| `BrasilNFe/brasilnfe-mcp` | `NOASSERTION` | MIT | Está en `master` |
+| `DoubleH10/zatca-mcp` (5★) | `NOASSERTION` | Apache-2.0 | Texto sin encabezado SPDX |
+
+**Sobredeclaraciones: cero.** Filtrar por el campo de la API en este plano habría descartado cinco
+repos usables, cuatro de ellos permisivos, uno con 599 estrellas. La causa raíz es mecánica y vale
+como regla para cualquier curaduría de este KB: **el detector de licencias de GitHub falla cuando
+el archivo vive en `master` en lugar de `main`, o cuando el texto arranca con una línea de
+encabezado antes del nombre de la licencia.** La licencia se lee del archivo, en las dos ramas,
+siempre.
+
+## 43. Un archivo de licencia puede contener tres licencias, y la restrictiva es la de la dependencia
+
+`InvoicePlane/InvoicePlane` tiene **3.289 estrellas** y es la plataforma de facturación open source
+más estrellada que devuelve cualquier búsqueda. Su `LICENSE.txt` contiene, en este orden:
+
+1. una **restricción de marca** que prohíbe redistribuir la aplicación bajo el nombre y el logo;
+2. **MIT**, para el código de InvoicePlane;
+3. **la licencia propietaria de CodeIgniter de EllisLab Inc.**, redactada como *«legal agreement
+   between you and EllisLab Inc.»*, para el framework que viene empaquetado en el repo.
+
+**Decir «InvoicePlane es MIT» es media verdad**, y la media que falta es la del framework que el
+repo distribuye. Es un cuarto modo de trampa de licencia, distinto de los tres que esta KB ya tenía
+catalogados —badge que miente (octava pasada), archivo ausente (décima), API que subdeclara
+(tendencia 42)—: **un archivo de licencia correcto que incluye la licencia restrictiva de una
+dependencia empaquetada.** La regla que se deduce: en un repo que empaqueta su framework, leer el
+`LICENSE` **completo**, no las primeras líneas.
+
+## 44. LATAM tiene el código por primera vez en once planos, y la causa es que obliga desde 2008
+
+La tendencia 9 de esta KB dice *«Asia tiene el código; Europa tiene la regulación; LATAM tiene al
+Estado comprando»*. **El plano del comprobante la invierte.** El repo horizontal fiscal más
+estrellado del plano es brasileño y Apache-2.0 (`wmixvideo/nfe`, 770★), y la capa NF-e de Brasil
+—770 + 599 + 376 + 330 estrellas entre `nfe`, `PyNFe`, `OCA/l10n-brazil` y `nfewizard-io`— **supera
+a la capa fiscal europea de este plano, incluidos los artefactos oficiales de la Comisión (271★)**.
+
+La causa no es talento ni inversión: es **antigüedad del mandato**. Brasil obliga a emitir NF-e
+desde 2008; Europa empezó a obligar en 2024–2026. LATAM tuvo dieciocho años para construir lo que
+EMEA está construyendo ahora. Y eso produce el único argumento comercial de esta KB que va **de
+LATAM hacia afuera**: un equipo que ya resolvió *clearance* en tiempo real contra una autoridad
+fiscal brasileña es el que mejor implementa KSeF polaco, Verifactu español o InvoiceNow
+singapurense. **Los esquemas cambian; el problema es el mismo que Brasil resuelve desde 2008.**
+
+⚠️ **La brecha interna de la región, medida:** Brasil 376★ en Odoo contra México 20★, y
+`cfdi sat facturacion` devuelve **33 repos en total**, cuatro de los ocho primeros por estrellas
+**sin archivo de licencia**. Brasil tiene ecosistema; México tiene piezas.
+
+## 45. Un solo viaje de negocios produce dos regímenes documentales, y ninguna herramienta abierta lo modela
+
+Según guía de un proveedor de viaje corporativo (⚠️ secundaria, no del BMF): en Alemania **la
+factura de hotel entra plenamente al mandato de e-invoicing y el pasaje de avión y de tren están
+exentos**. Un viaje de tres días a Múnich genera, entonces, un documento estructurado obligatorio
+por el alojamiento y un documento exento por el transporte — dos regímenes, un mismo viaje, un mismo
+centro de costo.
+
+El equivalente en India va por el comprador y no por el tipo de servicio: la reserva corporativa
+B2B y la factura de banquetes a una empresa llevan e-invoice con IRN, y **la cuenta B2C del huésped
+particular no**. El mismo hotel, el mismo día, emite dos tipos de documento según quién compra — y
+**el agente que reserva es quien decide cuál sale**, porque es quien pasa o no pasa el GSTIN.
+
+Ninguna de las piezas open source catalogadas en este plano modela la asimetría. Los doce MCP de
+`cmendezs` emiten **por jurisdicción**; ninguno razona sobre **qué línea del itinerario entra al
+mandato y cuál no**. Es la misma forma del hallazgo de la Receta 27 (un evento de custodia, cuatro
+obligaciones regionales) aplicada al comprobante, y está sin construir.
+
+## 46. La licencia viaja peor cuando el formato de distribución es un *skill*
+
+`causa-prima-ai` publica tres repos que se describen como *«free, AI-native EN 16931-compliant
+e-invoicing»*. Los tres archivos `LICENSE` —leídos el 2026-11-23— dicen **«All rights reserved…
+proprietary and confidential. No license is granted to use, copy, modify, or distribute»**.
+
+El tercero es [`scribo-skill`](https://github.com/causa-prima-ai/scribo-skill) (7★): **un skill de
+Claude/Codex**. Y ahí está la tendencia, que ya había asomado en la séptima pasada de esta KB
+—*«el inventario empieza a distribuirse como skill, no como API»*— y que acá muestra su costado
+sucio: **un skill es el formato que se copia a un agente sin que nadie abra el archivo de
+licencia.** Un repo de biblioteca pasa por un gestor de dependencias y por una revisión de SBOM; un
+skill se arrastra a una carpeta. El vector de distribución nuevo del vertical **no tiene el control
+de licencia que el viejo sí tenía**.
+
+**Regla para esta KB y para cualquier engagement:** un skill se audita como una dependencia —
+licencia leída del archivo, no de la descripción — **antes** de copiarlo.

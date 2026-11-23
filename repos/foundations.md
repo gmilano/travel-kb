@@ -1275,3 +1275,106 @@ embeber y una capa horizontal enorme para construir encima. Lo demás se lee y s
 | `prophet` no pudo medirse por la API de búsqueda | `q=repo:facebook/prophet` → 0 hits | Declarado, no estimado. |
 | El dato competitivo abierto no es contractualmente limpio | `hotelrate-crawl`, `hotel-price-aggregator` (MIT, crawling) | El código sirve; el dato de producción se compra. |
 | Ningún repo del plano implementa paridad **como control auditable** | Sólo monitorización (vía API ajena) | Tras SAMR/Trip.com es una brecha con exposición regulatoria, no sólo técnica. |
+
+## Plano del comprobante — la primera vez que la capa horizontal está *certificada* y no sólo grande
+
+**Undécima pasada, 2026-11-23.** En los diez planos anteriores la ley estructural de esta KB fue
+siempre la misma: horizontal grande y permisiva, vertical chica o inexistente. Acá vuelve a
+cumplirse —pero con una diferencia que la hace más fuerte: **la capa horizontal de este plano no es
+sólo grande, es la que el regulador reconoce.** Las reglas de validación EN 16931 que publica la
+Comisión Europea son el artefacto normativo, no una reimplementación de alguien.
+
+### Método de verificación de este plano
+
+- Liveness: `git ls-remote` sobre los **36 repos nuevos** de esta pasada → **36 vivos, 0 muertos**.
+- Licencia: `curl` de `LICENSE`/`LICENSE.md`/`LICENSE.txt`/`COPYING` en `main` **y** `master`, y
+  **lectura del texto**, no del campo `license` de la API — que en este plano falló cinco veces.
+- Estrellas y último push: `search/repositories`, 2026-11-23.
+
+### Capa horizontal — permisiva, viva, enorme, y no sabe nada de viajes
+
+| Repo | Licencia (archivo leído) | Stars | Último push | Qué aporta |
+| --- | --- | --- | --- | --- |
+| [ZUGFeRD/mustangproject](https://github.com/ZUGFeRD/mustangproject) | Apache-2.0 (`master/LICENSE`) | 497 | **2026-11-23** | **La pieza de referencia del plano.** Biblioteca Java + validador + CLI de Factur-X/ZUGFeRD, UN/CEFACT CII y XRechnung. Push de hoy |
+| [wmixvideo/nfe](https://github.com/wmixvideo/nfe) | Apache-2.0 (`master/LICENSE`) | **770** | **2026-11-23** | **El repo más estrellado de todo el plano, y es brasileño.** NF-e en Java, push de hoy |
+| [ConnectingEurope/eInvoicing-EN16931](https://github.com/ConnectingEurope/eInvoicing-EN16931) | **EUPL-1.2** (`master/LICENSE.txt`) | 271 | 2026-10-26 | Los **artefactos oficiales de validación** del estándar europeo. Es la norma, no una interpretación. ⚠️ Copyleft recíproco — ver la auditoría abajo |
+| [phax/phive-rules](https://github.com/phax/phive-rules) | Apache-2.0 (`master/LICENSE`) | 55 | **2026-11-23** | Reglas de validación de e-invoice **de muchos países** para el motor phive. La capa multi-jurisdicción que no hay que reimplementar |
+| [atgp/factur-x](https://github.com/atgp/factur-x) | MIT (texto leído, `master/LICENSE`) | 154 | 2026-08-18 | Factur-X / ZUGFeRD 2.0 en PHP: incrusta y extrae el XML del PDF |
+| [TadaSoftware/PyNFe](https://github.com/TadaSoftware/PyNFe) | **LGPL-3.0** | 599 | 2026-02-20 | NF-e en Python. La API dice `NOASSERTION`; el archivo dice LGPL-3.0 — copyleft débil, usable enlazando |
+| [bsnsoft/esj](https://github.com/bsnsoft/esj) | Apache-2.0 | 4 | **2026-11-22** | EN 16931 **como JSON por paths** en vez de XML. 4★, pero es la forma en que un agente quiere leer una factura |
+| [backoffice-plus/e-invoice-validator](https://github.com/backoffice-plus/e-invoice-validator) | Apache-2.0 | 21 | 2026-10-20 | Validador alemán de E-Rechnung, para usar como gate |
+| [Quittio/quittio](https://github.com/Quittio/quittio) | MIT (`master/LICENSE`; **404 en `main`**) | 47 | 2026-11-20 | ZUGFeRD/Factur-X/XRechnung en PHP y Laravel: crear, validar y leer |
+| [NemonInvocash/verifactu-php](https://github.com/NemonInvocash/verifactu-php) | MIT | 9 | 2026-07-09 | Cliente de Verifactu y TicketBAI. Chico, y es lo único permisivo del régimen español |
+| [nfewizard-org/nfewizard-io](https://github.com/nfewizard-org/nfewizard-io) | **GPL-3.0** (`main/LICENSE.txt`) | 330 | 2026-11-08 | NF-e en Node.js contra SEFAZ. ⚠️ GPL-3.0: no se enchufa en un producto cerrado de cliente |
+| [gflohr/e-invoice-eu](https://github.com/gflohr/e-invoice-eu) | **WTFPL v2** | 383 | **2026-11-23** | Genera EN 16931 (Factur-X/ZUGFeRD, UBL). ⚠️ No aprobada por OSI: preguntar al área legal del cliente antes de proponerla |
+
+### Capa vertical de viaje — la medición más corta de las once pasadas
+
+| Búsqueda | Total | Lo que hay |
+| --- | --- | --- |
+| `travel agency invoice billing system` | **2** | `karlomanson/tour-invoices` (GPL-3.0, **0★, último push 2017-02-27**) y uno sin licencia |
+| `hotel folio invoice` | **5** | Cuatro sin archivo de licencia; el único con licencia son **plantillas de factura GST** para hoteles indios, no software |
+| `per diem allowance calculator` | **0** | — |
+| `airline ticket invoice receipt api` | **0** | — |
+
+**La proporción del plano:** la capa horizontal suma **770 + 497 + 383 + 330 + 271 + 154 + 55 + 47
++ 21 + 9 + 4 estrellas** y tiene push de hoy en cuatro repos; la capa vertical de viaje es **un
+repo GPL de 2017 con 0 estrellas**. Es la segunda brecha más grande medida en este KB, después de
+la del precio — y a diferencia del precio, acá **la pieza horizontal sí resuelve el problema
+completo**: una factura de hotel es una factura. Lo que falta no es el motor fiscal, es el
+**cableado del dato fiscal del comprador dentro del flujo de reserva**.
+
+### ⚠️ La auditoría de licencia de este plano — y es la inversa de la de la octava pasada
+
+En el plano de la reseña la trampa era un badge que **afirmaba** una licencia que no existía. Acá
+el error va en la otra dirección y se repitió **cinco veces**: el campo `license` de la API dijo
+`NOASSERTION` y el archivo existía.
+
+| Repo | API | Archivo leído | Causa medida |
+| --- | --- | --- | --- |
+| `phax/phive-rules` | `NOASSERTION` | Apache-2.0 | El archivo empieza con una línea `====` y un copyright antes del nombre |
+| `Quittio/quittio` | `NOASSERTION` | MIT | Está en `master`; en `main` da 404 |
+| `TadaSoftware/PyNFe` | `NOASSERTION` | LGPL-3.0 | Texto completo sin encabezado SPDX |
+| `BrasilNFe/brasilnfe-mcp` | `NOASSERTION` | MIT | Está en `master` |
+| `DoubleH10/zatca-mcp` | `NOASSERTION` | Apache-2.0 | Texto completo sin encabezado SPDX |
+
+**Sobredeclaraciones en este plano: cero.** Descartar por el campo de la API habría tirado cinco
+repos usables, cuatro de ellos permisivos. **La regla operativa que se confirma: en este vertical
+la licencia se lee del archivo, en las dos ramas, siempre.**
+
+### ⚠️ Las dos licencias de este plano que hay que mirar dos veces
+
+1. **EUPL-1.2 en `ConnectingEurope/eInvoicing-EN16931`.** Son los artefactos oficiales de la
+   Comisión, y son **copyleft recíproco**. Usarlos como gate de validación en CI es limpio;
+   redistribuirlos dentro del entregable cerrado de un cliente arrastra la reciprocidad. Es el
+   único caso de esta KB donde **la norma misma tiene licencia copyleft**.
+2. **WTFPL en `gflohr/e-invoice-eu`** (383★, push de hoy). Permite todo y **no está aprobada por
+   OSI**. Técnicamente la más libre del plano; políticamente la que más áreas legales rechazan.
+
+### Brechas del plano del comprobante, medidas el 2026-11-23
+
+| Lo que no existe | Evidencia |
+| --- | --- |
+| Biblioteca de facturación específica de viaje usable | `travel agency invoice billing system` → **2**, el único con licencia es GPL-3.0 de 2017 con 0★ |
+| Modelo de datos abierto de folio hotelero fiscalmente válido | `hotel folio invoice` → **5**, ninguno es software con licencia |
+| Capa open source de la red de EE. UU. | `dbnalliance` → **1** repo, de 2023, sin licencia, sin biblioteca |
+| Cliente de Access Point Peppol open source | `peppol access point client library` → **0** |
+| Calculadora de per diem / viático | `per diem allowance calculator` → **0** |
+| Campo de identidad fiscal del comprador en un agente de reserva | **Ninguno** de los agentes de reserva catalogados en los once planos de esta KB lo tiene |
+
+### ⚠️ Lo que esta sesión NO pudo verificar, dicho en voz alta
+
+- **Las fechas de los mandatos salen de cobertura secundaria coincidente** (Sovos, Peppol.nu,
+  guías de compliance y blogs de viaje corporativo), **no de los textos oficiales**. Dos puntos
+  quedaron con fuentes en conflicto y se registran así: **España** (Verifactu corrido a 2027 por
+  decreto de diciembre de 2025 según una fuente, enero de 2026 según otra anterior; B2B el
+  2027-10-01 o el 2027-10-06) y **Alemania** (emisión 2027 sobre EUR 800.000 de facturación según
+  una fuente, 2027–2028 por tamaño según otra). **No se afirma ninguna.**
+- **La regla «hotel sí, pasaje de avión y de tren no» en Alemania** viene de una guía de un
+  proveedor de viaje corporativo, no del BMF. Es el dato más accionable del plano y el que más
+  conviene confirmar con el área fiscal del cliente antes de usarlo en una propuesta.
+- **Brasil 2026 es año de prueba de CBS/IBS** con tasas testigo (0,9% CBS / 0,1% IBS) y las
+  fuentes discrepan sobre la fecha de NFS-e (2026-08-01, 2026-10-01 o 2026-12-01 según cuál).
+  Ninguna fuente localizada trata **hoteles** en particular.
+- **No se leyó código** de ninguno de los doce MCP de `cmendezs`: se verificó licencia, liveness,
+  estrellas y fecha de push. Que declaren un esquema no prueba que lo implementen bien.

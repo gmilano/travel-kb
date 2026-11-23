@@ -423,3 +423,63 @@ Tres hechos lo convierten en producto y no en idea:
 Y la variante más vendible es la de LATAM, porque ahí **todavía no es obligatorio**: se vende como
 gobierno de dato sobre un motor ya desplegado, y se convierte en cumplimiento el día que el
 PL 5441/2025 o su sucesor salga. Receta 30.
+
+## Plano del comprobante — qué se puede personalizar y qué hay que comprar (2026-11-23, undécima pasada)
+
+### No hay plataforma de facturación de viaje open source — pero sí hay motor fiscal maduro
+
+Es la primera vez en once planos que la ausencia vertical **no duele**: una factura de hotel es una
+factura, y los motores fiscales horizontales la emiten igual de bien. Lo que falta no es el motor,
+es el **cableado del dato fiscal del comprador en el flujo de reserva**.
+
+| Plataforma / pieza | Licencia (archivo leído) | Qué resuelve del plano | Qué hay que construir encima |
+| --- | --- | --- | --- |
+| [ZUGFeRD/mustangproject](https://github.com/ZUGFeRD/mustangproject) (497★, Apache-2.0) | Apache-2.0 | Emite y valida Factur-X/ZUGFeRD/XRechnung, con CLI para meter en CI | El mapeo folio→factura: línea de habitación, desayuno, *city tax*, IVA por tasa |
+| [wmixvideo/nfe](https://github.com/wmixvideo/nfe) (770★, Apache-2.0) | Apache-2.0 | NF-e brasileña contra SEFAZ, en Java | El modelo de servicio de hospedaje y el régimen CBS/IBS de 2026 |
+| [OCA/l10n-brazil](https://github.com/OCA/l10n-brazil) (376★) | **AGPL-3.0** | Localización fiscal brasileña **dentro de Odoo**, mantenida por la OCA | Módulo de hospedaje; se publica como módulo Odoo, igual que el patrón de la pasada cuarta |
+| [OCA/l10n-mexico](https://github.com/OCA/l10n-mexico) (20★) | **AGPL-3.0** | Ídem para CFDI 4.0 en Odoo | Ídem. **20★ contra 376★**: México está mucho menos cubierto que Brasil en el ecosistema Odoo |
+| [QloApps](https://github.com/Qloapps/QloApps) | **OSL-3.0** (ya catalogada en este KB) | PMS + motor de reserva donde el folio ya existe | El campo de identidad fiscal del comprador **en el momento de la reserva**, que es lo que falta |
+| [automationsmanufaktur-labs/open-invoice-germany](https://github.com/automationsmanufaktur-labs/open-invoice-germany) (35★) | **AGPL-3.0** | Facturación self-hosted alemana con E-Rechnung | Nada de viaje. Sirve como referencia de UX de emisión |
+| [Speicherstadt/belegt](https://github.com/Speicherstadt/belegt) (8★) | **AGPL-3.0** | Archivo documental con modo **GoBD**: guarda e-facturas y escaneos con requisitos de retención | El lado de retención del plano, que ningún agente cubre |
+
+### ⚠️ Lo que los listados recomiendan en este plano y no conviene tomar
+
+- **[InvoicePlane/InvoicePlane](https://github.com/InvoicePlane/InvoicePlane) (3.289★)** es la
+  plataforma de facturación open source más estrellada que devuelve cualquier búsqueda, y su
+  `LICENSE.txt` **contiene tres licencias, no una**: (1) una **restricción de marca** que prohíbe
+  redistribuir la aplicación bajo el nombre y el logo InvoicePlane, (2) **MIT** para el código de
+  InvoicePlane, y (3) **la licencia propietaria de CodeIgniter de EllisLab Inc.** para el framework
+  que viene empaquetado, redactada como *«legal agreement between you and EllisLab Inc.»*.
+  **Decir «InvoicePlane es MIT» es media verdad.** Es un modo de trampa que esta KB no había visto
+  en diez pasadas: no es un badge que miente ni un archivo ausente, es **un archivo de licencia que
+  contiene la licencia restrictiva de una dependencia empaquetada**. Si entra a un engagement, el
+  framework empaquetado va a revisión legal aparte.
+- **`causa-prima-ai/scribo`, `scribo-mcp` y `scribo-skill`** se describen como *«free, AI-native
+  EN 16931-compliant e-invoicing»* y sus tres archivos `LICENSE` dicen **«All rights reserved…
+  proprietary and confidential. No license is granted»**. Leídos los tres el 2026-11-23.
+  **No se pueden usar.** El tercero se distribuye como **skill de Claude/Codex**.
+- **`gflohr/e-invoice-eu` (383★, push de hoy)** es técnicamente excelente y su licencia es la
+  **WTFPL**, no aprobada por OSI. No es un problema de alcance, es un problema de política de área
+  legal: hay que preguntar antes de proponerla.
+- **`ConnectingEurope/eInvoicing-EN16931`** son los artefactos oficiales de la Comisión y son
+  **EUPL-1.2**, copyleft recíproco. Como gate de validación en CI, limpio. Redistribuidos dentro de
+  un entregable cerrado, arrastran reciprocidad.
+
+### El hueco de producto más claro de este plano
+
+**Un adaptador de identidad fiscal del comprador para el momento de la reserva.** No es un motor
+fiscal —ésos existen y son Apache-2.0— es el campo que falta antes:
+
+- Recibe el identificador fiscal del comprador (VAT ID, RFC, CUIT, GSTIN, NIF) junto con la
+  solicitud de reserva, **no después**.
+- Lo valida contra la fuente del país cuando hay una (`OrtaMarco/mx-fiscal-mcp-server` valida RFC;
+  en la UE hay servicios de validación de VAT ID).
+- Lo pasa al PMS o al canal en el campo que el hotel usa para decidir si emite **factura** o
+  **recibo de consumidor**.
+- Declara explícitamente *«no se pudo pasar la identidad fiscal, el IVA de esta estadía no va a ser
+  recuperable»* cuando el canal no tiene el campo, **antes de confirmar la reserva**.
+
+Esta pieza no existe en GitHub con ninguna licencia: `travel agency invoice billing system`
+devuelve **2 repos** (uno GPL de 2017 con 0★, uno sin licencia) y `hotel folio invoice` devuelve
+**5**, ninguno de ellos software con licencia. Es el hueco de producto mejor delimitado de los once
+planos, porque el motor caro ya está resuelto y lo que falta es un adaptador de un solo campo.

@@ -125,6 +125,39 @@ en cuatro continentes, y el código abierto del vertical ofrece una biblioteca d
 herramientas de divulgación.** Es la brecha más grande medida en los diez planos de este KB.
 
 
+### El comprobante, la cifra que ordena el undécimo plano (2026-11-23)
+
+No hay una «cifra de mercado del comprobante»: la factura no es un segmento, es la condición para
+que el gasto del viaje corporativo sea recuperable. Lo que se puede medir —y es lo que ordena el
+plano— es **cuántas jurisdicciones ya obligan, y qué tan grande es la capa open source que las
+cubre frente a la capa específica de viaje**:
+
+| Medida | Valor | Cómo se midió |
+| --- | --- | --- |
+| Servidores MCP de facturación electrónica por jurisdicción, Apache-2.0 | **12** (de un solo autor) | `user:cmendezs` + lectura de los 12 `LICENSE` |
+| De esos 12, con push en los últimos 7 días | **10** | `search/repositories`, 2026-11-23 |
+| Estrellas del más estrellado de los 12 | **3** | ídem. **Sin adopción medible: riesgo de autor único** |
+| Estrellas del repo horizontal fiscal más grande (`wmixvideo/nfe`, Apache-2.0, **brasileño**) | **770** | ídem, push 2026-11-23 |
+| Repos de facturación **específica de viaje** | **2** | `travel agency invoice billing system` |
+| De esos 2, usables (licencia + vivos) | **0** | Uno GPL-3.0 con **0★ y último push en 2017**; el otro sin licencia |
+| Repos de folio hotelero fiscal | **5, ninguno software con licencia** | `hotel folio invoice` |
+| Repos de la red de EE. UU. (DBNAlliance) | **1, de 2023, sin licencia** | `dbnalliance` |
+| Repos de cliente Peppol Access Point | **0** | `peppol access point client library` |
+| Repos de cálculo de per diem | **0** | `per diem allowance calculator` |
+| Veces que la API de GitHub **subdeclaró** la licencia en este plano | **5** | Lectura del archivo en `main` y `master` |
+| Veces que la **sobredeclaró** | **0** | ídem |
+
+**Por qué esta cifra ordena el plano:** es el único plano de los once donde **la pieza cara ya está
+resuelta y es permisiva**. En los diez anteriores faltaba el motor; acá el motor existe, tiene 770
+estrellas, licencia Apache-2.0 y push de hoy. Lo que falta es **un campo**: la identidad fiscal del
+comprador, pasada en el momento de la reserva. Y ese campo no existe en ningún agente de reserva
+catalogado por esta KB.
+
+**El hecho travel-específico que hace al plano, y es el más accionable de la pasada:** si el número
+de IVA del comprador no llega al hotel **en la reserva**, el hotel emite recibo de consumidor y el
+IVA de esa estadía **no se recupera nunca**. El agente de reserva es, por lo tanto, el punto donde
+se pierde la recuperación — y la pierde ejecutando correctamente.
+
 ## Opportunities by region
 
 ### North America
@@ -465,6 +498,42 @@ sin apagar su motor. El diferenciador es que se puede auditar hacia atrás: qué
 qué entradas, con qué versión de biblioteca. Y la variante defensiva —**precio desde capacidad y no
 desde la persona** (Receta 28)— es la única que contesta la pregunta del regulador de forma
 estructural en lugar de documental.
+
+
+#### Comprobante fiscal — la región sin mandato, y por eso con la oportunidad invertida (undécima pasada, 2026-11-23)
+
+**Evidencia.** **EE. UU. no tiene mandato federal de facturación electrónica B2B** y, según
+cobertura de compliance actualizada a septiembre de 2026, **tampoco hay propuesta en trámite**. La
+red **DBNAlliance** es un marco de intercambio **voluntario**, alineado a Peppol, presentado como
+la contraparte norteamericana de la red europea; tuvo su primera conferencia en Nueva York en abril
+de 2026 (las fuentes discrepan entre el 1 y el 22 de abril). La adopción sigue siendo limitada: la
+mayor parte de la facturación B2B de EE. UU. es papel, PDF o EDI. La excepción es la compra
+pública: las agencias federales facturan electrónicamente desde 2015, sobre todo por la Invoice
+Processing Platform del Tesoro.
+
+**La medición que lo confirma del lado del código:** la familia de doce servidores MCP por
+jurisdicción **no tiene uno de EE. UU.**, y `dbnalliance` como búsqueda de repos devuelve **un solo
+resultado**, de 2023, sin licencia y sin biblioteca. **No es un hueco de la familia: es la forma
+correcta del mercado de EE. UU. en este plano.**
+
+**La oportunidad, y acá está invertida respecto de las otras tres regiones.** En EMEA, APAC y LATAM
+el trabajo es *cumplir un mandato*. En North America no hay mandato, así que el argumento no puede
+ser compliance. Lo que sí hay es **un cliente norteamericano cuyos empleados viajan a jurisdicciones
+que sí obligan**: una empresa de EE. UU. que manda gente a Bélgica, Polonia, Francia, India,
+Singapur, Brasil o México **recibe facturas bajo seis regímenes distintos y no tiene mandato propio
+que la haya obligado a construir la capacidad de leerlas**. Ése es el engagement: no emitir, sino
+**recibir, validar y conciliar comprobantes extranjeros** contra el programa de viaje, con
+`mustangproject` y `phive-rules` (los dos Apache-2.0) como motor de validación multi-jurisdicción y
+la **Receta 33** como forma — y la Receta 31 como cura, porque toda estadía que llegó
+como recibo es una regla de reserva para la próxima vez.
+
+**El segundo ángulo, específico de la región.** El mismo cliente tiene un problema de IVA
+extranjero recuperable que hoy no recupera por falta del dato en origen — y la pieza que lo arregla
+es el adaptador de identidad fiscal en la reserva (Receta 31), no un motor fiscal.
+
+**Gap declarado de la región:** no se localizó ninguna regulación de EE. UU. ni de Canadá que
+obligue a un hotel o a una aerolínea a emitir un comprobante estructurado. **La ausencia está
+medida, no asumida.**
 
 ### EMEA
 
@@ -915,6 +984,50 @@ avisar, con qué texto y en qué idioma, y deja el registro. Si el DFA sale con 
 *profiling* sobre menores y vulnerables, esa misma pieza es donde se implementa el corte — y el
 cliente que ya la tenga no rehace el motor.
 
+
+#### Comprobante fiscal — la región donde el mandato ya venció y la factura de hotel entra (undécima pasada, 2026-11-23)
+
+**Evidencia — y es la región con el calendario más denso de los once planos.** Todas las fechas
+salen de **cobertura secundaria coincidente** (Sovos, Peppol.nu, guías de compliance y guías de
+viaje corporativo), **no de los textos oficiales**:
+
+| Jurisdicción | Estado | Fecha |
+| --- | --- | --- |
+| **Bélgica** | Vigente | **2026-01-01**, B2B estructurado obligatorio sobre Peppol entre empresas sujetas a IVA establecidas en Bélgica |
+| **Polonia (KSeF)** | Vigente, por tramos | **2026-02-01** grandes contribuyentes, **2026-04-01** el resto de los registrados en IVA, **2027-01-01** micro |
+| **Francia** | **Vigente desde el 2026-09-01** | Grandes y medianas **emiten**, y **todas las empresas deben poder recibir**. PyMEs y micro: **2027-09-01** |
+| **Alemania** | Recepción obligatoria desde 2025 | Emisión por tramos **2027–2028**. ⚠️ fuentes en conflicto sobre el umbral (una dice 2027 sobre EUR 800.000 de facturación) |
+| **España** | ⚠️ **fuentes en conflicto** | Verifactu corrido a **enero y julio de 2027** por decreto de diciembre de 2025 según una fuente; B2B el **2027-10-01** o el **2027-10-06** |
+| **Italia** | Vigente desde hace años | FatturaPA / SDI |
+| **Rumania** | Vigente | RO e-Factura. ⚠️ un recibo **se puede reportar** en 5 días hábiles y **no lleva el IVA del comprador**, así que la recuperación falla igual |
+| **EAU** | 2026 | PINT AE / Peppol 5-corner |
+| **UE (ViDA)** | Futuro | B2B transfronterizo y reporte digital apuntando al **2030-07-01** |
+
+**El hecho travel-específico, y es el más accionable de toda la pasada.** Según guía de un proveedor
+de viaje corporativo (⚠️ no del BMF): en Alemania **la factura de hotel entra plenamente al mandato
+y el pasaje de avión y de tren están exentos**. Un solo viaje de negocios produce, entonces, **dos
+regímenes documentales distintos** — e-factura obligatoria para el alojamiento, documento exento
+para el transporte. Ninguna herramienta open source de este KB modela esa asimetría.
+
+**La sanción, que es lo que mueve el presupuesto del cliente.** Cobertura de la industria reporta
+multas de hasta el **3% de la facturación global** por incumplimiento del AI Act para firmas que
+operan en la UE; el régimen de e-invoicing tiene su propio esquema sancionatorio por jurisdicción.
+Y del lado de la recuperación: **un recibo sirve para deducir el gasto en el impuesto a las
+ganancias y no sirve para recuperar el IVA.** La confirmación de pago de un hotel **no es** una
+factura fiscal.
+
+**La oportunidad.** La capa de código está, es madura y es permisiva: `mustangproject` (497★,
+Apache-2.0, push de hoy) cubre Factur-X/ZUGFeRD/XRechnung/CII; `phive-rules` (55★, Apache-2.0,
+push de hoy) trae las reglas de validación de muchas jurisdicciones en un solo motor; los MCP de
+`cmendezs` cubren DE, ES, FR, IT, BE, PL y AE con Apache-2.0. Lo que **no** existe es el mapeo
+folio→factura con *city tax*, desayuno e IVA por tasa, ni el adaptador de identidad fiscal en la
+reserva. Receta 31 y Receta 32.
+
+⚠️ **Dos trampas de licencia específicas de esta región:** los artefactos **oficiales** de
+validación de la Comisión (`eInvoicing-EN16931`, 271★) son **EUPL-1.2, copyleft recíproco** — limpio
+como gate de CI, contaminante dentro de un entregable cerrado; y `gflohr/e-invoice-eu` (383★, push
+de hoy) es **WTFPL**, no aprobada por OSI, que varias áreas legales rechazan por política.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -1262,6 +1375,44 @@ salida del motor**, no como política escrita. Un operador que vende en China ne
 por transacción, que el precio no se fijó por frecuencia del cliente y que no se impuso paridad al
 proveedor. Eso es un artefacto de datos derivado del mismo evento de precio que alimenta Nueva York
 y la CRD — y es la pata que convierte la Receta 30 en una sola pieza de cuatro salidas.
+
+
+#### Comprobante fiscal — la región donde no facturar bien cuesta crédito fiscal (undécima pasada, 2026-11-23)
+
+**Evidencia.** Todas las fechas de cobertura secundaria, **no de los textos oficiales de CBIC,
+IRAS o LHDN**:
+
+| Jurisdicción | Estado | Detalle |
+| --- | --- | --- |
+| **India** | Vigente | Facturación con turnover ≥ **INR 5 crore** debe registrar cada factura B2B en el IRP y obtener **IRN + QR**. ⚠️ **Sin IRN válido, India niega el crédito fiscal (ITC)**: la factura mal emitida aumenta el impuesto a pagar, no sólo incumple |
+| **Singapur** | En despliegue | **2026-04-01**: todos los nuevos registrados voluntarios de GST envían los datos de factura a IRAS por **InvoiceNow**. Extensión por tramos a **todos** los registrados hasta **abril de 2031** |
+| **Malasia** | Vigente, por tramos | **MyInvois** desde agosto de 2024 para los más grandes; **desde enero de 2026** para los de facturación anual sobre **RM 1 millón**. Modelo de reporte **en tiempo real con validación de LHDN** |
+
+**El hecho travel-específico de la región.** Según un blog sectorial indio (⚠️ secundario, conviene
+confirmar con CBIC/GSTN): en hoteles, **la reserva corporativa B2B y la factura de banquetes a una
+empresa sí llevan e-invoice**, mientras que **la cuenta B2C del huésped particular no**. Es decir:
+el mismo hotel, el mismo día, emite dos tipos de documento según quién sea el comprador — y **el
+agente que reserva es el que define cuál de los dos va a salir**, porque es quien pasa (o no) el
+GSTIN del comprador.
+
+**Lo que hay de código, y es poco para el tamaño del mandato.** Dos MCP de la familia
+(`mcp-einvoicing-in`, 1★, y `mcp-invoicenow-sg`, 0★, los dos Apache-2.0, push del 2026-11-21/22) y
+`ansh-devs/zoho-books-sdk` (MIT, 1★, 2026-11-06) que incluye GST e IRN. **De Malasia (MyInvois) no
+se localizó ninguna biblioteca ni MCP open source**: es el mandato más agresivo de la región —
+validación en tiempo real— y **la región no tiene capa open source propia que lo cubra**. Gap
+declarado.
+
+**La oportunidad.** El argumento comercial de APAC no es compliance, es **dinero**: en India, una
+factura sin IRN válido **no es un incumplimiento formal, es crédito fiscal perdido**. Eso convierte
+el adaptador de identidad fiscal en la reserva (Receta 31) en un caso de negocio aritmético, igual
+que los USD 260 por pieza del plano del equipaje: el GSTIN que el agente no pasó se paga en ITC
+negado. Y el motor de validación en tiempo real que Malasia exige es la variante de la Receta 32
+con el estado *«aceptado por la autoridad»* como requisito previo a confirmar la operación.
+
+**Gaps declarados de la región:** no se localizó fuente sobre cómo afecta el mandato a hoteles o
+agencias de viaje **de Singapur o de Malasia** en particular, ni material sobre la conciliación
+transfronteriza de una factura de viaje india facturada a Singapur o Malasia. No se localizó
+biblioteca open source de MyInvois. **Las tres ausencias están escritas, no silenciadas.**
 
 ### LATAM
 
@@ -1668,6 +1819,61 @@ porque no hay de qué cumplir todavía— y se convierte en cumplimiento el día
 mismo argumento que la Receta 22 (sello de estadía verificada) pero sobre el precio: **invertir el
 problema y tener la evidencia antes de que la pidan.** Para una aerolínea de la región que ya corre
 Fetcherr, es lo único que su equipo legal no puede construir solo.
+
+
+#### Comprobante fiscal — el primer plano de los once donde LATAM tiene la capa open source más fuerte (undécima pasada, 2026-11-23)
+
+**El hallazgo de la pasada, y es una inversión de la ley de este KB.** En los diez planos
+anteriores LATAM apareció como la región que compra, no como la que tiene el código: *«Asia tiene
+el código; Europa tiene la regulación; LATAM tiene al Estado comprando»* (tendencia 9). **En el
+plano del comprobante eso se da vuelta.** El repo horizontal fiscal más estrellado de todo el plano
+es brasileño:
+
+| Repo | Licencia (archivo leído) | Stars | Último push |
+| --- | --- | --- | --- |
+| [wmixvideo/nfe](https://github.com/wmixvideo/nfe) | **Apache-2.0** | **770** | **2026-11-23** |
+| [TadaSoftware/PyNFe](https://github.com/TadaSoftware/PyNFe) | LGPL-3.0 | 599 | 2026-02-20 |
+| [OCA/l10n-brazil](https://github.com/OCA/l10n-brazil) | AGPL-3.0 | 376 | **2026-11-23** |
+| [nfewizard-org/nfewizard-io](https://github.com/nfewizard-org/nfewizard-io) | GPL-3.0 | 330 | 2026-11-08 |
+| [OCA/l10n-mexico](https://github.com/OCA/l10n-mexico) | AGPL-3.0 | 20 | 2026-11-09 |
+
+**770 + 599 + 376 + 330 estrellas de NF-e brasileña supera a cualquier capa fiscal regional de este
+plano, incluida la europea.** La causa es histórica y es simple: Brasil obliga desde 2008, así que
+la región tuvo dieciocho años para construir la capa que Europa empezó en 2024.
+
+**La brecha interna de LATAM, medida.** Brasil 376★ en Odoo contra México 20★, y en CFDI lo que hay
+es chico y disperso: `FiscalAPI/fiscalapi-net` (MPL-2.0, 69★), `bambucode/catalogos_sat_JSON` (82★,
+**sin archivo de licencia**), `Timbrix/mcp` (MIT, 0★), `OrtaMarco/mx-fiscal-mcp-server` (MIT, 1★),
+`cmendezs/mcp-cfdi-mx` (Apache-2.0, 0★). **`cfdi sat facturacion` devuelve 33 repos en total y
+cuatro de los ocho primeros por estrellas no tienen archivo de licencia.** Brasil tiene ecosistema;
+México tiene piezas.
+
+**Regulación.** Brasil está en el **año de prueba de CBS/IBS**: 2026 con tasas testigo de 0,9% CBS
+y 0,1% IBS y **sin recaudación**, pero con las obligaciones accesorias ya exigibles. ⚠️ **Las
+fuentes discrepan sobre la fecha de NFS-e**: 2026-08-01, 2026-10-01 o 2026-12-01 según cuál; una
+sitúa la exigibilidad de los documentos fiscales de CBS/IBS con sanciones **desde el 2026-08-01**.
+**Ninguna fuente localizada trata hoteles en particular** — el hospedaje es un servicio, así que
+caería bajo las reglas generales de NFS-e, pero eso es inferencia y se declara como tal. México
+mantiene **CFDI 4.0 con Complemento de Pagos 2.0**.
+
+**La oportunidad, y es la única región donde se puede vender «exportar» en lugar de «cumplir».**
+LATAM no necesita que alguien le traiga un motor fiscal: lo tiene, es Apache-2.0 y tiene push de
+hoy. Lo que necesita es lo mismo que las otras tres regiones —**el campo de identidad fiscal del
+comprador dentro del flujo de reserva** (Receta 31)— más dos cosas propias:
+
+1. **El módulo de hospedaje que le falta a `OCA/l10n-brazil`**, para que un PMS open source emita
+   NFS-e de hospedaje correctamente bajo el régimen de 2026. Se publica como módulo Odoo AGPL,
+   exactamente el patrón de la pasada cuarta de este KB.
+2. **Exportar la madurez.** Un equipo brasileño que ya sabe NF-e es el que mejor puede implementar
+   KSeF polaco, Verifactu español o InvoiceNow singapurense: **los esquemas cambian, el problema de
+   *clearance* en tiempo real contra una autoridad fiscal es el mismo que Brasil resuelve desde
+   2008.** Es el primer argumento de esta KB donde la experiencia regional de LATAM es el activo
+   que se vende a EMEA y APAC, y no al revés.
+
+**Gap declarado de la región:** no se localizó nada sobre facturación electrónica de viaje en
+**Chile, Argentina, Colombia ni Perú** en esta pasada, pese a que los cuatro tienen regímenes de
+documento electrónico vigentes. Las búsquedas de repos de esta pasada no los alcanzaron. **Queda
+escrito como lo que falta medir, no como ausencia de mandato.**
 
 ## Posicionamiento Globant
 
