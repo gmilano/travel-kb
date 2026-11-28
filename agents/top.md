@@ -1005,3 +1005,125 @@ incompleta**.
 Los cuatro repos que ya traen el corte (`voyara`, `tourclaim`, `10life`, `HelloSafe`) implementan
 el tercer estado. **Ninguno de los seis implementa el segundo.** Ése es el hueco de producto del
 plano, y está en la Receta 34.
+
+---
+
+## 2026-11-28 — decimotercera pasada · Plano de la unidad regulada (el número de registro)
+
+**Lo que se midió y por qué este plano es distinto a los doce anteriores.** En los planos
+anteriores la pregunta era *¿existe código abierto para esto?*. Acá la respuesta se parte en dos y
+la partición **es** el hallazgo: **el esquema existe y el conector no**. El número de registro de
+una unidad de alojamiento —el artefacto alrededor del cual giran el Reglamento (UE) 2024/1028, el
+CIN italiano, la Local Law 18 de Nueva York, el STRA Register de Nueva Gales del Sur, el padrón de
+la CDMX y la Ley 6255 de CABA— **ya tiene campo tipado en los dos protocolos abiertos de STR que
+existen**, y **no tiene una sola implementación abierta que lo valide contra ningún registro**.
+
+### Los dos protocolos abiertos del vertical, y los dos están vivos de forma desigual
+
+Ninguna de las doce pasadas anteriores había mirado esta capa. Son **dos intentos independientes**
+de desintermediar la distribución de alojamiento para agentes AI, **los dos permisivos**, con
+diseños de confianza distintos:
+
+| Protocolo | Repo | Licencia (**archivo leído**) | ★ | Último commit en rama default | Qué define |
+|---|---|---|---|---|---|
+| **Vacation Rental Protocol (VRP)** | [`vacationrentalprotocol/vrp-spec`](https://github.com/vacationrentalprotocol/vrp-spec) | **CC0-1.0** la spec (`LICENSE`, 7.048 B) + **Apache-2.0** el código (`LICENSE-CODE`, 11.358 B) | 5★ | **2026-11-27** | Oferta de estadía **firmada criptográficamente** y verificable contra la clave pública del dominio del anfitrión: `/.well-known/vacation-rental.json`, JWKS, Ed25519, `did:web`. Incluye `schemas/`, `spec/`, `contexts/` (JSON-LD), `ietf/` y `skills/` |
+| **OpenSTR Protocol** | [`openstr-protocol/protocol`](https://github.com/openstr-protocol/protocol) | ⚠️ **Apache-2.0 MODIFICADO** (`LICENSE`, 9.761 B) — ver la trampa abajo | 5★ | **2026-04-07** (dormido ~7,5 meses) | Vocabulario común para que un agente descubra, consulte y reserve STR «sin plataforma centralizada intermediaria». Estado declarado `v0.1.0-draft` |
+
+**La diferencia de licencia es una decisión de diseño, no un accidente.** VRP separa la
+especificación (CC0-1.0: dominio público, sin atribución exigible) del código de referencia
+(Apache-2.0: con cláusula de patentes). Para Globant eso significa **cero fricción de licencia
+para implementar la spec** y una concesión explícita de patentes al usar el código. Es la
+combinación más limpia encontrada en los trece planos de esta KB.
+
+### La capa agentic de la unidad regulada
+
+| Agente | Repo | Licencia (**archivo leído**) | ★ | Último commit (rama default) | Qué hace |
+|---|---|---|---|---|---|
+| HemmaBo MCP server | [`HemmaBo-se/hemmabo-mcp-server`](https://github.com/HemmaBo-se/hemmabo-mcp-server) | **Apache-2.0** (11.358 B) + `NOTICE` (350 B) | 5★ | **2026-11-28 (hoy)** | Implementación **de referencia** de VRP: un agente compatible verifica la firma de la oferta de estadía del anfitrión y **manda al huésped a reservar con el anfitrión**. Publicado en npm y en el MCP Registry |
+| Verificador independiente de VRP | [`Swarnabha753/vrp-independent-verifier`](https://github.com/Swarnabha753/vrp-independent-verifier) | **MIT** (1.071 B) | 0★ | 2026-08-22 (dormido ~3 meses) | Verificador de VRP **sin dependencia de la implementación de referencia**. Que exista es la prueba de que la spec es implementable por un tercero |
+| Airbnb MCP (HasData) | [`HasData/airbnb-mcp`](https://github.com/HasData/airbnb-mcp) | **MIT** (1.064 B) | 7★ | 2026-10-29 | Servidor MCP: busca estadías y lee el detalle completo del listado como JSON |
+| Hotel MCP (StayingAPI) | [`stayingapi/hotel-mcp`](https://github.com/stayingapi/hotel-mcp) | **MIT** (1.067 B) | 2★ | 2026-07-21 | MCP alojado de datos de hotel y alojamiento sobre Airbnb, Booking.com, Vrbo y Google |
+| Airbnb API (StayingAPI) | [`stayingapi/airbnb-api`](https://github.com/stayingapi/airbnb-api) | MIT — ⚠️ **declarada por la API de GitHub, no leída del archivo** en esta pasada | 4★ | push 2026-07-21 | Búsqueda, disponibilidad y precio de Airbnb en un esquema unificado |
+
+**Honestidad de la medición:** las cinco primeras licencias se leyeron del archivo en un clon
+`--depth 1` de la rama default. La de `stayingapi/airbnb-api` **no**, y queda marcada como tal en
+vez de darla por buena — la pasada undécima documentó que la API de GitHub declaró mal la licencia
+5 de 5 veces.
+
+### El hallazgo central: el campo existe, el validador no
+
+Los dos protocolos **ya modelan el número de registro**, y lo modelan mejor de lo que cualquier
+implementación abierta puede cumplir hoy:
+
+**OpenSTR** (`rfcs/rfc.identity_trust.md`) define dos campos y **una obligación normativa**:
+
+| Campo | Qué es |
+|---|---|
+| `business_registration_number` | Número de registro de la empresa, para `host_type: business` |
+| `local_registration_number` | «Short-term let registration or licence number where required by local regulations (e.g. Edinburgh, Barcelona, Amsterdam, Paris)». Ejemplo en la propia RFC: `"CHI-STR-2026-004821"` |
+
+Y en la línea 454 de esa RFC pone el deber **en el emisor de la credencial**: donde la jurisdicción
+exige registro, *el emisor debe verificar que el número declarado está vigente y es válido antes de
+incluirlo en la credencial* (jurisdicciones nombradas: Chicago, Edimburgo, Barcelona, Ámsterdam,
+París, Nueva York).
+
+**VRP** va un paso más allá y lo hace un tipo de atestación de primera clase,
+`vrpRegulatoryRegistrationSubject` (`schemas/attestations-v0.1.schema.json`), con `type` constante
+`VRPRegulatoryRegistration`. Campos obligatorios: `id` (`did:web`), `type`, `canonicalDomain`,
+`registrationId`, `jurisdiction`, `evidence`. Y **`evidence` es un enum cerrado de tres valores**:
+
+| `evidence` | Significado | Qué exige el esquema además |
+|---|---|---|
+| `self_declared` | El anfitrión lo dice | **`disclaimer` obligatorio** (condicional `if/then` en el esquema) |
+| `registry_verified` | Verificado contra el registro | **`verifiedAt` obligatorio** (condicional `if/then`) |
+| `state_attested` | Atestado por el Estado | — |
+
+El campo `jurisdiction` lleva un `comment` explícito en el esquema: *«Jurisdiction-neutral: never
+constrained to any specific country»*.
+
+**La consecuencia, y es la frase vendible del plano:** el esquema distingue **la procedencia de la
+afirmación de cumplimiento**, y obliga a poner un descargo cuando es sólo declarada. Pero **no
+existe un solo conector abierto a ningún registro nacional o municipal** (ocho búsquedas en cero,
+medidas abajo). Por lo tanto **toda implementación abierta que existe hoy sólo puede emitir
+honestamente `self_declared` + `disclaimer`**. El nivel `registry_verified` está **especificado por
+el protocolo, exigido por el regulador y no implementado por nadie, en ninguna región**. Eso no es
+una plataforma que falte: es **un conector por registro**, y es el hueco construible del plano.
+
+### Trampas verificadas en esta pasada
+
+| Repo | Lo que parece | Lo que dice el archivo | Consecuencia |
+|---|---|---|---|
+| [`ivannikolovbg/repull-channel-manager`](https://github.com/ivannikolovbg/repull-channel-manager) 6★, commit 2026-11-10 | Su descripción dice literalmente «**Open-source** channel manager starter — fork it, deploy to Vercel, ship your own» | `LICENSE.md` (11.134 B) es una licencia propia, «**Repull Channel Manager Community License Agreement**», que **contiene “All rights reserved”**. `NOTICE` (301 B), © Divanova Inc. | **No es open source utilizable.** Es la quinta vez en esta red de KBs que «open source» en la descripción contradice el archivo. La API de GitHub dice `NOASSERTION`, y acá **acierta** |
+| [`openstr-protocol/protocol`](https://github.com/openstr-protocol/protocol) 5★ | Badge «License Apache 2.0» en el README y un `LICENSE` de 9.761 B que abre con «Apache License, Version 2.0» | **Es un Apache-2.0 reescrito**: **12 bloques difieren** del texto canónico, **falta el APPENDIX completo**, y la definición de `"Contribution"` **perdió su sujeto** — dice *«“Contribution” shall mean, as submitted to the Licensor for inclusion in the Work…»*, sin el *«any work of authorship, including the original version of the Work and any modifications…»* del original | **Grave y nueva en esta KB.** El §5 de Apache-2.0 (concesión entrante del contribuyente) **se apoya en esa definición**, que acá no define nada. Una empresa que contribuya aguas arriba **no tiene concesión clara**. Requiere revisión legal antes de adoptar. **Primer caso en esta red de KBs donde `NOASSERTION` de GitHub es probablemente CORRECTO** |
+| [`chaochenxuanhua-boop/japan-resort-minpaku-map`](https://github.com/chaochenxuanhua-boop/japan-resort-minpaku-map) 0★, commit 2026-11-26 | Explorador de ordenanzas de zonificación minpaku en inglés (tope 180 vs 365 días) — contenido **directamente** sobre este plano | **Sin archivo de licencia bajo 14 grafías** | Contenido útil, **no reutilizable**. Se cita como fuente de lectura, no como dependencia |
+| [`Kamra-PMS/kamra-pms`](https://github.com/Kamra-PMS/kamra-pms) 116★ | El README **de esta propia KB** afirmaba «Kamra **AGPL-3.0**» | `license.txt` (**11.358 B**) es **Apache-2.0** íntegro, y `pyproject.toml` declara `Apache-2.0`. Hay además un `TRADEMARK.md` que separa marca de código «in the same spirit as Frappe and ERPNext» | **Error propio corregido, no anotado.** Kamra es **Apache-2.0**. Ver la corrección en `verticals/solutions.md` y en el README |
+
+### Defecto de medición propio, corregido para las doce industrias
+
+Mi script de verificación buscaba el archivo de licencia bajo 13 grafías y **no encontró ninguna en
+Kamra**, lo que casi produjo un «sin licencia» falso sobre el PMS permisivo más activo del vertical.
+La grafía que faltaba es **`license.txt`: todo en minúscula y con extensión**. La lista de nombres a
+probar en cualquier industria debe incluir, además de las conocidas
+`LICENSE`/`LICENSE.md`/`LICENSE.txt`/`LICENCE`/`LICENCE.txt`/`COPYING`/`NOTICE`:
+**`license.txt`**, `license`, `license.md`. Y hay que mirar **la rama default real**: la de Kamra es
+`develop`, no `main`, y la de `Gribadan/RentTools.io` es `master`.
+
+### Las ocho búsquedas en cero (la brecha, medida y escrita como brecha)
+
+`gh api search/repositories`, `total_count`, 2026-11-28:
+
+| Búsqueda | Repos |
+|---|---|
+| `short term rental compliance registration` | **0** |
+| `registration number listing accommodation compliance` | **0** |
+| `codice identificativo nazionale CIN affitti` | **0** |
+| `ventanilla unica digital alquiler` | **0** |
+| `lodging tax occupancy tax calculator` | **0** |
+| `guest registration police report hotel` | **0** |
+| `str regulation scraper housing` | **0** |
+| `open travel accommodation registry api` | **0** |
+| `tourist tax calculation` | 1, **irrelevante** (una guía de entretenimiento de Katmandú) |
+| `topic:minpaku` | 3 en total: un calculador de impuesto MIT, una demo Apache-2.0 declarada «portfolio», un mapa sin licencia |
+
+**Ocho ceros exactos sobre la capa que la ley vuelve obligatoria.** No es que la capa esté
+inmadura: **no existe**.

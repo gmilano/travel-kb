@@ -1683,3 +1683,127 @@ seis repos de los dos tramos implementa el principio.
 vez**, con un expediente que muestra qué vía pagó cada gasto. **No** promete interpretar la cláusula
 de coordinación de beneficios de una póliza concreta: eso vuelve al estado `no_puedo_responder` de
 la Receta 34, con el asegurador como destinatario.
+
+---
+
+## Receta 37 — Atestación de registro de tres niveles de evidencia (la receta base del plano)
+
+**El problema.** Un agente que ofrece una unidad de alojamiento en la UE, Italia, Nueva York, NSW,
+Japón, CDMX o CABA necesita afirmar algo sobre su número de registro. Hoy, en abierto, **sólo se
+puede afirmar «el anfitrión dice que tiene uno»** — y la mayoría de las implementaciones lo afirman
+sin decir que es eso.
+
+**La pieza que ya existe y no hay que diseñar.** VRP define la atestación
+`VRPRegulatoryRegistration` ([`vacationrentalprotocol/vrp-spec`](https://github.com/vacationrentalprotocol/vrp-spec),
+spec **CC0-1.0**, código **Apache-2.0**, commit 2026-11-27) en
+`schemas/attestations-v0.1.schema.json`, con campos obligatorios `id` (`did:web`), `type`
+(`VRPRegulatoryRegistration`), `canonicalDomain`, `registrationId`, `jurisdiction` y `evidence`.
+
+**El cableado.**
+
+1. **Firma y verificación**: [`HemmaBo-se/hemmabo-mcp-server`](https://github.com/HemmaBo-se/hemmabo-mcp-server)
+   (**Apache-2.0**, commit **2026-11-28**) como implementación de referencia — publica
+   `/.well-known/vacation-rental.json` + JWKS y verifica firmas Ed25519 contra `did:web`.
+2. **Verificación independiente en CI**: [`Swarnabha753/vrp-independent-verifier`](https://github.com/Swarnabha753/vrp-independent-verifier)
+   (**MIT**), para no depender del verificador del propio vendor. Que existan dos
+   implementaciones es lo que permite afirmar interoperabilidad en una due diligence.
+3. **Los tres niveles, implementados honestamente** — y esto es lo que la receta aporta:
+
+| `evidence` | Cuándo emitirlo | Qué exige el esquema | Qué se le promete al cliente |
+|---|---|---|---|
+| `self_declared` | El anfitrión tipeó el número y nadie lo comprobó | **`disclaimer` obligatorio** | «Mostramos lo declarado, con el descargo visible». **Es lo único que hoy se puede entregar en abierto** |
+| `registry_verified` | Se consultó el registro y respondió | **`verifiedAt` obligatorio** | «Verificado contra el registro **a una fecha**». Requiere el conector que **no existe** — es el entregable a construir |
+| `state_attested` | La autoridad firma la atestación | — | No disponible en ninguna jurisdicción medida. **No prometer** |
+
+4. **El conector, que es el trabajo real.** Uno por jurisdicción, y en este orden por relación
+   esfuerzo/valor: **CDMX** (padrón en línea y gratuito, plazo vivo por el Mundial 2026), **Italia**
+   (CIN obligatorio desde el 2025-01-01, formato estable, cero herramientas), **NSW** (STRA Register
+   con ID obligatorio en todo anuncio), **Nueva York** (donde el valor no es el sello sino evitar el
+   bloqueo de pago).
+
+**Lo que promete y lo que no.** Promete que **cada afirmación de cumplimiento lleve su procedencia y
+su fecha**, y que un `self_declared` nunca se muestre como verificado. **No** promete que el número
+sea válido donde no haya conector: ahí el estado honesto es `self_declared` **con el descargo
+puesto**, no un `registry_verified` optimista. Emitir `registry_verified` sin haber consultado el
+registro es el fallo que esta receta existe para impedir.
+
+---
+
+## Receta 38 — *Gate* de pre-reserva contra bloqueo de plataforma (la receta de North America)
+
+**El problema, y es dinero, no compliance.** En Nueva York, desde el **2023-09-05**, una plataforma
+**no puede procesar la reserva** de un listado no registrado: la Local Law 18 lo bloquea en el flujo
+de pago. Un agente que confirma una estadía de menos de 30 días en un listado sin registro válido no
+genera una multa — **genera una reserva que no se puede cobrar**, después de haberle dicho al
+viajero que estaba confirmada.
+
+**El cableado.**
+
+1. **Regla de alcance antes que nada** (es donde se cae el 90% de los errores): si la estadía es de
+   **30 días o más**, la LL18 **no aplica** y el *gate* debe dejarla pasar. Si es de **menos de 30
+   días**, exige registro, **presencia física del anfitrión** y **tope de dos huéspedes**. Las tres
+   condiciones son del mismo artículo y hay que evaluarlas juntas.
+2. **Estado de registro** vía la atestación de la Receta 37. En NA, hoy, el estado alcanzable es
+   `self_declared`: el *gate* **no bloquea** por eso — **marca**.
+3. **Tres salidas, no dos**, sobre el patrón de tres estados que esta KB usa desde la Receta 20:
+   `cobrable` / `no_cobrable_bloqueo_plataforma` / `no_puedo_determinar`. La tercera salida es
+   obligatoria y es la que evita el peor resultado: **confirmarle al viajero y no poder cobrar**.
+4. **Calendario y tope de huéspedes**: [`Gribadan/RentTools.io`](https://github.com/Gribadan/RentTools.io)
+   (**MIT**, commit **2026-11-28**, rama `master`) ya sincroniza iCal de Airbnb/Booking/Vrbo, que es
+   de donde sale la duración real de la estadía — el insumo del paso 1.
+5. **PMS de respaldo**: [`Kamra-PMS/kamra-pms`](https://github.com/Kamra-PMS/kamra-pms)
+   (**Apache-2.0**, rama `develop`) o [`open-condo-software/condo`](https://github.com/open-condo-software/condo)
+   (**MIT**) para el registro operativo. Los dos son permisivos: el *gate* se puede embeber en un
+   producto de cliente.
+
+**Lo que promete y lo que no.** Promete que **ninguna reserva se confirme sin saber si es cobrable**,
+y que la duda se diga en vez de resolverse optimistamente. **No** promete determinar si el anfitrión
+estará físicamente presente —eso es un hecho futuro que ningún registro contiene— ni reemplazar la
+verificación de la OSE. Las cifras de tasa (~US$ 145) y multas (US$ 100–5.000) **varían entre
+fuentes secundarias**: no cotizar contra ellas sin confirmar con la Mayor's Office of Special
+Enforcement.
+
+---
+
+## Receta 39 — Un hecho de ocupación, cinco obligaciones regionales (la receta transversal del plano)
+
+**La tesis.** Igual que la Receta 27 con la custodia del equipaje y la Receta 30 con el precio: **un
+solo registro tipado y reproducible de «qué unidad, con qué número de registro, ocupada qué noches,
+por cuántos huéspedes, de qué países» satisface cinco obligaciones regionales distintas**, y
+construirlo cinco veces es el error que esta receta evita.
+
+**El registro base, un evento por noche-unidad** con: identidad de la unidad (`canonicalDomain` +
+`registrationId` + `jurisdiction`), `evidence` y `verifiedAt` de la Receta 37, noches ocupadas,
+número de huéspedes, países de residencia, URL del listado, y el importe cobrado.
+
+**Las cinco proyecciones:**
+
+| Región | Obligación | Proyección del mismo evento |
+|---|---|---|
+| **EMEA (UE)** | Reglamento (UE) 2024/1028, aplicable desde el **2026-05-20**: transmisión **mensual** a la autoridad (**trimestral** para plataformas pequeñas) | Noches alquiladas + huéspedes + países de residencia + dirección + número de registro + URL del listado. **Es la proyección que hay que construir primero**, porque es la que sobrevivió a la anulación del registro español |
+| **EMEA (IT)** | CIN obligatorio en **todos** los anuncios desde el **2025-01-01** | El `registrationId` renderizado en cada anuncio, con chequeo de presencia — no de validez, salvo que exista conector |
+| **APAC (AU/JP)** | Tope de **180 días** (NSW no hospedado en Greater Sydney, por período de registro de 12 meses; Japón 180 noches/año, reducible por el gobierno local) | **Conteo acumulado de noches contra el tope**, con la ventana anclada al período de registro. Es aritmética auditable sobre el mismo evento |
+| **APAC (JP)** | Impuesto de alojamiento (宿泊税) por municipio | [`benstaydev/japan-stay-tax`](https://github.com/benstaydev/japan-stay-tax) (**MIT**) sobre el importe y el municipio. Un autor, 1★: **punto de partida, no dependencia de producción** |
+| **Global** | DAC7 / DPI: reporte del operador de plataforma | [`backmarket-oss/dac7`](https://github.com/backmarket-oss/dac7) para el **XML francés** (CLI **Apache-2.0**, esquemas **Etalab-2.0**). ⚠️ **Sólo Francia**: su propio README dice que el esquema francés difiere del de la OCDE «lo justo para romper compatibilidad». Cada Estado miembro publica su variante |
+
+**La advertencia semántica, de la misma clase que AI(15) vs AI(17) en retail y la de la Receta 33.**
+**«Noche ocupada» y «noche que cuenta contra el tope» no son el mismo hecho.** En NSW el tope de 180
+días aplica a estadías **no hospedadas** y **no tiene tope** si el anfitrión vive en la propiedad
+durante la estadía; en Japón el tope es anual y **el gobierno local puede bajarlo**. Un contador que
+sume todas las noches por igual **sobreestima** el consumo del tope en NSW y **subestima** el riesgo
+en un municipio japonés restrictivo. Hay que marcar cada noche como hospedada o no hospedada **en el
+evento**, no derivarlo después.
+
+**Y la advertencia de LATAM, que es por qué esta receta tiene cinco filas y no seis.** En Brasil y
+CABA la legalidad depende de **una autorización privada** —asamblea de dos tercios (STJ, REsp
+2.121.055, 2026-05-07) o reglamento de copropiedad— que **no está en ningún registro público y no
+tiene campo en ningún protocolo**. **No se puede proyectar desde este evento.** La pieza para LATAM
+es una atestación nueva de autorización del consorcio, y VRP —**CC0-1.0**, con `jurisdiction`
+declarado *«jurisdiction-neutral»*— es el lugar donde proponerla sin pedir permiso.
+
+**Lo que promete y lo que no.** Promete **un solo modelo de evento, cinco salidas, y sin copyleft**:
+VRP spec es CC0-1.0, su código de referencia Apache-2.0, `japan-stay-tax` MIT, el CLI de DAC7
+Apache-2.0. **No** promete el DAC7 de ningún país que no sea Francia, ni la transmisión mensual
+europea contra un esquema técnico verificado — **el esquema del Punto Único de Entrada Digital no se
+pudo localizar en esta pasada y `eur-lex.europa.eu` no resuelve en esta red**. Esa parte se cotiza
+después de leer el texto primario, no antes.

@@ -11,6 +11,57 @@ updated: 2026-11-28
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
 
+## 2026-11-28 — decimotercera pasada (plano de la unidad regulada: la capa de operación está sana y la de cumplimiento no existe)
+
+**La medición de la pasada.** Este plano parte la infraestructura en dos capas con diagnósticos
+opuestos, y la frontera entre ellas **es exactamente la línea donde empieza la obligación legal**.
+
+**Capa 1 — operar la unidad: viva, permisiva y grande.** Licencias leídas del archivo, último
+commit tomado de la **rama default** de un clon `--depth 1` (no de `pushed_at`, que cuenta pushes a
+cualquier rama):
+
+| Repo | Licencia (**archivo leído**) | ★ | Rama default | Último commit | Qué es |
+|---|---|---|---|---|---|
+| `Qloapps/QloApps` | **OSL-3.0** (`LICENSE.md`, 10.365 B) | **14.525★** | `develop` | 2026-11-20 | PMS hotelero con motor de reservas, channel management, inventario y pagos. **Copyleft fuerte y recíproco en red** |
+| `open-condo-software/condo` | **MIT** (1.077 B, © 2020 8IQ Software Company) | 437★ | `main` | **2026-11-28 (hoy)** | SaaS de gestión de propiedades: tickets, residentes, cobros. **Permisivo, grande y con push de hoy** |
+| `senatroxx/OpenKos` | **Apache-2.0** (11.357 B) | 130★ | `main` | 2026-09-28 | Gestión de pensiones (*kos*), alquileres y departamentos. Indonesio: **el único repo del plano nacido en APAC** |
+| `Kamra-PMS/kamra-pms` | **Apache-2.0** (`license.txt`, 11.358 B) + `TRADEMARK.md` | 116★ | **`develop`** | **2026-11-28 (hoy)** | PMS hotelero sin licencia por habitación. **Corrige el README de esta KB, que lo daba por AGPL-3.0** |
+| `Gribadan/RentTools.io` | **MIT** (1.065 B) | 34★ | **`master`** | **2026-11-28 (hoy)** | Sincroniza calendarios de Airbnb, Booking.com, Vrbo e iCal; agenda de limpieza; **extrae datos de pasaporte del huésped** |
+| `viljemd-hub/channel-manager` | **AGPL-3.0** (34.523 B) | 7★ | `main` | 2026-11-22 | «CM Free V1.0», autoalojado, guarda estado en archivos JSON |
+| `OceansCreative/oceans-minpaku-demo` | **Apache-2.0** (11.358 B) | 0★ | `main` | 2026-06-07 | Demo de reservas minpaku (Next.js 15). Su `NOTICE` (708 B) **se declara «portfolio»**: no es producto |
+
+**Tres repos con commit de hoy en la rama default, dos de ellos permisivos y uno de 437★.** Esta
+capa no necesita que nadie la financie.
+
+**Capa 2 — cumplir con el registro de la unidad: ocho búsquedas en cero.** `short term rental
+compliance registration` 0 · `registration number listing accommodation compliance` 0 · `codice
+identificativo nazionale CIN affitti` 0 · `ventanilla unica digital alquiler` 0 · `lodging tax
+occupancy tax calculator` 0 · `guest registration police report hotel` 0 · `str regulation scraper
+housing` 0 · `open travel accommodation registry api` 0.
+
+**Capa 2b — lo único que sí existe, y viene de fuera del turismo.** El reporte fiscal de
+plataformas (DAC7) sí tiene herramientas, y las publicó **una empresa de e-commerce, no una de
+viajes**:
+
+| Repo | Licencia (**archivo leído**) | ★ | Último commit | Nota |
+|---|---|---|---|---|
+| `backmarket-oss/dac7` | **tres licencias** — Apache-2.0 el CLI Python (`cli/LICENSE.md`), **Etalab-2.0** los `schemas/` y los `examples/` | 4★ | 2026-11-13 | Construye, valida, nombra, comprime y cifra la declaración DAC7 **francesa**. La API de GitHub dice `NOASSERTION` y **se equivoca** |
+| `tyclipso/dac7_reporter` | **EUPL-1.2** (13.826 B) | 5★ | **2025-02-07** | Envía los archivos firmados de reporte DAC7 a la API del DIP. **Dormido ~21 meses**, y copyleft europeo |
+| `benstaydev/japan-stay-tax` | **MIT** (1.069 B) | 1★ | 2026-11-03 | Calcula el impuesto de alojamiento japonés (宿泊税) para cualquier municipio: Tokio, Osaka, Kioto, Niseko y 20+. **Lo más cercano a una tasa turística abierta que existe** |
+
+**La trampa de licencia de `backmarket-oss/dac7`, y es honesta pero importante:** decir «es
+Apache-2.0» es media verdad. El **código** es Apache-2.0; los **esquemas y ejemplos** —la parte que
+codifica el requisito del regulador— son **Etalab-2.0**, porque están tomados y adaptados del
+*cahier des charges DPI-DAC7 v1.6* de la DGFiP (publicado el **2025-11-05**). Etalab-2.0 es
+permisiva pero **exige atribución** y **no es Apache-2.0**. Es el mismo patrón que la pasada
+undécima encontró en InvoicePlane, con la diferencia de que acá **el repo lo documenta él mismo, en
+un `LICENSE.md` de tres secciones**.
+
+**Y el dato estructural que sale de ahí:** su propio README dice que el DAC7 francés difiere del
+estándar OCDE *«on a couple of points that are small yet enough to break compatibility»*. Ese es el
+plano entero en una frase — **el artefacto es común y cada jurisdicción lo rompe lo justo para que
+no sirva el de al lado**.
+
 ## 2026-11-28 — duodécima pasada (plano del seguro: la capa horizontal viva es copyleft, y la permisiva no sabe de viajes)
 
 **La medición de la pasada, y es la inversa exacta de la undécima.** En el plano del comprobante la

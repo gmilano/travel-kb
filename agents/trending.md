@@ -12,6 +12,49 @@ updated: 2026-11-28
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
 
+## 2026-11-28 — decimotercera pasada (plano de la unidad regulada: el esquema le pasó por encima al conector)
+
+**La medición de la pasada, y contradice la intuición de las doce anteriores.** Hasta acá la capa
+agentic vertical o estaba vacía, o estaba recién nacida, o era un trabajo práctico. En este plano
+pasa algo que esta KB no había visto: **la capa de modelado está más adelantada que la capa de
+ejecución**. El número de registro de una unidad de alojamiento ya tiene **campo tipado y
+obligación normativa** en los dos protocolos abiertos de STR, y **cero** implementaciones que lo
+validen contra un registro real.
+
+**Los dos protocolos aparecieron este año y se mueven a velocidades opuestas:**
+
+| Repo | Licencia (**archivo leído**) | ★ | Último commit (rama default) | Estado |
+|---|---|---|---|---|
+| `vacationrentalprotocol/vrp-spec` | **CC0-1.0** (spec) + **Apache-2.0** (código) | 5★ | **2026-11-27** | **Vivo**. Spec, esquemas JSON, contextos JSON-LD, borradores IETF y `skills/` |
+| `HemmaBo-se/hemmabo-mcp-server` | **Apache-2.0** (11.358 B) | 5★ | **2026-11-28 (hoy)** | **Vivo**. Implementación de referencia de VRP, en npm y en el MCP Registry |
+| `Swarnabha753/vrp-independent-verifier` | **MIT** (1.071 B) | 0★ | 2026-08-22 | Dormido ~3 meses. **Verificador de tercero**, sin dependencia de la referencia |
+| `openstr-protocol/protocol` | ⚠️ **Apache-2.0 modificado** (12 bloques difieren del canónico) | 5★ | **2026-04-07** | **Dormido ~7,5 meses**, declarado `v0.1.0-draft` |
+
+**La asimetría importa más que las estrellas.** Los cuatro repos están entre 0★ y 7★, así que
+rankear por estrellas acá no distingue nada — es el mismo efecto que la pasada de retail documentó
+para infraestructura de estándares: **las estrellas miden atención de consumidor, y un protocolo de
+cumplimiento no tiene ninguna por construcción.** Lo que sí distingue es **qué protocolo tiene el
+modelo regulatorio más fino y qué protocolo está vivo, y no son el mismo**:
+
+- **OpenSTR tiene el modelo normativo más explícito** —`local_registration_number` y el deber del
+  emisor de verificar vigencia antes de emitir la credencial, con seis ciudades nombradas— **y está
+  dormido desde abril**.
+- **VRP está vivo (push de hoy) y tiene el modelo más accionable**: la atestación
+  `vrpRegulatoryRegistration` con `evidence` ∈ {`self_declared`, `registry_verified`,
+  `state_attested`}, que **exige `disclaimer` cuando es autodeclarado y `verifiedAt` cuando es
+  verificado contra registro**.
+
+**Para una propuesta a cliente hoy, VRP es la apuesta y OpenSTR es la referencia conceptual** — y
+OpenSTR, además, no se puede adoptar sin revisión legal, porque su archivo de licencia es un
+Apache-2.0 reescrito al que se le rompió la definición de `"Contribution"` (detalle en
+`agents/top.md`).
+
+**Lo que NO apareció, y es el punto:** ni un `evidence: registry_verified` implementado, ni un
+conector a la Ventanilla Única Digital española, ni al CIN italiano, ni al registro de la Local
+Law 18 de Nueva York, ni al STRA Register de NSW, ni al padrón de la CDMX. **Ocho búsquedas en
+cero.** El deber de verificar está escrito en el protocolo y **no hay código abierto que lo
+cumpla**.
+
 ## 2026-11-28 — duodécima pasada (plano del seguro: la capa agentic del vertical nació en catorce semanas)
 
 **La medición de la pasada, y da vuelta la ley estructural de esta KB.** En los once planos

@@ -547,3 +547,62 @@ preguntó el viajero, qué no se contestó, y a quién se lo derivó*. Es la **R
 única pieza del plano que una consultoría puede construir, licenciar como MIT y vender a cuatro
 regiones sin pedirle permiso a un regulador — porque **documentar una negativa no es distribuir un
 seguro**.
+
+---
+
+## 2026-11-28 — decimotercera pasada · Plataformas de la unidad regulada
+
+### ⚠️ Corrección a esta KB: Kamra es Apache-2.0, no AGPL-3.0
+
+El README de esta KB afirmaba, desde la reescritura del 2026-11-21, que *«los tres repos más
+grandes del vertical son copyleft (TREK AGPL-3.0, QloApps OSL-3.0, **Kamra AGPL-3.0**)»*. **La
+afirmación sobre Kamra es falsa al día de hoy** y se corrige acá y en el README.
+
+Lo que dice el archivo, leído en un clon `--depth 1` de la rama default (`develop`):
+
+- `license.txt` — **11.358 B, texto íntegro de Apache License 2.0**.
+- `pyproject.toml` — `license = { text = "Apache-2.0" }`.
+- `TRADEMARK.md` — separa explícitamente el código de la marca: *«The code is Apache-2.0: you may
+  use, change, host and sell it under that license. The name "Kamra", "Kamra PMS", "Kamra Agent"
+  and the Kamra mark are not part of that license»*, «in the same spirit as Frappe and ERPNext».
+- La API de GitHub también dice `Apache-2.0`, y **acierta**.
+
+**Por qué importa comercialmente:** Kamra pasa de ser el PMS que había que descartar por copyleft a
+ser **el PMS permisivo más activo del vertical** (116★, commit en `develop` del **2026-11-28**). Se
+puede modificar, alojar y revender bajo Apache-2.0. **Lo único que no se puede** es usar el nombre
+y la marca: una implementación para cliente se presenta como «runs on Kamra PMS» o «Kamra
+implementation by Globant», no como un producto propio llamado Kamra. Eso es exactamente el modelo
+Frappe/ERPNext y es un patrón con el que la industria ya sabe trabajar.
+
+**Cómo se produjo el error, para no repetirlo:** el archivo se llama `license.txt` —**minúscula y
+con extensión**— y una lista de 13 grafías habituales **no lo encuentra**. Un chequeo automático
+habría reportado «sin licencia». Ver el defecto de medición en `agents/top.md`.
+
+### Las plataformas del plano
+
+| Plataforma | Repo | Licencia (**archivo leído**) | ★ | Rama / último commit | Qué se puede hacer con ella |
+|---|---|---|---|---|---|
+| **Kamra PMS** | [`Kamra-PMS/kamra-pms`](https://github.com/Kamra-PMS/kamra-pms) | **Apache-2.0** (`license.txt`) + `TRADEMARK.md` | 116★ | `develop` / **2026-11-28** | PMS hotelero completo: recepción, folio, POS, pagos anticipados. **Permisivo**: base legítima para un producto de cliente. Trae ramas de `feat/guest-visa-oci` y `feat/kamra-connect`, y un directorio `mcp/` — es decir, **ya tiene superficie agentic propia** |
+| **QloApps** | [`Qloapps/QloApps`](https://github.com/Qloapps/QloApps) | **OSL-3.0** (`LICENSE.md`, 10.365 B) | **14.525★** | `develop` / 2026-11-20 | El más maduro del vertical. **OSL-3.0 es copyleft con reciprocidad de red**: sirve para desplegar y customizar para un cliente, **no** para embeber en un producto cerrado propio |
+| **Condo** | [`open-condo-software/condo`](https://github.com/open-condo-software/condo) | **MIT** (1.077 B) | 437★ | `main` / **2026-11-28** | Gestión de propiedades multi-inquilino: tickets, residentes, cobros. **MIT y con push de hoy** — la base permisiva más grande para la capa de administración |
+| **OpenKos** | [`senatroxx/OpenKos`](https://github.com/senatroxx/OpenKos) | **Apache-2.0** (11.357 B) | 130★ | `main` / 2026-09-28 | Pensiones, alquileres y departamentos. **Nacido en Indonesia**: el único de la lista pensado desde APAC, y el modelo de *kos* se parece más al alquiler urbano latinoamericano que un PMS hotelero |
+| **RentTools.io** | [`Gribadan/RentTools.io`](https://github.com/Gribadan/RentTools.io) | **MIT** (1.065 B) | 34★ | **`master`** / **2026-11-28** | Gestor para anfitriones de STR: sincroniza calendarios de Airbnb/Booking/Vrbo por iCal, agenda limpieza y **extrae datos de pasaporte del huésped**. MIT y vivo. Es el candidato más directo para colgarle encima la capa de cumplimiento que falta |
+| **CM Free** | [`viljemd-hub/channel-manager`](https://github.com/viljemd-hub/channel-manager) | **AGPL-3.0** (34.523 B) | 7★ | `main` / 2026-11-22 | Channel manager autoalojado mínimo; guarda estado en archivos JSON. **AGPL**: se corre como servicio, no se embebe |
+| Demo minpaku | [`OceansCreative/oceans-minpaku-demo`](https://github.com/OceansCreative/oceans-minpaku-demo) | **Apache-2.0** (11.358 B) | 0★ | `main` / 2026-06-07 | ⚠️ Su `NOTICE` (708 B) **se declara publicada «as a portfolio»**. Es material de lectura sobre el flujo minpaku, **no una base de producto** |
+
+### Lo que ninguna de estas plataformas hace
+
+**Ninguna de las siete valida un número de registro contra un registro.** Ninguna emite la
+transmisión mensual de actividad que el Reglamento (UE) 2024/1028 pide a las plataformas. Ninguna
+calcula una tasa turística europea. Ninguna transmite el parte de viajero a una autoridad policial.
+Esa es, literalmente, **la superficie de construcción de este plano**: la capa de operación está
+resuelta y permisiva, y **el tramo regulado se agrega encima**, lo que es una posición de partida
+mucho mejor que la de los planos donde faltaba la pieza cara.
+
+### La trampa de este plano en verticales
+
+[`ivannikolovbg/repull-channel-manager`](https://github.com/ivannikolovbg/repull-channel-manager)
+(6★, commit 2026-11-10) **se describe como «open-source channel manager starter»** y su
+`LICENSE.md` de 11.134 B es una licencia propia —«Repull Channel Manager Community License
+Agreement»— que **contiene «All rights reserved»**. No se puede usar como base. Es la quinta vez en
+esta red de KBs que la descripción dice «open source» y el archivo dice lo contrario.

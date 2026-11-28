@@ -197,6 +197,35 @@ seguro de viaje como el ramo más listo para automatización end-to-end con AI»
 **Brasil, el único dato de prima de la región que se pudo ubicar:** **R$ 965 millones** de primas de
 seguro de viaje en 2024 (HelloSafe citando SUSEP vía CNSEG).
 
+### El registro, la cifra que ordena el decimotercer plano (2026-11-28)
+
+**La cifra es un cero, y es el cero mejor medido de las trece pasadas.** Ocho consultas distintas a
+`gh api search/repositories` sobre la capa de cumplimiento del registro de alojamiento devuelven
+**0 repositorios**, mientras la capa de operación de la misma unidad tiene **15.000+ estrellas
+acumuladas y tres repos con commit de hoy**. La frontera entre ese cero y esas estrellas **es la
+línea donde empieza la obligación legal**.
+
+**La segunda cifra, y es la que sirve en una reunión:** el deber de verificar el número de registro
+**ya está escrito en los protocolos abiertos** —OpenSTR lo pone como deber del emisor de la
+credencial; VRP lo tipifica con un enum `evidence` de tres valores (`self_declared`,
+`registry_verified`, `state_attested`) que **exige un descargo cuando es autodeclarado**— y el
+nivel `registry_verified` **no tiene una sola implementación abierta en ninguna región del mundo**.
+Toda implementación existente hoy sólo puede emitir `self_declared`.
+
+**La tercera, la que corrige la ley estructural que esta red de KBs viene construyendo.** La pasada
+de retail del 2026-11-28 sostuvo que *un plazo legal cercano produce herramientas open source más
+rápido que una oportunidad de margen*. Este plano **refina esa ley y no la confirma**: acá los
+plazos **ya pasaron** —UE desde el 2026-05-20, CIN italiano obligatorio desde el 2025-01-01, Nueva
+York con bloqueo de pagos a listados no registrados desde el 2023-09-05, es decir entre seis meses
+y más de tres años de plazo transcurrido— y la capa de cumplimiento **sigue en ocho ceros**. Lo que
+sí apareció con los plazos fue **el esquema**: los dos protocolos son de 2026.
+
+**La conclusión, que es una regla de estimación para las once industrias restantes:** *un plazo
+legal coordina voluntarios de **estándares**, no voluntarios de **integración***. Un esquema se
+escribe una vez y sirve en toda jurisdicción; un conector a un registro es **por jurisdicción**,
+necesita credenciales que un voluntario no tiene, no se puede probar sin una propiedad realmente
+registrada, y no da prestigio. Por eso el campo existe y el conector no.
+
 ## Opportunities by region
 
 ### North America
@@ -618,6 +647,43 @@ de arquitectura, no proveedor en producción.
 sobre AI en distribución de seguros**; las recomendaciones de marco federal de AI de marzo de 2026
 no son específicas de seguros. Tampoco se localizó material sobre seguro de viaje en **México**
 desde la óptica del regulador (CNSF) en esta pasada. **Las ausencias están medidas, no asumidas.**
+
+
+#### Plano de la unidad regulada — North America (2026-11-28)
+
+**El hecho:** Nueva York es la jurisdicción con la obligación **más antigua y más dura** del plano,
+y la que demuestra que la dureza regulatoria **no produce** herramientas abiertas. La **Local Law
+18 de 2022**, sancionada el **2022-01-09**, agregó los capítulos 31 y 32 al título 26 del
+Administrative Code y la administra la **Mayor's Office of Special Enforcement (OSE)**. Desde el
+**2023-09-05** las plataformas **no pueden procesar reservas de listados no registrados**: no es una
+multa, es un bloqueo en el flujo de pago, el mecanismo de cumplimiento más fuerte visto en los trece
+planos de esta KB.
+
+**Alcance:** las estadías de **menos de 30 días** requieren registro, el anfitrión **debe estar
+físicamente presente** y hay tope de **dos huéspedes**. Las de **30 días o más quedan fuera** de la
+ley — y esa frontera de 30 días es exactamente el tipo de regla que un agente de reserva debe
+conocer antes de ofertar.
+
+**El dato de escala, y es el argumento comercial:** la OSE reportó **~3.000 registros activos** en
+su informe del **2025-09-03**. Una fuente secundaria (blog del sector, **no verificada contra la
+OSE**) menciona **3.522 anfitriones aprobados a junio de 2026** y que **los registros de cuatro años
+empiezan a renovarse en octubre de 2026**. Las cifras de tasa (~US$ 145) y multas (US$ 100 a 5.000)
+**varían entre fuentes**: confirmar con la OSE antes de usarlas en una propuesta.
+
+**La oportunidad, y es de producto no de compliance:** en NA **no se vende «cumplir con la LL18»** —
+el registro lo hace el anfitrión ante la ciudad y eso no es software. Lo que se vende es **el
+bloqueo evitado**: una plataforma, un property manager o un agente de reserva que opere en Nueva
+York necesita saber, **antes de confirmar**, si el listado puede cobrarse. Eso es un *gate* de
+pre-reserva sobre `evidence` de VRP, y hoy **nadie lo tiene en abierto**.
+
+**Lo que NO se examinó, declarado como brecha de cobertura y no como ausencia de regulación:**
+California, Hawái, Nueva Orleans y el resto de los regímenes municipales de EE. UU.; Quebec (CITQ)
+y el registro de Columbia Británica en Canadá. Son regímenes reales y no se midieron en esta pasada.
+
+**El contexto de AI de la región, para no mezclar planos:** la Casa Blanca publicó en **marzo de
+2026** recomendaciones legislativas para un marco federal de AI, que **seguía siendo una propuesta**
+en las fuentes consultadas. No hay regulación federal de AI aplicable a este plano: **la obligación
+que muerde en NA es municipal y es de alojamiento, no de AI**.
 
 ### EMEA
 
@@ -1162,6 +1228,69 @@ cláusulas de coordinación de beneficios quedan **[sin verificar]**; no se loca
 seguro de viaje en Medio Oriente ni África en esta pasada, pese a que la región del campo
 `region: EMEA` los incluye. **Escrito como lo que falta medir.**
 
+
+#### Plano de la unidad regulada — EMEA (2026-11-28)
+
+**EMEA es la región que ordena el plano, y trae el hallazgo más importante de la pasada: en España
+murió el registro y sobrevivió el caño.**
+
+**El marco europeo.** El **Reglamento (UE) 2024/1028** sobre recopilación e intercambio de datos
+relativos a los servicios de alquiler de corta duración **es aplicable desde el 2026-05-20** (las
+fuentes secundarias coinciden en la fecha). Lo que las plataformas deben transmitir a las
+autoridades, **mensualmente** (las plataformas pequeñas, **trimestralmente**): noches alquiladas,
+número de huéspedes, países de residencia, dirección de la unidad, número de registro y URL del
+listado.
+
+⚠️ **Contradicción de fuentes sin resolver, y es la más importante del plano.** Las fuentes se
+dividen sobre si el número de registro es **exigible en toda la UE**: algunas lo describen como
+requisito universal, otras sostienen que el Reglamento **no crea** una exigencia paneuropea sino un
+**marco**, y que el número se pide **sólo donde existe un procedimiento de registro** establecido
+por el Estado miembro o la zona. Las fuentes cautelosas parecen más fiables, y la propia ayuda de
+Airbnb citada por una de ellas apunta en esa dirección. **No se pudo leer el texto primario:
+`eur-lex.europa.eu` no resuelve en la red de esta sesión.** Confirmar en EUR-Lex antes de afirmar
+cualquiera de las dos versiones ante un cliente.
+
+**España — el registro anulado y la obligación que quedó viva.** El **Tribunal Supremo anuló el
+Registro Único de Arrendamientos (NRUA)** creado por el **RD 1312/2024**. ⚠️ **La fecha está en
+conflicto entre fuentes**: se cita como **Sentencia 620/2026** del **19, 21 o 22 de mayo de 2026**;
+una fuente precisa que la del 19 de mayo fue recurrida por la Generalitat Valenciana y que hay un
+fallo posterior del 21 de mayo publicado en el BOE el **2026-06-26**. **No se resuelve acá.**
+
+**Lo que sobrevivió a la anulación, y es el activo comercial:** la **Ventanilla Única Digital**, el
+**deber de transmisión de datos de las plataformas** y el intercambio de datos con fines
+estadísticos. Sólo cayeron las disposiciones que creaban el registro único. Las licencias
+autonómicas **no se vieron afectadas**: el propietario sigue sujeto a su comunidad autónoma.
+
+**La lección de arquitectura, y vale para las cuatro regiones:** **el registro es la pieza
+políticamente frágil y el caño de transmisión es la pieza durable.** Una hoja de ruta anclada en
+«integramos el registro nacional español» quedó anulada en mayo de 2026; una anclada en «emitimos la
+transmisión mensual de actividad» no. **Construir contra la obligación de transmisión, no contra el
+registro.**
+
+**Italia — la obligación más madura de la región.** El **CIN** (*Codice Identificativo Nazionale*),
+creado por el **DL 145/2023**, abrió registro el **2024-09-01** y es **plenamente obligatorio desde
+el 2025-01-01**. Debe figurar **en todos los anuncios online**, las plataformas lo controlan y los
+listados sin CIN válido pueden ser retirados. Multas reportadas de **800 a 8.000 €** (fuente única,
+confirmar). Y aun así: `codice identificativo nazionale CIN affitti` = **0 repositorios**. Casi dos
+años de obligación plena, cero código abierto.
+
+**Francia — contradicción de calendario, no de obligación.** La **loi n° 2024-1039 del 2024-11-19**
+(«loi Le Meur») generaliza el registro a todo el territorio, **incluida la residencia principal**.
+Las fuentes se contradicen: varias dicen que la obligación rige **desde el 2026-05-20**; otras que
+el **teleservicio nacional que emite el número todavía no está abierto** y se esperaba para el
+**cuarto trimestre de 2026** según la DGE, de modo que hasta entonces se sigue el procedimiento de
+cada *commune*. Un número nacional de **15 caracteres** aparece en un **decreto en borrador**
+(provisional). Los decretos **2026-196 y 2026-197 del 2026-03-19** los menciona **una sola fuente**:
+**verificar en Légifrance**.
+
+**La oportunidad en EMEA, ordenada por madurez de obligación:** Italia primero (obligación plena,
+formato estable, cero herramientas), después el deber de transmisión del Reglamento UE (durable y
+sobreviviente), y Francia al final **no por falta de ley sino por inestabilidad de calendario** —
+cotizar un conector al teleservicio francés antes de que abra es cotizar contra un borrador.
+
+**Lo que NO se examinó:** Portugal (Alojamento Local), Países Bajos y Ámsterdam, Grecia, Croacia.
+Son regímenes de registro reales y quedan como **brecha de cobertura declarada**.
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -1613,6 +1742,63 @@ que la región ya probó y que ningún competidor occidental está copiando.
 óptica de las grandes OTA (Trip.com/Fliggy); no se localizó material sobre **Malasia, Indonesia,
 Tailandia ni Corea** en este plano; y de la FSA japonesa se tiene la existencia del documento y no su
 contenido. **Las cuatro ausencias están escritas, no silenciadas.**
+
+
+#### Plano de la unidad regulada — APAC (2026-11-28)
+
+**APAC es la región donde la obligación es más explícita sobre el número en el anuncio, y donde
+apareció lo único parecido a una herramienta abierta de tasa turística en el mundo.**
+
+**Australia (NSW) — el régimen mejor documentado del plano.** El **STRA Register** se tramita en el
+**NSW Planning Portal** y lo administra el *Department of Planning, Housing and Infrastructure*.
+Según el listado oficial de ABLIS: **A$ 65 de solicitud y A$ 25 de renovación** para 2026-27. El
+registro **dura un año y se renueva anualmente**, y en el trámite se **declara cumplimiento de
+seguridad contra incendios**. **Hospedado** (el dueño vive en la propiedad): **sin tope de días**.
+**No hospedado** en Greater Sydney: **180 días por período de registro de 12 meses**. El **ID de
+registro debe figurar en todos los anuncios de todas las plataformas**, y existe un **NSW STRA
+Exclusion Register** que puede excluir del mercado **hasta cinco años**. A noviembre de 2026 **no se
+había anunciado** un *short-stay levy* y el tope de 180 noches **seguía sin cambios**; la City of
+Sydney pidió revisar prohibiciones en suburbios de baja vacancia. ⚠️ La mayoría de estas fuentes son
+blogs comerciales: **confirmar tasas y topes en el NSW Planning Portal**; sólo la cifra de tasas
+viene del listado oficial de ABLIS.
+
+**Japón — notificación, no licencia, y el tope como dato de negocio.** El régimen *minpaku* (*Private
+Lodging Business Act*) funciona por **notificación** ante la autoridad local, no por licencia, a
+cambio de un **tope de 180 noches al año** que **los gobiernos locales pueden reducir**. El **número
+de registro debe aparecer en cada anuncio** (Airbnb, Booking.com y sitio propio). Si el dueño no
+reside en o cerca de la propiedad, la operación requiere un **住宅宿泊管理業者** (gestor minpaku
+licenciado). Multas reportadas de **hasta ¥1.000.000** por infracción.
+
+⚠️ **Lo que NO se pudo confirmar sobre Japón, y se reporta como no confirmado:** que desde **julio de
+2026** los municipios puedan restringir el minpaku a **cero días** en zonas específicas; que **Osaka**
+—que concentraba más del 90% de las noches de minpaku de zona especial— **dejara de aceptar nuevas
+solicitudes el 2026-05-29**; y que un **sistema nacional entrara en línea en abril de 2026**. Las
+tres afirmaciones vienen de **blogs**, no de la Japan Tourism Agency ni del MLIT. Son relevantes y
+**hay que verificarlas en la fuente oficial antes de usarlas**.
+
+**El único activo abierto de la región, y del plano:**
+[`benstaydev/japan-stay-tax`](https://github.com/benstaydev/japan-stay-tax) (**MIT**, 1.069 B, 1★,
+commit **2026-11-03**) calcula el **impuesto de alojamiento japonés (宿泊税)** para cualquier
+municipio: Tokio, Osaka, Kioto, Niseko y 20+. Es **lo más parecido a una librería de tasa turística
+que existe en abierto en cualquier región**, y tiene **un solo autor y una estrella**: sirve como
+punto de partida y **no como dependencia de producción**.
+
+**El otro repo de la región:** [`senatroxx/OpenKos`](https://github.com/senatroxx/OpenKos)
+(**Apache-2.0**, 130★, commit 2026-09-28), gestión de *kos* indonesios — **el único repo del plano
+pensado desde APAC**, y su modelo de alquiler urbano por habitación se parece más al alquiler
+latinoamericano que un PMS hotelero. Y `topic:minpaku` tiene **3 repos en total** en todo GitHub:
+el calculador MIT, una demo Apache-2.0 **autodeclarada «portfolio»** y un mapa de zonificación **sin
+licencia**.
+
+**La oportunidad:** APAC es la región donde **«el ID debe figurar en cada anuncio» está más
+claramente escrito** (NSW y Japón lo dicen los dos), y donde el tope de días convierte el
+cumplimiento en **un problema de conteo**, no sólo de identidad: 180 noches por período de registro
+es aritmética auditable sobre el calendario que
+[`Gribadan/RentTools.io`](https://github.com/Gribadan/RentTools.io) (MIT) **ya sincroniza**. Es el
+encaje más limpio entre una obligación y un repo permisivo vivo en todo el plano.
+
+**Lo que NO se examinó:** Corea del Sur, Tailandia, Singapur, India, y el resto de los estados
+australianos (Victoria aplicó un *levy*; no se midió). **Brecha de cobertura declarada.**
 
 ### LATAM
 
@@ -2135,6 +2321,64 @@ homologación.
    Perú** en esta pasada.
 3. **Cero repositorios** de seguro de viaje de cualquier país de LATAM, más allá del repo académico
    de OPIN.
+
+
+#### Plano de la unidad regulada — LATAM (2026-11-28)
+
+**LATAM rompe, por primera vez en cuatro pasadas de travel, el patrón de «LATAM va adelante de su
+narrativa»: acá va atrás, y la razón es estructural — la obligación es municipal, no nacional.**
+
+**CDMX — registro obligatorio, con el Mundial como reloj.** El registro de inmuebles de hospedaje
+temporal ante el gobierno capitalino **es obligatorio**, se tramita en línea y **gratis** en
+**estanciaseventuales.cdmx.gob.mx** con cuenta **Llave CDMX**, y alcanza a quien opera por Airbnb,
+Booking y Vrbo. Una fuente fecha su entrada en vigor el **2026-05-22**. Quien opere **más de tres
+inmuebles** debe constituirse como **establecimiento mercantil**. ⚠️ **Las fechas límite están en
+conflicto**: una guía habla de **prórroga hasta diciembre de 2026** y otra del **2026-06-20**.
+Confirmar en el portal oficial. El encuadre político es la **Copa del Mundo 2026**, lo que hace de
+esta la obligación **con el plazo más caliente de la región**.
+
+**CABA — la más antigua de la región, y la que tiene un veto privado encima.** La **Ley 6255** exige
+registrar la propiedad ante el **Ente de Turismo** porteño para ofrecerla en Airbnb o Booking; el
+alquiler temporario se define de **una noche hasta un máximo de tres meses**; el trámite va por el
+sistema **TAD**. Además hay que **notificar al consorcio** y **contratar seguro de responsabilidad
+civil**. **El dato que cambia el diseño del producto:** el **reglamento de copropiedad puede
+prohibir** el alquiler temporario, y esa prohibición **vincula a todos los propietarios**. Es decir:
+en CABA **un listado puede estar registrado ante el Estado y ser igualmente ilícito** por el
+reglamento del edificio. **Ninguna atestación de VRP modela eso** — ni `registry_verified` lo
+captura, porque el registro estatal no sabe del consorcio.
+
+**Brasil — no hay registro nacional, y el obstáculo real es el condominio.** La **Lei do Inquilinato
+(8.245/1991)** trata la *locação por temporada* como contrato de **hasta 90 días sin servicios de
+hotelería**. El **2026-05-07** la **2ª Seção del STJ** decidió, **5 votos a 4** (**REsp
+2.121.055**), que el alquiler de corta temporada en **condominio residencial depende de autorización
+en asamblea con dos tercios** de los condóminos. Lo municipal está **en trámite, no sancionado**:
+Río **PL 2265/2026** (crearía *cadastro* municipal con fechas de check-in/check-out y montos
+recaudados, **todavía no votado en plenario** a agosto de 2026), Curitiba **PL 005.00646.2025**
+(hasta 120 días al año, inscripción en el *cadastro municipal de atividades econômicas*), y
+**Salvador Lei nº 9.877/2025**, ya sancionada, que habilita cobrar **ISS** a quien ofrece el
+inmueble — Airbnb se pronunció en contra y pidió coordinación nacional. ⚠️ **Las fuentes se
+contradicen** sobre qué ciudades ya exigen *cadastro*: una afirma que São Paulo, Río, Florianópolis
+y Foz do Iguaçu ya lo piden; otra dice que Río **no tiene** reglas específicas. Dado que el PL de
+Río sigue en trámite, **la segunda parece más precisa**. Verificar municipio por municipio.
+
+**La consecuencia comercial, y es la inversa de EMEA:** en Europa el artefacto es **un número de
+registro estatal**; en LATAM el artefacto que decide la legalidad es, en dos de tres jurisdicciones,
+**una autorización privada del consorcio o condominio** — dos tercios de la asamblea en Brasil, el
+reglamento de copropiedad en CABA. **Eso no está en ningún registro público y ningún protocolo lo
+modela.** Un agente que verifique `registry_verified` contra el Ente de Turismo porteño y confirme
+la reserva **puede estar confirmando una estadía ilícita**. Es el mismo tipo de defecto semántico que
+la pasada undécima encontró en el comprobante fiscal: **ejecutar correctamente y destruir el
+resultado**.
+
+**La oportunidad concreta en LATAM, por orden de inmediatez:** (1) **CDMX**, porque el plazo está
+vivo y el padrón es gratuito y en línea —integrarlo es trabajo acotado y el Mundial le pone fecha—;
+(2) **CABA**, donde el producto que falta es la **constancia de autorización del consorcio** como
+atestación propia, un campo que no existe en VRP ni en OpenSTR y que **Globant puede proponer como
+extensión**; (3) **Brasil**, donde todavía **no hay a qué integrarse** a nivel nacional y lo
+construible es el **expediente de la asamblea de dos tercios**, que es un documento, no una API.
+
+**Lo que NO se examinó:** Chile, Colombia, Perú y Uruguay. **Brecha de cobertura declarada**, no
+ausencia de regulación.
 
 ## Posicionamiento Globant
 

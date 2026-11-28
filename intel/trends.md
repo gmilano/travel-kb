@@ -1095,3 +1095,122 @@ política de seguro: en India el obstáculo es **la UI** (no tildar nada por def
 datos), en EE. UU. es **el verbo** (no recomendar ni comparar), en el Reino Unido es **la salida**
 (derivar al directorio), y en Brasil es **la prueba** (qué documentos tiene derecho a ver el
 asegurado). Las cuatro son satisfacibles a la vez, y ninguna se satisface sola. Receta 35.
+
+## 53. El esquema le pasó por encima al conector: el campo existe y el validador no
+
+**La tendencia que define el decimotercer plano, y es nueva en las trece pasadas.** En los doce
+planos anteriores el patrón era *la obligación existe y no hay ni modelo ni código*. Acá el modelo
+**sí existe, y es bueno**: el número de registro de una unidad de alojamiento tiene campo tipado en
+los dos protocolos abiertos de STR. OpenSTR define `local_registration_number` y pone en el **emisor
+de la credencial** el deber de verificar vigencia y validez antes de emitirla, nombrando Chicago,
+Edimburgo, Barcelona, Ámsterdam, París y Nueva York. VRP lo tipifica como atestación de primera
+clase `VRPRegulatoryRegistration`, con `evidence` ∈ {`self_declared`, `registry_verified`,
+`state_attested`}, **`disclaimer` obligatorio si es autodeclarado** y **`verifiedAt` obligatorio si
+es verificado contra registro**.
+
+Y **cero** conectores abiertos a cualquier registro, en ocho búsquedas distintas. Consecuencia
+directa y verificable: **toda implementación abierta que existe hoy sólo puede emitir honestamente
+`self_declared` + `disclaimer`**. El nivel que el regulador exige está especificado por el protocolo
+y **no implementado por nadie en ninguna región**.
+
+## 54. Un plazo legal coordina voluntarios de estándares, no voluntarios de integración
+
+**Corrección y refinamiento de la ley estructural que propuso la pasada de retail del 2026-11-28**
+(«un plazo legal cercano produce herramientas open source más rápido que una oportunidad de
+margen»). Este plano es el caso de control que esa ley necesitaba: acá **los plazos ya pasaron** —UE
+aplicable desde el **2026-05-20**, CIN italiano plenamente obligatorio desde el **2025-01-01**,
+Nueva York bloqueando pagos de listados no registrados desde el **2023-09-05**, entre seis meses y
+más de tres años de plazo transcurrido— y la capa de cumplimiento **sigue en ocho ceros**. Lo que
+los plazos produjeron fue **el esquema**: los dos protocolos son de 2026.
+
+**La razón, y es la parte generalizable a las once industrias restantes:** un esquema se escribe una
+vez y vale en toda jurisdicción; **un conector a un registro es por jurisdicción**, exige
+credenciales que un voluntario no tiene, **no se puede probar sin una propiedad realmente
+registrada**, y no da prestigio. El plazo mueve la capa que un voluntario puede terminar solo.
+
+**PREDICCIÓN FALSABLE, para que la verifique la próxima pasada de travel:** el enum `evidence` de
+VRP **seguirá sin implementación abierta de `registry_verified`**, y si aparece una, **vendrá de una
+autoridad nacional o municipal publicando una API, no de un voluntario**. **Si antes de la próxima
+pasada aparece un conector a cualquiera de los registros de UE / Italia / Nueva York / NSW / CDMX
+construido por un voluntario, esta tendencia está mal y hay que tacharla.**
+
+## 55. El registro es la pieza frágil y el caño de transmisión es la pieza durable
+
+**La lección de arquitectura del plano, y salió de un hecho judicial.** El Tribunal Supremo español
+**anuló el Registro Único de Arrendamientos** creado por el RD 1312/2024 (Sentencia 620/2026; ⚠️ la
+fecha se cita como 19, 21 o 22 de mayo de 2026 según la fuente, y **no se resuelve**). Pero **lo que
+sobrevivió** fue la **Ventanilla Única Digital**, el **deber de transmisión de datos de las
+plataformas** y el intercambio con fines estadísticos. Sólo cayó el registro.
+
+Y el propio Reglamento (UE) 2024/1028 está construido igual: es un **marco de intercambio de
+datos**, con el registro **condicionado** a que el Estado miembro monte el procedimiento.
+
+**Regla de diseño que se desprende, y aplica a cualquier plano regulatorio de cualquier industria:**
+**anclar la hoja de ruta en la obligación de transmisión, no en la integración del registro.** Una
+propuesta que decía «integramos el registro nacional español» quedó sin objeto en mayo de 2026; una
+que decía «emitimos la transmisión mensual de actividad» siguió siendo válida el mismo día. El caño
+sobrevive a la base de datos.
+
+## 56. Una licencia puede tener el nombre correcto y el cuerpo dañado — segunda corrección a la tendencia 42
+
+**Y obliga a corregir la regla que esta red de KBs viene afinando desde el ciclo 8.** La regla era:
+*la licencia se lee del archivo, nunca del badge ni de la API*, y la pasada de retail la cuantificó
+(`NOASSERTION` resultó equivocado en 4 de 5 casos). **Este plano encontró el caso donde leer el
+archivo produce un falso positivo.**
+
+El `LICENSE` de [`openstr-protocol/protocol`](https://github.com/openstr-protocol/protocol) tiene
+9.761 B, abre con «Apache License, Version 2.0» y el README luce un badge de Apache-2.0. Pero
+**difiere del texto canónico en 12 bloques**, **le falta el APPENDIX completo**, y la definición de
+`"Contribution"` **perdió su sujeto**: dice *«“Contribution” shall mean, as submitted to the
+Licensor for inclusion in the Work…»*, sin el *«any work of authorship, including the original
+version of the Work and any modifications or additions to that Work or Derivative Works thereof»*
+del original. No es una edición legal deliberada: es un texto **parafraseado con pérdida**.
+
+**La consecuencia es real:** el **§5 de Apache-2.0** —la concesión entrante del contribuyente, que
+es una de las razones por las que una empresa elige Apache-2.0— **se apoya en esa definición**, que
+acá no define nada. Quien contribuya aguas arriba no tiene concesión clara.
+
+**Y el giro:** la API de GitHub reporta `NOASSERTION` para este repo, y **probablemente acierta** —
+su detector rechazó el texto porque el texto no coincide. **Primer caso en esta red de KBs donde
+`NOASSERTION` es la lectura correcta.**
+
+**La regla queda así, para las doce industrias:** leer la licencia del archivo **y además
+compararla contra el texto canónico**. Un archivo puede tener el nombre bien y el cuerpo mal. Y
+cuando el diff no es trivial, **es revisión legal, no una celda de tabla**.
+
+## 57. La frontera entre la capa sana y la capa inexistente es la línea donde empieza la obligación legal
+
+**El corte más nítido medido en esta KB.** La misma unidad de alojamiento, dos capas:
+
+- **Operarla**: `Qloapps/QloApps` 14.525★ OSL-3.0, `open-condo-software/condo` 437★ **MIT con commit
+  de hoy**, `senatroxx/OpenKos` 130★ Apache-2.0, `Kamra-PMS/kamra-pms` 116★ **Apache-2.0 con commit
+  de hoy**, `Gribadan/RentTools.io` 34★ **MIT con commit de hoy**. **Tres repos con commit del día
+  en la rama default, dos de ellos permisivos.**
+- **Cumplir con su registro**: **ocho búsquedas en cero.**
+
+No es una diferencia de madurez ni de dinero ni de dificultad técnica —validar un número contra una
+API es más fácil que escribir un PMS—. **Es que la primera capa le sirve a quien escribe el código y
+la segunda le sirve a un regulador.** Esto generaliza la regla de la pasada de retail («donde hay un
+dataset abierto de referencia esperá una capa agentic usable, y donde no, presupuestá construir la
+capa de datos primero») con un caso donde **ni el dataset ni la capa existen porque el beneficiario
+no es el autor**.
+
+## 58. En LATAM la autorización que decide la legalidad no es estatal, y ningún protocolo la modela
+
+**El hallazgo regional que rompe el modelo de datos de los dos protocolos.** En EMEA y APAC el
+artefacto que vuelve lícita una unidad es **un número emitido por el Estado**. En LATAM, en dos de
+las tres jurisdicciones medidas, es **una autorización privada**: en Brasil el STJ decidió el
+**2026-05-07** (5-4, **REsp 2.121.055**) que el alquiler de corta temporada en condominio
+residencial **requiere asamblea con dos tercios** de los condóminos; en CABA el **reglamento de
+copropiedad puede prohibirlo** y vincula a todos los propietarios.
+
+**Eso no está en ningún registro público.** Un listado de CABA puede estar **registrado ante el Ente
+de Turismo y ser igualmente ilícito**. De modo que `evidence: registry_verified` —el nivel más alto
+que un implementador puede aspirar a emitir— **es insuficiente en LATAM por diseño**, no por falta
+de datos. Es la misma clase de defecto semántico que la pasada undécima halló en el comprobante
+fiscal: **el agente ejecuta correctamente y destruye el resultado**.
+
+**Oportunidad concreta:** el campo que falta es una atestación de **autorización del consorcio o
+condominio**, que no existe en VRP ni en OpenSTR. VRP es **CC0-1.0** y declara su `jurisdiction`
+explícitamente *«jurisdiction-neutral: never constrained to any specific country»* — es decir,
+**está diseñado para recibir esa extensión y no hay que pedir permiso para proponerla**.

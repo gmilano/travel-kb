@@ -1474,3 +1474,59 @@ API **tampoco cierra el tema**: hay que leer *de quién* es el copyright.
 5. **El AI Discussion Paper v1.1 de la FSA japonesa (3-3-2026)**: existe y está fechado, pero el
    documento es en japonés y **no se localizó su contenido sobre distribución de seguros**. Se
    reporta su existencia, no su contenido.
+
+---
+
+## 2026-11-28 — decimotercera pasada · Fundacionales del plano de la unidad regulada
+
+Todo lo de abajo: existencia confirmada por `git ls-remote`, **licencia leída del archivo** en un
+clon `--depth 1` de la rama default, estrellas por `gh api search/repositories`, y **último commit
+tomado de la rama default**, no de `pushed_at`.
+
+### Capa de protocolo — la pieza nueva del vertical
+
+| Repo | Licencia (archivo) | ★ | Rama / último commit | Para qué sirve en un engagement |
+|---|---|---|---|---|
+| [`vacationrentalprotocol/vrp-spec`](https://github.com/vacationrentalprotocol/vrp-spec) | **CC0-1.0** spec (7.048 B) + **Apache-2.0** código (11.358 B) | 5★ | `main` / **2026-11-27** | La base. Oferta de estadía firmada (Ed25519, `did:web`, JWKS en `/.well-known/vacation-rental.json`), esquemas JSON versionados, contextos JSON-LD, y la atestación `vrpRegulatoryRegistration` que modela el número de registro |
+| [`HemmaBo-se/hemmabo-mcp-server`](https://github.com/HemmaBo-se/hemmabo-mcp-server) | **Apache-2.0** (11.358 B) | 5★ | `main` / **2026-11-28** | Implementación de referencia y verificador. Punto de partida para un piloto, con la salvedad de que su mantenedor es el implementador comercial de referencia (declarado en `MAINTAINERS.md` de la spec) |
+| [`Swarnabha753/vrp-independent-verifier`](https://github.com/Swarnabha753/vrp-independent-verifier) | **MIT** (1.071 B) | 0★ | `main` / 2026-08-22 | Verificación sin depender del vendor. Útil como prueba de interoperabilidad en una due diligence |
+| [`openstr-protocol/protocol`](https://github.com/openstr-protocol/protocol) | ⚠️ **Apache-2.0 modificado** (9.761 B, 12 bloques difieren, sin APPENDIX, `"Contribution"` roto) | 5★ | `main` / 2026-04-07 | **Leer, no depender.** Su `rfc.identity_trust.md` es el mejor modelo escrito de identidad y registro local del vertical; la licencia exige revisión legal |
+
+### Capa de reporte fiscal de plataforma — existe, y no la escribió nadie de turismo
+
+| Repo | Licencia (archivo) | ★ | Último commit | Qué cubre y qué no |
+|---|---|---|---|---|
+| [`backmarket-oss/dac7`](https://github.com/backmarket-oss/dac7) | Apache-2.0 (CLI) + **Etalab-2.0** (esquemas y ejemplos) | 4★ | 2026-11-13 | Declaración DAC7 **sólo de Francia**, ingresos 2025, contra el *cahier des charges* v1.6 de la DGFiP del 2025-11-05. Construye, valida, nombra, comprime y cifra con GnuPG. **No cubre alojamiento específicamente**: cubre el reporte del operador de plataforma |
+| [`tyclipso/dac7_reporter`](https://github.com/tyclipso/dac7_reporter) | **EUPL-1.2** (13.826 B) | 5★ | 2025-02-07 (~21 meses dormido) | Envío de reportes DAC7 firmados a la API del DIP. **Copyleft europeo**: la EUPL es recíproca, no sirve para embeber en producto cerrado |
+| [`benstaydev/japan-stay-tax`](https://github.com/benstaydev/japan-stay-tax) | **MIT** (1.069 B) | 1★ | 2026-11-03 | Impuesto de alojamiento japonés (宿泊税) por municipio: Tokio, Osaka, Kioto, Niseko y 20+. Un solo autor, 1★ — **es un punto de partida, no una dependencia de producción** |
+
+### Capa de operación de la unidad
+
+| Repo | Licencia (archivo) | ★ | Rama / último commit | Nota |
+|---|---|---|---|---|
+| [`Gribadan/RentTools.io`](https://github.com/Gribadan/RentTools.io) | **MIT** (1.065 B) | 34★ | **`master`** / **2026-11-28** | Sincronización iCal de Airbnb/Booking/Vrbo, limpieza, y **extracción de datos de pasaporte del huésped** — lo que lo acerca al registro de viajeros (ver la brecha de abajo) |
+| [`open-condo-software/condo`](https://github.com/open-condo-software/condo) | **MIT** (1.077 B) | 437★ | `main` / **2026-11-28** | El repo permisivo más grande y más vivo de la capa de operación |
+
+### Brechas de este plano, escritas como brechas
+
+1. **No existe conector abierto a ningún registro de alojamiento.** Ocho búsquedas en cero
+   (listadas en `agents/top.md`). Ni UE, ni España, ni Italia, ni Francia, ni Nueva York, ni NSW,
+   ni Japón, ni CDMX, ni CABA. El nivel `evidence: registry_verified` de VRP **no tiene ninguna
+   implementación abierta en el mundo**.
+2. **No existe librería abierta de tasa turística / impuesto de alojamiento**, salvo
+   `benstaydev/japan-stay-tax` (MIT, 1★) para Japón. `lodging tax occupancy tax calculator` = 0 y
+   `tourist tax calculation` = 1 irrelevante. Para un *city tax* europeo o un ISS brasileño **hay
+   que escribirlo**.
+3. **No existe implementación abierta del registro de viajeros ante autoridad policial**
+   (`guest registration police report hotel` = 0), que es obligación real en España (parte de
+   viajero), Italia (*alloggiati web*) y Portugal (SEF/AIMA boletim). `RentTools.io` extrae el
+   pasaporte pero **no lo transmite a ninguna autoridad**: el último tramo, el que tiene la
+   obligación legal, está vacío. **No se examinó** el detalle técnico de esos tres sistemas en esta
+   pasada: se declara como brecha de cobertura, no como ausencia de obligación.
+4. **No se pudo leer el texto primario del Reglamento (UE) 2024/1028.** `eur-lex.europa.eu` **no
+   resuelve** en el entorno de red de esta sesión. Todo lo regulatorio europeo de esta pasada viene
+   de fuentes secundarias y **está marcado como tal, con los conflictos sin resolver**. La próxima
+   pasada debería reintentarlo: es la única forma de cerrar la contradicción sobre si el número de
+   registro es exigible en toda la UE o sólo donde el Estado miembro montó procedimiento.
+5. **Especificación técnica del Punto Único de Entrada Digital (Single Digital Entry Point)**: no
+   localizada. Se conoce su existencia por fuentes secundarias, no su esquema.
