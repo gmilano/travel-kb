@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # ✈️ Travel & Hospitality KB
@@ -10,7 +10,7 @@ updated: 2026-11-23
 > Concierge digital, booking agents, itinerarios verificables, servicing de disrupción,
 > revenue management.
 
-## Estado al 2026-11-23
+## Estado al 2026-11-28
 
 Reescritura completa. El contenido anterior databa del 2026-07-02 y tenía filas de ejemplo
 publicadas como datos (celdas de guión con la leyenda de pendiente), repos muertos y colisiones de keyword
@@ -41,6 +41,15 @@ del archivo de licencia**, no del badge.
    `mustangproject` 497★ Apache-2.0, los dos con push de hoy) y lo que falta es **un campo**.
    Y es el primer plano donde **la capa open source más fuerte es de LATAM**, porque Brasil
    obliga desde 2008.
+7. **El acto regulado es *hablar*, no ejecutar — y la capa agentic del vertical nació en catorce
+   semanas.** (duodécima pasada, 2026-11-28) Describir una cobertura, **recomendar** un límite o
+   **comparar** pólizas es un acto licenciado en EE. UU., y EIOPA preguntó en septiembre de 2026 si
+   un chatbot que filtra productos o recomienda está **distribuyendo seguros** bajo la IDD. El
+   concierge ya desplegado que contesta «¿esto me lo cubre?» **cruzó un límite sin cobrar nada**.
+   Los seis repos agentic de seguro de viaje que existen fueron creados entre el **2026-08-22 y el
+   2026-11-08**, ninguno pasa de 2★, y **cuatro ya traen la baranda escrita en el README** sin que
+   el regulador haya cerrado la frase (`voyara`, MIT: *«quote a policy without letting them buy
+   one»*). Es también el primer plano donde **lo vertical está mejor licenciado que lo horizontal**.
 
 ## Estructura
 
@@ -51,7 +60,7 @@ travel-kb/
 │                 #   pago, visibilidad, plano terrestre + brechas medidas
 ├── verticals/     # Plataformas reales customizables con AI (QloApps, Odoo, HAIP, Kamra)
 ├── intel/         # Mercado y tendencias, con oportunidades por región
-└── compose/       # 33 recetas concretas con repos nombrados
+└── compose/       # 36 recetas concretas con repos nombrados
 ```
 
 ## Uso

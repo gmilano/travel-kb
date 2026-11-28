@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 🗺️ Mapa de mercado — Travel & Hospitality
@@ -157,6 +157,45 @@ catalogado por esta KB.
 de IVA del comprador no llega al hotel **en la reserva**, el hotel emite recibo de consumidor y el
 IVA de esa estadía **no se recupera nunca**. El agente de reserva es, por lo tanto, el punto donde
 se pierde la recuperación — y la pierde ejecutando correctamente.
+
+### El seguro, la cifra que ordena el duodécimo plano (2026-11-28)
+
+**Y la cifra que lo ordena no es el tamaño de mercado.** Las estimaciones del mercado global de
+seguro de viaje para 2026 que devolvió esta pasada **no coinciden entre sí**, y todas son informes
+pagos con definiciones distintas:
+
+| Fuente | 2026 | Proyección |
+|---|---|---|
+| IMARC | USD **25,5** mil millones | USD 56,5 mm a 2034 |
+| Mordor Intelligence | USD **30,08** mil millones | USD 62,53 mm a 2031 |
+| GII Research | USD **31,25** mil millones | USD 53,66 mm a 2032 (CAGR 9,35%) |
+| The Business Research Company | USD **35,97** mil millones | CAGR 16,9% |
+| Expert Market Research | — | USD 261 mm a 2035 (CAGR 24,5%) — **atípico, descartar** |
+
+**Rango honesto: USD 25–36 mil millones para 2026.** Esta KB no elige un número: la dispersión es de
+**más del 40%** entre la cifra más baja y la más alta para el mismo año, lo que indica que las
+definiciones de «mercado de seguro de viaje» de cada proveedor no son comparables.
+
+**Lo que no se encontró:** un **ratio de siniestralidad global**. Lo único disponible es por país y
+de un solo proveedor: India, siniestralidad incurrida de viaje al exterior **66,35% (2021) → 41,59%
+(2023) → 49,45% (2025)**, y doméstico cerca del **11,62%** *(un único vendor de market research —
+**[sin verificar]**, no es un benchmark global)*.
+
+**La cifra que sí ordena el plano es regulatoria, no financiera:**
+
+> **38 estados** de EE. UU. con el NAIC Travel Insurance Model Act #632 promulgado (NAIC, abril de
+> 2026) · **4 reguladores** con norma viva aplicable a un agente en las cuatro regiones ·
+> **0 repositorios** de asistencia en viaje open source en todo GitHub.
+
+Es el primer plano de los doce donde **el presupuesto del cliente lo mueve la licencia y no el
+ahorro**: el riesgo no es pagar de más, es **perder la habilitación para distribuir**.
+
+⚠️ **Un dato que circula y no soporta peso:** «casi la mitad de los profesionales de seguros ve al
+seguro de viaje como el ramo más listo para automatización end-to-end con AI» (GlobalData). Es una
+**encuesta de opinión de 98 respuestas**. Sirve como color, no como evidencia de mercado.
+
+**Brasil, el único dato de prima de la región que se pudo ubicar:** **R$ 965 millones** de primas de
+seguro de viaje en 2024 (HelloSafe citando SUSEP vía CNSEG).
 
 ## Opportunities by region
 
@@ -534,6 +573,51 @@ es el adaptador de identidad fiscal en la reserva (Receta 31), no un motor fisca
 **Gap declarado de la región:** no se localizó ninguna regulación de EE. UU. ni de Canadá que
 obligue a un hotel o a una aerolínea a emitir un comprobante estructurado. **La ausencia está
 medida, no asumida.**
+
+**El plano del seguro en North America (2026-11-28, duodécima pasada): la región regula *quién
+puede hablar*.**
+
+**La norma, fechada.** El **NAIC Travel Insurance Model Act #632** fue adoptado en diciembre de 2018
+y, según la propia NAIC, **38 estados lo tienen promulgado a abril de 2026**. La arquitectura
+relevante para un agente es la figura del ***limited lines travel insurance producer***, con el
+minorista de viaje **exento de licencia únicamente si se limita a «ofrecer y diseminar»** productos
+en nombre de ese productor licenciado. (Las cifras de adopción varían según la fuente y la versión
+del modelo que se mida: hay reportes de prensa sectorial de 46 estados para la parte de licencia de
+agentes de viaje y de «todos menos 19» sin especificar versión. **La cifra de la NAIC es la que esta
+KB usa.**)
+
+**Por qué eso convierte al agente en un problema de alcance y no de producto.** La exención del
+minorista se sostiene sobre un verbo estrecho: *ofrecer y diseminar*. Un asistente que **compara**
+dos pólizas o **recomienda** un límite deja de estar describiendo un producto y pasa a realizar
+*solicitation*. El estatuto de Florida enumera seis actividades que exigen licencia, entre ellas
+**recomendar** y **comparar o interpretar coberturas** *(fuente secundaria: blog de un proveedor de
+agentes de voz citando el estatuto — **[sin verificar]** contra el texto estatutario, y es la pieza
+más citable del plano: confirmarla antes de usarla con un cliente)*. **La licencia se adhiere al
+acto, no a la herramienta.**
+
+**Lo que sí se mueve en producto en la región.** **Medavie Blue Cross (Canadá)** incorporó un
+beneficio de demora **automático** para miembros de planes grupales, sobre la plataforma de Blink
+Parametric, que monitorea el estado del vuelo y dispara el beneficio al cruzar el umbral **sin que
+se radique reclamo**.
+
+**La oportunidad, y es la inversa de la del comprobante.** Acá el entregable **es la restricción**.
+A un cliente norteamericano no se le vende «un agente que vende seguro»: se le vende el
+**gobernador de verbos** más el **registro auditable de la negativa** —la **Receta 34**, con el enum
+de verbos restringido a `describir | ninguno` por configuración de tool y no por prompt (**Receta
+35**, paso 3)—. Es un entregable chico, defendible ante el área legal del cliente, y es lo único del
+plano que **no requiere habilitación para construirlo**: documentar una negativa no es distribuir un
+seguro.
+
+**El segundo ángulo de la región.** El viajero corporativo norteamericano ya tiene seguro de viaje
+**en la tarjeta de crédito corporativa** y no lo usa. `tourclaim/tourclaim-cli` (MIT, creado
+2026-10-04) existe exactamente para eso y deja la adjudicación en el administrador del beneficio de
+la tarjeta — ⚠️ en *review mode* desde octubre de 2026 **crea reclamos sintéticos**, así que es base
+de arquitectura, no proveedor en producción.
+
+**Gaps declarados de la región:** no se localizó **ninguna norma federal de EE. UU. ni de Canadá
+sobre AI en distribución de seguros**; las recomendaciones de marco federal de AI de marzo de 2026
+no son específicas de seguros. Tampoco se localizó material sobre seguro de viaje en **México**
+desde la óptica del regulador (CNSF) en esta pasada. **Las ausencias están medidas, no asumidas.**
 
 ### EMEA
 
@@ -1028,6 +1112,56 @@ validación de la Comisión (`eInvoicing-EN16931`, 271★) son **EUPL-1.2, copyl
 como gate de CI, contaminante dentro de un entregable cerrado; y `gflohr/e-invoice-eu` (383★, push
 de hoy) es **WTFPL**, no aprobada por OSI, que varias áreas legales rechazan por política.
 
+**El plano del seguro en EMEA (2026-11-28, duodécima pasada): la única región donde el regulador
+nombró el artefacto de la negativa.**
+
+**Las normas y las fechas, separando lo vinculante de lo que no lo es.**
+- **EIOPA, Opinion sobre gobernanza y gestión de riesgo de AI: `EIOPA-BoS-25-360`, del 6-8-2025.**
+  Dirigida a supervisores nacionales, **no vinculante**, y explícitamente **sin requisitos nuevos**:
+  explica cómo la legislación existente (Solvencia II, IDD) aplica a sistemas de AI, con enfoque
+  basado en riesgo. Revisión de prácticas supervisoras prevista **dos años después**, hacia agosto
+  de 2027. ⚠️ Varios resúmenes comerciales la describen como «guidelines con seis áreas definidas»;
+  **eso no coincide con la descripción de EIOPA**. Usar el documento, no los resúmenes.
+- **La pregunta abierta, y es la que define el plano.** En un artículo vinculado a Eurofi de
+  **septiembre de 2026**, EIOPA plantea si un chatbot que recolecta datos personales, **filtra
+  productos o da recomendaciones** está realizando **actividad de distribución de seguros** bajo la
+  IDD. La IDD es tecnológicamente neutral; eso no resuelve el caso, **lo deja abierto**.
+- **Encuesta de GenAI de EIOPA del 2-2-2026:** **347 entidades en 25 países**.
+- **FCA (Reino Unido), *signposting*:** vigente desde **abril de 2021**, obliga a derivar a un
+  **directorio de proveedores especializados** —el de MoneyHelper, del Money and Pensions Service, o
+  otro que cumpla los criterios de la FCA y figure en su listado— cuando la cobertura se **rechaza,
+  no se ofrece, se cancela a mitad de vigencia o se recarga** por una condición médica preexistente.
+  La FCA consultó cambios en **CP24/26** con efecto **1-1-2026**, que afectan el disparador de prima.
+  ⚠️ **El umbral vigente no se pudo verificar** (la cifra de £100 es de prensa de la época de la
+  consulta original): usar «hay un umbral y cambió en enero de 2026».
+
+**Lo que se mueve en producto, y es la región más activa del mundo en paramétrico de viaje.**
+**Cover-More Europe (Irlanda)** lanzó un beneficio paramétrico de demora: 3 horas o más disparan
+**pase a sala VIP o €30 en efectivo instantáneo**, en tiempo real. **Aviva (Irlanda)** lanzó un
+beneficio paramétrico de demora dentro de su seguro **grupal de viaje de negocios**. **Blink
+Parametric** aparece como la plataforma detrás de varios de estos lanzamientos, incluido uno con
+Heymondo.
+
+**La oportunidad, y es doble.**
+1. **El módulo de derivación (Receta 34, segundo estado).** EMEA es la única región donde la
+   obligación de derivar existe **y el artefacto está nombrado**. Y los seis repos agentic de seguro
+   de viaje que existen en el mundo **implementan el corte de venta y ninguno implementa la
+   derivación**. Es un hueco chico, con norma que lo exige y cero competencia open source.
+2. **El libro mayor indemnizatorio (Receta 36).** EMEA es donde EU261 convive con el seguro, así que
+   es la región donde el riesgo de **cobrar dos veces el mismo gasto** es real y frecuente. Lo que
+   hay de código es todo de los últimos tres meses —`hermes-plugin-delayclaim` (MIT, 7★, creado
+   2026-11-10), `eu261-claim` (**AGPL-3.0**), `airtruth` (**sin licencia**, inusable)— y
+   **ninguno implementa el principio indemnizatorio**.
+
+⚠️ **La trampa de licencia de la región en este plano:** `eu261-claim` es **AGPL-3.0**. Como la
+reclamación se expone por red, el copyleft de red aplica: corre **como servicio separado**, nunca
+compilado dentro del entregable del cliente.
+
+**Gaps declarados de la región:** no se leyó **ningún condicionado de póliza completo**, así que las
+cláusulas de coordinación de beneficios quedan **[sin verificar]**; no se localizó material sobre
+seguro de viaje en Medio Oriente ni África en esta pasada, pese a que la región del campo
+`region: EMEA` los incluye. **Escrito como lo que falta medir.**
+
 ### APAC
 
 **Evidencia — la región con mayor adopción medida, y la más desigual regulatoriamente.**
@@ -1413,6 +1547,72 @@ con el estado *«aceptado por la autoridad»* como requisito previo a confirmar 
 agencias de viaje **de Singapur o de Malasia** en particular, ni material sobre la conciliación
 transfronteriza de una factura de viaje india facturada a Singapur o Malasia. No se localizó
 biblioteca open source de MyInvois. **Las tres ausencias están escritas, no silenciadas.**
+
+**El plano del seguro en APAC (2026-11-28, duodécima pasada): la región con la regla más dura del
+mundo para un flujo agentic — y la única que ya envió código vertical.**
+
+**India: la norma más específica del planeta para un agente que reserva.** La circular de **IRDAI
+vigente desde el 1-10-2019** (dictada bajo el art. 34(1) de la Insurance Act, 1938) establece que
+los portales y apps de viaje:
+- **no pueden traer la cobertura preseleccionada** — el *pre-selection of policy* está prohibido;
+- deben ofrecer **opt-out / deselección antes de concluir la transacción**;
+- deben mostrar **nombre de la aseguradora y monto de prima** como costo de la cobertura, **y la
+  tasa de impuesto aplicable**;
+- para viaje **doméstico**, no pueden cobrar prima con más de **90 días** de anticipación al inicio
+  del riesgo (para **internacional** esa restricción **no** aplica, y la cobertura al exterior
+  puede emitirse en cualquier momento).
+
+Es la única jurisdicción medida en esta KB donde **la regulación dicta la interfaz**, no el
+resultado. Un agente que «ayuda» agregando la cobertura por conveniencia **incumple por diseño**.
+
+⚠️ **Y un segundo límite indio que un agente puede violar sin saberlo:** la compra de seguros de
+aseguradoras del exterior por residentes en India **está prohibida**, salvo aprobación general o
+específica del RBI (guía Chambers 2026). Un agente que derive a un viajero indio a una aseguradora
+extranjera puede estar empujando una operación de **control de cambios**, no sólo una venta no
+licenciada.
+
+**Siniestralidad medida (la única del plano, y de un solo proveedor):** siniestralidad incurrida de
+viaje al exterior en India **66,35% (2021) → 41,59% (2023) → 49,45% (2025)**; doméstico cerca del
+**11,62%** *(**[sin verificar]** — un único vendor)*.
+
+**Singapur y Japón, con sus contradicciones declaradas.** El **MAS** publicó sus **Guidelines on
+Artificial Intelligence Risk Management el 7-10-2026**, y cubren explícitamente **AI convencional,
+generativa y agentes de AI**, con enfoque basado en riesgo y la expectativa de distinguir de forma
+documentada la asistencia rutinaria de la decisión de alto impacto. ⚠️ **Las fechas de exigibilidad
+se contradicen entre fuentes** (una dice vigencia 7-10-2027; otra, cumplimiento desde octubre de
+2027 e implementación plena en octubre de 2028), y **no se pudo determinar** si reemplazan, enmiendan
+o conviven con los principios **FEAT de 2018**. La **FSA japonesa** publicó el **AI Discussion Paper
+v1.1 el 3-3-2026**; el documento está en japonés y **no se localizó su contenido sobre distribución
+de seguros**: se reporta su existencia, **no su contenido**.
+
+**La región que ya envió código vertical, y es el hallazgo de la pasada para APAC.** Tres de los
+repos más relevantes del plano son de APAC:
+- `10Life/10life-travel-mcp` (Hong Kong, 2026-10-22): comparador single-trip **read-only**, el más
+  explícito del mundo en autolimitarse («premiums and scores are indicative, **the product page is
+  the authority**»), prohíbe PII en el parámetro de razón de llamada y topea en 5 planes por
+  respuesta. ⚠️ **sin archivo de licencia**, y es un manual de conexión a un endpoint remoto.
+- `kentaroajisaka/labor-law-mcp` (Japón, **MIT, 67★ 8f**): el MCP de seguros **más estrellado que
+  existe**, y **no sirve un producto: sirve la ley** (derecho laboral y de seguridad social, API
+  e-Gov y 通達 del MHLW). La forma que gana tracción es *el agente consulta la regla*.
+- Dos *Agent Skills* MIT en chino (`Zenine/china-family-insurance` 2026-11-20,
+  `xuyue9129-ctrl/medical-insurance-product-research` 2026-10-28), los dos **autolimitados en el
+  README** y el segundo con **SHA256 y grado de evidencia A/B/C/D** por documento.
+
+**Lo que se mueve en producto.** **Southern Cross Travel Insurance (Australia/Nueva Zelanda)** paga
+un voucher de **NZ$50 por viajero asegurado con demora de 2 horas y sin radicar reclamo**, y reportó
+que en sus primeros tres meses **cerca de 200 vuelos** cruzaron el umbral entre julio y septiembre
+de 2026.
+
+**La oportunidad.** APAC es donde el entregable es **la interfaz, no el modelo**: el widget de
+*ancillary* que cumple la regla india (nada tildado, tres datos visibles, opt-out antes del botón
+final) es la **Receta 35, paso 2**, y es replicable a cualquier OTA de la región. Y el pipeline de
+investigación de producto con evidencia hasheada —el patrón del skill chino— es la pieza de método
+que la región ya probó y que ningún competidor occidental está copiando.
+
+**Gaps declarados de la región:** no se midió el seguro de viaje de **China continental** desde la
+óptica de las grandes OTA (Trip.com/Fliggy); no se localizó material sobre **Malasia, Indonesia,
+Tailandia ni Corea** en este plano; y de la FSA japonesa se tiene la existencia del documento y no su
+contenido. **Las cuatro ausencias están escritas, no silenciadas.**
 
 ### LATAM
 
@@ -1874,6 +2074,67 @@ comprador dentro del flujo de reserva** (Receta 31)— más dos cosas propias:
 **Chile, Argentina, Colombia ni Perú** en esta pasada, pese a que los cuatro tienen regímenes de
 documento electrónico vigentes. Las búsquedas de repos de esta pasada no los alcanzaron. **Queda
 escrito como lo que falta medir, no como ausencia de mandato.**
+
+**El plano del seguro en LATAM (2026-11-28, duodécima pasada): la región tiene el régimen y, esta
+vez, no tiene el código.**
+
+**Lo que está documentado y es verificable.**
+- **Brasil, Lei 15.040/2024 («Marco Legal dos Seguros»)**, la primera ley integral de contrato de
+  seguro de la región. Lo relevante para un agente: el asegurado **accede a los documentos que la
+  aseguradora usó en la regulación del siniestro**, salvo los protegidos por sigilo legal, y la ley
+  fija **plazos objetivos** para el análisis de propuestas y reglas uniformes de formación, vigencia
+  y extinción del contrato. ⚠️ **Vigencia en conflicto entre fuentes: la mayoría de los análisis
+  jurídicos indica el 11-12-2025 (art. 134: un año después de la publicación), mientras la Agência
+  Câmara tituló la entrada en vigor el 10-12-2024, que parece un error de la propia agencia.
+  Conflicto registrado y no resuelto.** Tampoco se localizó el plazo de regulación de siniestro en
+  días.
+- **Open Insurance (OPIN) sigue siendo prioridad regulatoria y no despegó.** El Plano de Regulação
+  2026 de SUSEP (aprobado por **Resolução Susep nº 72/2025**) incluye la **revisión de la
+  regulación de Open Insurance**, y hay normas en movimiento sobre el ecosistema de compartición y
+  el **Registro de Operações (SRO)**, con APIs estandarizadas, consentimiento explícito y alcance
+  versionado *(análisis de tercero, autoridad incierta — **[sin verificar]**)*. Del otro lado:
+  reporte sectorial de junio de 2026 señala **2 SPOCs autorizadas a abril de 2026, baja demanda y
+  fricción en la jornada del cliente**.
+- **Prima del ramo:** **R$ 965 millones** de primas de seguro de viaje en Brasil en 2024 (HelloSafe
+  citando SUSEP vía CNSEG).
+- **Adopción de AI en la región:** mercado de AI en turismo de LATAM **~USD 93,7 millones (2024) →
+  ~USD 372,6 millones (2029), CAGR ~25,9%** (market vendor); y **89% de familiaridad del consumidor
+  con AI, el más alto del mundo** — ⚠️ **estudio patrocinado por Booking.com**, tratar como color.
+  Casos de Estado: **Perú** integró un asistente AI en la plataforma oficial `peru.travel` en abril
+  de 2026, **Chile** tiene app nacional con asistente, y **Rappi** está armando oferta de viaje con
+  loyalty y AI.
+
+**El contraste con la undécima pasada, y es el hallazgo regional.** En el plano del comprobante,
+LATAM tenía **la capa open source más fuerte del mundo** (`wmixvideo/nfe`, 770★, Apache-2.0, push
+del día) porque Brasil obliga desde 2008. Acá **se invierte**: Brasil tiene el régimen más ambicioso
+de la región —OPIN, con APIs estandarizadas y consentimiento, más una ley de contrato nueva— y lo
+que hay de código abierto es **un (1) repositorio**: `luciano-coelho/opin-doctor-ppgcc-ufsc` (**MIT**,
+creado 2026-07-20, push 2026-11-24), un entorno local completo de OPIN —gateway mTLS, Authorization
+Server— publicado **desde un posgrado de la UFSC, con 0★**. ⚠️ Y su archivo MIT dice «Copyright (c)
+2025 **Open Insurance Brasil**», una entidad que **no es la que publica el repo**: la licencia es
+legítima y la **procedencia no es verificable** (cuarto modo de trampa de licencia de esta KB).
+
+**La oportunidad, y es la más limpia del plano.** **Open Insurance es un riel de distribución que
+nadie construyó del lado del agente.** Existen el consentimiento, las APIs estandarizadas y el
+registro de operaciones; no existe **un cliente OPIN-nativo de seguro de viaje**. Y el problema de
+adopción que reporta el sector —baja demanda, fricción en la jornada— es **exactamente** el problema
+que un agente resuelve: el consentimiento OPIN es un flujo tedioso para un humano y trivial para un
+agente que ya tiene el contexto del viaje.
+
+El entregable concreto: un cliente OPIN de viaje que (a) use el consentimiento explícito como
+mecanismo de autorización, (b) **cotice y no bindee** (Receta 34), y (c) conserve el expediente
+exportable al asegurado que la Lei 15.040 vuelve derecho —no buena práctica— (**Receta 35, paso 5**).
+`opin-doctor` sirve de entorno de desarrollo local, que es justo lo que falta para empezar sin
+homologación.
+
+**Gaps declarados de la región, y uno es llamativo:**
+1. No se localizó **ningún lanzamiento de seguro paramétrico de viaje en LATAM**, mientras que esta
+   misma pasada midió cuatro en EMEA, North America y APAC (Cover-More, Aviva, Medavie, SCTI). Es
+   una **ausencia medida**, no una afirmación de que no exista.
+2. No se localizó regulación de seguro de viaje de **México (CNSF), Chile, Argentina, Colombia ni
+   Perú** en esta pasada.
+3. **Cero repositorios** de seguro de viaje de cualquier país de LATAM, más allá del repo académico
+   de OPIN.
 
 ## Posicionamiento Globant
 

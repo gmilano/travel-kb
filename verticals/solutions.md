@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 🏭 Verticales de partida — Travel & Hospitality
@@ -483,3 +483,67 @@ Esta pieza no existe en GitHub con ninguna licencia: `travel agency invoice bill
 devuelve **2 repos** (uno GPL de 2017 con 0★, uno sin licencia) y `hotel folio invoice` devuelve
 **5**, ninguno de ellos software con licencia. Es el hueco de producto mejor delimitado de los once
 planos, porque el motor caro ya está resuelto y lo que falta es un adaptador de un solo campo.
+
+## Plano del seguro — qué se puede personalizar y qué hay que comprar (2026-11-28, duodécima pasada)
+
+### No hay plataforma de seguro de viaje open source — y acá la ausencia es doble
+
+En los planos anteriores la ausencia era de **producto**. Acá es de producto **y de operación**:
+
+- **No existe una plataforma de seguro de viaje open source.** Ni una. Lo más cercano es
+  `openimis` (**AGPL v3**, 13★ y **86 forks**, push 2026-11-27), un núcleo de gestión de
+  asegurados/pólizas/siniestros de origen salud y financiado por cooperación al desarrollo. Se
+  puede adaptar a un producto de viaje, pero **no trae nada de viaje**: ni demora de vuelo, ni
+  equipaje, ni red médica internacional, ni tramos.
+- **No existe la asistencia.** `travel assistance repatriation` → **0 repositorios**.
+  `medical assistance travel api` → **0**. La red médica, la garantía de pago a un hospital en el
+  exterior y la repatriación son el corazón operativo del producto y **no tienen una línea de
+  código abierto en el mundo**. Esto no se construye en un engagement: **se compra, o se integra
+  contra el asistidor del cliente.**
+
+### Lo que existe como plataforma abierta y se puede customizar
+
+| Plataforma | Licencia (archivo) | Estado | Dónde enchufa la capa agentic |
+|---|---|---|---|
+| `openimis` | **AGPL v3** | 86 forks, push 2026-11-27 | Núcleo de póliza y siniestro. Se corre **como servicio** (AGPL): la capa AI va *al lado*, hablándole por API, no compilada adentro |
+| `openl-tablets` | **LGPL-3.0** | 215★, push 2026-11-28 | Reglas de cobertura y tarifa **en tablas que un actuario edita**. Es la pieza que convierte «la póliza dice» en algo ejecutable y auditable. LGPL permite enlazarlo desde producto cerrado |
+| `OasisLMF` + `OasisPlatform` | **BSD-3-Clause** | push 2026-11-28 los dos | Sólo si el engagement incluye agregación de riesgo por evento (clima, catástrofe). Permisivo de verdad |
+| `phil-cc/voyara-travel-insurance` | **MIT** | 0★, 2026-11-08 | **La referencia de arquitectura**, no una plataforma: copiar su corte (cotiza sí, bindea no) y sus dos canales (MCP + WebMCP) |
+
+### Dónde enchufa esto en las plataformas que esta KB ya recomienda
+
+El seguro no es un sistema aparte: es **un campo en el flujo de reserva que ya existe**.
+
+- **QloApps / Kamra PMS / HAIP** (plano base de esta KB): el seguro entra como *ancillary* en el
+  checkout. La regla india lo vuelve concreto: **no puede venir pre-tildado** (ver abajo), así que
+  el punto de integración es un *opt-in explícito* con nombre de aseguradora, prima e impuesto
+  visibles — tres campos, no un checkbox.
+- **Odoo** (plano cuarto y décimo): el siniestro es un caso de uso de *helpdesk* + documentos. El
+  módulo que falta es el de **evidencia de siniestro de viaje** (parte médico, notificación del
+  transportista, registro meteorológico oficial), que es exactamente lo que `tourclaim` recolecta.
+- **El motor de derechos del pasajero de la Receta 10** (EU261): es el vecino de pared. Mismo
+  evento, dos derechos, y hoy **ninguna pieza abierta impide cobrar dos veces el mismo gasto**.
+
+### ⚠️ Lo que los listados recomiendan en este plano y no conviene tomar
+
+| Lo que aparece recomendado | Por qué no |
+|---|---|
+| `HelloSafe/travel-insurance-mcp`, `10Life/10life-travel-mcp` como «MCP open source de seguro» | **No tienen archivo de licencia y no son software**: son manuales de conexión a un endpoint remoto ajeno. El código abierto es de cero bytes. Como *proveedor* de cotizaciones pueden servir; como *base* para construir, no existen |
+| `sepehr071/iran-insurance-mcp` (18 tools, compara precios de seguro de viaje) | El archivo de licencia dice **«free for personal and non-commercial use»**. Una consultoría **no puede** embeberlo en un entregable. La API dice `NOASSERTION` y no lo advierte |
+| Los DApps de *flight delay insurance* de blockchain (`FlightSurety`, `Degis-Core`, `archwing`, `dkhroad-blockchain/flight-delay-insurance`) | Son la cohorte más poblada de la búsqueda (139 repos) y casi toda es **trabajo académico de 2019-2023, sin mantenimiento**. El único vivo es `Overdoo` (MIT, 2026-11-16) y es de un autor |
+| `nemmons/aspire` y `aposin/CalculusPrime-PnC` como motores de tarifación | Permisivos y bien escritos, pero **el último push es de 2021 y 2019**. Referencia de diseño, no dependencia |
+| Un «agente que vende seguro de viaje» como entregable | Es el punto del plano entero: **vender —y en varias jurisdicciones también recomendar y comparar— es un acto licenciado**. El entregable es el agente que cotiza, documenta y deriva |
+
+### El hueco de producto más claro de este plano
+
+**El tool de tres estados con destinatario en la negativa.** Los seis repos verticales que existen
+implementan el tercer estado (*no puedo venderlo*). **Ninguno implementa el segundo** (*no puedo
+responder esto, y acá está quién sí*), aunque hay un regulador que lo exige por norma y nombra el
+artefacto: la FCA obliga a derivar al directorio de proveedores especializados de MoneyHelper
+cuando la cobertura se rechaza, no se ofrece o se recarga por condición médica preexistente.
+
+Es un hueco chico, barato y defendible: un módulo de derivación con un registro auditable de *qué
+preguntó el viajero, qué no se contestó, y a quién se lo derivó*. Es la **Receta 34**, y es la
+única pieza del plano que una consultoría puede construir, licenciar como MIT y vender a cuatro
+regiones sin pedirle permiso a un regulador — porque **documentar una negativa no es distribuir un
+seguro**.

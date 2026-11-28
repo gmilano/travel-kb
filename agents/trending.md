@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 📈 Agentes trending — Travel & Hospitality
@@ -11,6 +11,67 @@ updated: 2026-11-23
 > para registrar.
 > Este archivo sigue **agentes y skills**. Para repos de infraestructura ver `repos/trending.md`
 > (hasta hoy los dos archivos eran copias idénticas; desde este ciclo son distintos).
+
+## 2026-11-28 — duodécima pasada (plano del seguro: la capa agentic del vertical nació en catorce semanas)
+
+**La medición de la pasada, y da vuelta la ley estructural de esta KB.** En los once planos
+anteriores la capa agentic vertical estaba vacía, muerta o era un trabajo práctico. En este plano
+**existe** — y es **recién nacida**: los seis repos agentic de seguro de viaje que existen en
+GitHub fueron **creados entre el 2026-08-22 y el 2026-11-08**. Catorce semanas. Ninguno pasa de
+**2★** (el de 4★ es un DApp de blockchain, no un agente). No hay un solo fork productivo.
+
+| Repo | Licencia (archivo) | ★ | Creado | Push |
+|---|---|---|---|---|
+| `Vujavujavuja/Overdoo` | MIT | 4★ 1f | 2026-08-22 | 2026-11-16 |
+| `HelloSafe/travel-insurance-mcp` | ⚠️ sin archivo | 0★ | 2026-08-26 | 2026-08-26 |
+| `tourclaim/tourclaim-cli` | MIT | 0★ | 2026-10-04 | 2026-11-08 |
+| `10Life/10life-travel-mcp` | ⚠️ sin archivo | 0★ | 2026-10-22 | 2026-10-22 |
+| `sepehr071/iran-insurance-mcp` | ⚠️ no-comercial | 2★ | 2026-11-01 | 2026-11-17 |
+| `phil-cc/voyara-travel-insurance` | MIT | 0★ | 2026-11-08 | 2026-11-08 |
+
+**La señal de tendencia, que no son las estrellas.** Es que **cuatro de los seis traen el límite
+regulatorio escrito en el README** sin que ningún regulador se lo haya exigido todavía. La frase
+de la pasada, de `voyara`: *«a reference build showing how an insurer can let AI agents **quote a
+policy without letting them buy one**»*. Y la de `10life`: *«Premiums and scores are indicative.
+**The product page is the authority**»*. La baranda llegó antes que la norma — lo inverso de los
+planos del comprobante y de la reseña, donde la norma llegó y la herramienta no.
+
+**Lo nuevo y usable de esta pasada**
+
+- `phil-cc/voyara-travel-insurance` (MIT, 2026-11-08) — el **único** repo del vertical que
+  implementa los dos canales agentic a la vez: MCP para agentes headless y **WebMCP** para el
+  agente dentro de la pestaña (Chrome 149+). Es la primera vez que WebMCP aparece como
+  implementación vertical en esta KB, y no como estándar citado en el plano de visibilidad.
+- `tourclaim/tourclaim-cli` (MIT, push 2026-11-08) — reclama el seguro **de la tarjeta de
+  crédito**, que es el seguro que el viajero ya tiene y no usa. Honestidad declarada en el README:
+  en *review mode* desde octubre de 2026, **crea reclamos sintéticos**, no reales.
+- `kentaroajisaka/labor-law-mcp` (MIT, **67★ 8f**) — el MCP de seguros más estrellado que existe
+  **no sirve un producto: sirve la ley**. Derecho laboral y de seguridad social japonés, API e-Gov
+  y 通達 del MHLW. La forma que acumula estrellas en este vertical es *«el agente consulta la
+  regla»*, no *«el agente vende»*.
+- Dos *Agent Skills* MIT en chino (`Zenine/china-family-insurance` 2026-11-20,
+  `xuyue9129-ctrl/medical-insurance-product-research` 2026-10-28), los dos **autolimitados en el
+  propio README** («no product picks», «not licensed insurance advice»). El segundo archiva cada
+  cláusula con **URL, SHA256, páginas, fecha y grado de evidencia A/B/C/D**: la única trazabilidad
+  criptográfica de fuente entre los veinticuatro repos medidos esta pasada.
+
+**La trampa de licencia de esta pasada: `NOASSERTION` va para los dos lados.** La undécima pasada
+midió cinco casos de `NOASSERTION` que escondían licencias **reales y permisivas**, y cero
+restrictivas, y concluyó que la API *sub*declara. Esta pasada encontró el caso inverso:
+`sepehr071/iran-insurance-mcp` devuelve `NOASSERTION` y su archivo dice *«Free for personal and
+**non-commercial** use… Commercial use…»*. **Corrección a la conclusión anterior de esta KB:
+`NOASSERTION` no significa «probablemente permisiva», significa «abrí el archivo».**
+
+**Y la trampa nueva: el repo que está vivo y no contiene el producto.** `HelloSafe/travel-insurance-mcp`
+y `10Life/10life-travel-mcp` no tienen archivo de licencia y **no son software**: son manuales de
+conexión a un endpoint remoto ajeno. Forkearlos devuelve un README. Es la primera vez que esta KB
+mide un «MCP open source» cuyo código abierto es **cero bytes**.
+
+**Lo que esta pasada mide como tendencia.** El movimiento no es de la comunidad: es de **las
+aseguradoras y los comparadores publicando su propia superficie agentic**. HelloSafe (comparador),
+10Life (comparador de Hong Kong), Seaworthy (agencia de seguros real, `seaworthy-mcp` MIT) y
+Copernican (TourClaim) son **empresas**, no hobbistas. El plano del seguro es el primero del
+vertical donde el open source aparece como **canal de adquisición**, no como infraestructura.
 
 ## 2026-11-23 — undécima pasada (plano del comprobante: una familia de 12 MCP por jurisdicción)
 

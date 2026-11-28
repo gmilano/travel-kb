@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 🎯 Agentes AI — Travel & Hospitality
@@ -868,3 +868,140 @@ línea de encabezado (`====`, copyright) antes del nombre de la licencia.**
    timbrar, firmar o transmitir a la autoridad es un acto legal con responsable humano.
 4. **Un agente no puede decir «ya facturado» sin el acuse de la autoridad.** Igual que en el plano
    del equipaje: tres estados, no dos — *emitido*, *aceptado por la autoridad*, *no se sabe*.
+
+## Seguro y siniestro — el plano donde el acto mismo de recomendar ya está licenciado
+
+*(duodécima pasada, 2026-11-28. Terreno virgen: antes de esta pasada las palabras `seguro`,
+`siniestro`, `insurance` y `claim` aparecían 0 veces en `agents/`.)*
+
+En los once planos anteriores el agente fallaba **por omisión**: le faltaba un campo (comprobante),
+una categoría (precio), una pieza (equipaje), un vocabulario (accesibilidad). Acá falla **por
+hablar**. Describir una cobertura, comparar dos pólizas o recomendar un límite es, en varias
+jurisdicciones, **un acto regulado en sí mismo**, independiente de que se cobre o no:
+
+- **EE. UU.:** el estatuto de Florida enumera seis actividades de *solicitation* que exigen
+  licencia, y entre ellas están **«recomendar»** y **«comparar o interpretar coberturas»**
+  *(fuente: resumen de un proveedor de voice-agents citando el estatuto; no se leyó el texto
+  estatutario — **[sin verificar]**, ver «Lo que esta sesión NO pudo verificar»)*.
+- **UE:** EIOPA planteó en septiembre de 2026 —en un artículo vinculado a Eurofi— si un chatbot
+  que recolecta datos personales, **filtra productos o da recomendaciones** está realizando una
+  **actividad de distribución de seguros** bajo la IDD. Es una pregunta abierta de la autoridad,
+  **no una norma**: la IDD es tecnológicamente neutral y eso es justamente el problema.
+
+La consecuencia operativa es dura y es nueva para esta KB: **el concierge que ya está desplegado y
+que contesta «¿esto me lo cubre el seguro?» cruzó un límite de licencia sin ejecutar ninguna
+transacción.** No hace falta que venda. Le basta con responder bien.
+
+### El hallazgo que da vuelta la ley estructural de este KB
+
+En los once planos anteriores la capa vertical agentic estaba **vacía o muerta**. Acá **existe, y
+nació anteayer**: los seis repos agentic de seguro de viaje que existen fueron **creados entre el
+2026-08-22 y el 2026-11-08** — catorce semanas — y **ninguno pasa de 2★** (el único con 4★ es un
+DApp de blockchain). Y lo más importante: **cuatro de los seis ya traen el corte regulatorio
+escrito en el propio README**, sin que ningún regulador haya cerrado la frase.
+
+La industria escribió la baranda antes de que el regulador terminara la oración.
+
+### Capa agentic vertical — los seis que existen, todos medidos
+
+| Repo | Licencia **leída del archivo** | ★ / creado / push | Qué hace | El corte que **ya trae** |
+|---|---|---|---|---|
+| `phil-cc/voyara-travel-insurance` | **MIT** (`main/LICENSE`) | 0★ / 2026-11-08 / 2026-11-08 | MCP + **WebMCP** (Chrome 149+): «one Quote API, two agent channels» | **Es su razón de existir, dicha por el autor:** «a reference build showing how an insurer can let AI agents **quote a policy without letting them buy one**» |
+| `tourclaim/tourclaim-cli` | **MIT** (`main/LICENSE`, © Copernican) | 0★ / 2026-10-04 / 2026-11-08 | CLI + SDK Python + MCP para reclamar el seguro **que viene con la tarjeta de crédito** | «the card's benefit administrator, **who decides coverage**». Y declara: en *review mode* desde octubre 2026, API/CLI/MCP crean reclamos **sintéticos** |
+| `HelloSafe/travel-insurance-mcp` | ⚠️ **sin archivo de licencia** | 0★ / 2026-08-26 / 2026-08-26 | MCP **hosteado** sobre catálogo multi-aseguradora; **un solo tool: `get_quote`** | No existe tool de compra. Devuelve primas, techos de garantía y links a los documentos de póliza |
+| `10Life/10life-travel-mcp` | ⚠️ **sin archivo de licencia** | 0★ / 2026-10-22 / 2026-10-22 | Hong Kong, single-trip, 3 tools **read-only** | El más explícito de los seis: «**Premiums and scores are indicative. The product page is the authority**», prohíbe nombre/teléfono/mail/documento en `callReason`, máximo 5 planes por respuesta, y anual **no disponible** |
+| `Vujavujavuja/Overdoo` | **MIT** (`main/LICENSE`) | 4★ 1f / 2026-08-22 / 2026-11-16 | Seguro **paramétrico** de demora sobre Monad: aterriza 3h+ tarde → paga | El disparador es **el dato de vuelo**, no un juicio de cobertura. Por eso no necesita opinar |
+| `sepehr071/iran-insurance-mcp` | ⚠️ **NO es open source** — ver trampa 1 | 2★ / 2026-11-01 / 2026-11-17 | 18 tools; compara precios **vivos** de seguro de viaje en dos marketplaces iraníes | «unofficial, read-only»; sin API key |
+
+### Capa agentic adyacente — otra línea de negocio, misma forma, y se puede copiar
+
+Ninguno es de viaje. Los cinco son **la forma del tool** que el plano necesita, ya escrita y
+permisiva:
+
+| Repo | Licencia (archivo) | ★ / push | Por qué importa acá |
+|---|---|---|---|
+| `kentaroajisaka/labor-law-mcp` | MIT | **67★ 8f** / 2026-09-14 | **El MCP de seguros más estrellado que existe no sirve un producto: sirve la *ley*** (derecho laboral y de seguridad social japonés, API e-Gov + 通達 del MHLW). La forma que gana estrellas es «el agente consulta la regla», no «el agente vende» |
+| `seaworthy-io/seaworthy-mcp` | MIT | 3★ / 2026-10-21 | Seguro de invalidez con un `quote_request` *agent-callable* + datos de carrier. Publicado por una **agencia de seguros real**: el mismo movimiento de HelloSafe, con licencia |
+| `chbhargavareddy/ClaimsProcessingAssistant-MCP` | MIT | 5★ / 2026-08-22 | Capacidades de procesamiento de siniestro expuestas por MCP |
+| `the-up/tsb-kasko-mcp` | MIT | 4★ / 2026-11-03 | Valores de referencia de seguro vehicular turco (TSB). EMEA, y es **dato de autoridad sectorial** vía MCP |
+| `mahesh7199/fnol-ai-agent` | MIT | 1★ / 2026-08-04 | FNOL (*first notice of loss*): la toma del siniestro, que es el único tramo del plano donde el agente **no** aconseja |
+
+### Los dos *skills* chinos, y lo que prueban
+
+Dos *Agent Skills* MIT, en chino, de octubre y noviembre de 2026. Importan porque **el corte
+regulatorio llegó al vertical como *skill*, no como API** —la tendencia 7 de esta KB— y porque
+**los dos se autolimitan sin que nadie los obligue**:
+
+| Repo | Licencia | ★ / creado | La autolimitación, textual |
+|---|---|---|---|
+| `Zenine/china-family-insurance` | MIT | 0★ / 2026-11-20 | Da «coverage-level recommendations (insurance type and sum insured, **no product picks**)» y cierra: «This is a method and toolset, **not licensed insurance advice**» |
+| `xuyue9129-ctrl/medical-insurance-product-research` | MIT | 0★ / 2026-10-28 | Pipeline **recomprobable**: ~200 productos en catálogo, 54 campos normalizados, y por cada documento archivado guarda **URL de origen, SHA256, páginas, fecha de obtención y grado de evidencia A/B/C/D** |
+
+El segundo es, de los veinticuatro repos medidos en esta pasada, **el único que trae trazabilidad
+criptográfica de la fuente de cada cláusula**. Es una pieza de método, no de producto, y es la que
+hay que copiar.
+
+### ⚠️ Trampas medidas en este plano
+
+1. **`sepehr071/iran-insurance-mcp` no es open source, y la API no lo dice.** El campo de licencia
+   de la API devuelve `NOASSERTION`. El archivo `main/LICENSE` empieza: *«Required Notice:
+   Copyright (c) 2026 Sepehr Radmard. **Free for personal and non-commercial use** under the terms
+   below. Commercial use…»*. Una consultoría **no puede** embeberlo en un entregable de cliente.
+   Y es la **inversa de la undécima pasada**: allí `NOASSERTION` escondió cinco veces licencias
+   reales y permisivas, y cero veces una restrictiva. Conclusión corregida para esta KB:
+   **`NOASSERTION` no significa «probablemente permisiva». Significa «abrí el archivo», y el
+   archivo puede ir para cualquiera de los dos lados.**
+2. **Dos de los cinco MCP de seguro de viaje no tienen archivo de licencia — y no son software.**
+   `HelloSafe/travel-insurance-mcp` y `10Life/10life-travel-mcp` son **manuales de conexión a un
+   endpoint remoto ajeno** (`https://hellosafe.com/api/mcp-travel`, `https://mcp.10life.com/mcp`).
+   Lo «abierto» es el endpoint, no el código: **si lo forkeás te queda un README**. No se puede
+   auditar el pricing, no se puede self-hostear, y el servicio puede cambiar o cerrar sin aviso.
+   Modo de falla nuevo para esta KB: *el repo existe, está vivo, y no contiene el producto.*
+3. **`luciano-coelho/opin-doctor-ppgcc-ufsc`: el titular del copyright no es quien publica.**
+   Licencia MIT legítima, pero el archivo dice «Copyright (c) 2025 **Open Insurance Brasil**»
+   mientras el repo pertenece a una persona física dentro de un programa de posgrado de la UFSC
+   (`ppgcc-ufsc`). No lo vuelve inusable; vuelve **la procedencia no verificable**, y una cesión
+   MIT firmada por una entidad que no publicó el repo no es una cesión sobre la que valga la pena
+   construir sin preguntar. **Cuarto modo de trampa de licencia de esta KB**, después del badge
+   que miente, el archivo ausente y las tres licencias en un archivo.
+4. **openIMIS confirma la causa diagnosticada en la undécima pasada.** API: `NOASSERTION`.
+   Archivo `main/LICENSE.md`: **GNU AGPL v3** — precedido por la línea «The program users must
+   agree to the following terms: License notices». **Es exactamente la causa que la pasada
+   anterior conjeturó**: una línea de encabezado antes del nombre de la licencia y el detector se
+   cae. Dos pasadas, misma causa, confirmada.
+
+### Las búsquedas de este plano que devolvieron cero o casi, escritas
+
+| Búsqueda (`in:name,description`) | Total | Qué había realmente |
+|---|---|---|
+| `travel assistance repatriation` | **0** | Cero. La asistencia en viaje —el corazón operativo del producto— no tiene **una línea** de open source |
+| `medical assistance travel api` | **0** | Cero |
+| `travel insurance api comparison` | 1 | Un perfil de API de un directorio, no software |
+| `trip cancellation claim` | 1 | Un trabajo práctico de ML de 2022, sin licencia |
+| `visa travel insurance requirement check` | 1 | Un buscador de vuelos chino, colisión de keyword |
+| `travel claim assistance` | 6 | Ninguno con licencia, ninguno arriba de 1★, cuatro son sitios web de corredores |
+| `ACORD insurance standard` | **3** | **Cero con licencia.** El estándar de datos del propio sector asegurador **no tiene implementación abierta** — el mismo hallazgo que OpenTravel en el plano de accesibilidad y que el organismo de estándares del plano de visibilidad |
+| `open insurance brazil opin` | **1** | Un entorno local de OPIN completo (mTLS, Authorization Server), MIT, académico, push 2026-11-24 |
+
+### Regla de diseño de este plano
+
+El tool de seguro **no tiene dos estados ni tres: tiene tres y el tercero es nuevo en esta KB.**
+No es `cubierto / no cubierto / no sé`. Es:
+
+```
+cotizado            → precio, techos de garantía y link al documento de póliza (no interpretado)
+no puedo responderlo→ y acá está QUIÉN sí puede, nominado
+no puedo venderlo   → el corte de binding, explícito, con el merchant/intermediario a cargo
+```
+
+Lo nuevo es el segundo estado. En los planos anteriores la negativa del agente terminaba en «no
+puedo»; **acá la negativa tiene que llevar destinatario**, y hay un solo regulador en el mundo que
+nombró el artefacto: la FCA obliga, desde abril de 2021, a **derivar a un directorio de
+proveedores especializados** (el de MoneyHelper, del Money and Pensions Service) cuando la
+cobertura se rechaza, no se ofrece o se recarga por una condición médica preexistente. Es la
+única jurisdicción medida en esta pasada donde **«no puedo ayudarte» es, por norma, una respuesta
+incompleta**.
+
+Los cuatro repos que ya traen el corte (`voyara`, `tourclaim`, `10life`, `HelloSafe`) implementan
+el tercer estado. **Ninguno de los seis implementa el segundo.** Ése es el hueco de producto del
+plano, y está en la Receta 34.

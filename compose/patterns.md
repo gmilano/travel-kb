@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 🧩 Patrones de composición — Travel & Hospitality
@@ -1553,3 +1553,133 @@ capacidad de leerlas**. Eso es el engagement: **no emitir — recibir, validar y
 **Lo que esta receta promete y lo que no.** Promete decir, por tramo, si el comprobante recupera IVA
 y por qué no. **No** promete recuperarlo: la recuperación transfronteriza es un trámite con plazos y
 agentes por país, y esta pieza produce el expediente, no el reembolso.
+
+## Receta 34 — El tool de seguro de tres estados, con destinatario en la negativa (la receta base del plano)
+
+**El problema que resuelve.** El concierge que el cliente ya tiene desplegado contesta preguntas de
+cobertura. Describir una cobertura, **recomendar** un límite y **comparar o interpretar coberturas**
+son, en EE. UU., actividades de *solicitation* que exigen licencia *(estatuto de Florida, fuente
+secundaria — **[sin verificar]**)*, y EIOPA preguntó en septiembre de 2026 si un chatbot que filtra
+productos o recomienda está **distribuyendo seguros** bajo la IDD. El agente no necesita vender para
+cruzar el límite: **le basta con contestar bien.**
+
+**Piezas:**
+
+| Pieza | Licencia (archivo leído) | Rol |
+| --- | --- | --- |
+| [phil-cc/voyara-travel-insurance](https://github.com/phil-cc/voyara-travel-insurance) (MIT, 0★, 2026-11-08) | MIT | **La referencia de arquitectura**: Quote API con dos canales (MCP headless + WebMCP en pestaña) y el binding deliberadamente fuera del alcance del agente |
+| [openl-tablets/openl-tablets](https://github.com/openl-tablets/openl-tablets) (LGPL-3.0, 215★, push 2026-11-28) | **LGPL-3.0** | Las reglas de cobertura en tablas que un actuario del cliente edita sin programar. Enlazable desde producto cerrado; **modificaciones al motor se liberan** |
+| [xuyue9129-ctrl/medical-insurance-product-research](https://github.com/xuyue9129-ctrl/medical-insurance-product-research) (MIT, 2026-10-28) | MIT | **El método a copiar**: por cada cláusula archivada guarda URL, **SHA256**, páginas, fecha de obtención y grado de evidencia A/B/C/D |
+| [Zenine/china-family-insurance](https://github.com/Zenine/china-family-insurance) (MIT, 2026-11-20) | MIT | El precedente de autolimitación: recomienda **tipo de cobertura y suma asegurada, nunca producto** |
+| [mahesh7199/fnol-ai-agent](https://github.com/mahesh7199/fnol-ai-agent) (MIT, 1★) | MIT | Toma del siniestro (FNOL), el único tramo donde el agente no aconseja |
+
+**El cableado:**
+
+1. **Tres estados en el tool, no dos.** La firma devuelve exactamente uno de:
+   - `cotizado` → prima, techos de garantía y **link al documento de póliza sin interpretar**;
+   - `no_puedo_responder` → **más el destinatario nominado** que sí puede;
+   - `no_puedo_vender` → el corte de *binding*, con el intermediario o *merchant* a cargo.
+2. **El segundo estado es el entregable, y no existe en ningún repo del mundo.** Los seis repos
+   verticales medidos implementan el tercero; **cero implementan el segundo**. Y hay un solo
+   regulador que nombra el artefacto: la FCA obliga a derivar al **directorio de proveedores
+   especializados de MoneyHelper** cuando la cobertura se rechaza, no se ofrece o se recarga por una
+   condición médica preexistente (norma de 4-2021; el umbral de recarga cambió con CP24/26 vigente
+   el 1-1-2026 — **no usar la cifra de £100 sin confirmarla**).
+3. **Toda respuesta cita cláusula con hash.** El patrón de `medical-insurance-product-research`:
+   ninguna frase sobre cobertura sale sin el documento de origen, su SHA256 y la página. Si no hay
+   cláusula, el estado es `no_puedo_responder`, **no** una respuesta prudente en prosa.
+4. **Las reglas viven en `openl-tablets`, no en el prompt.** Lo que decide si algo está cubierto es
+   una tabla que el actuario del cliente firma. El modelo redacta y cita; **no decide**.
+5. **Registro auditable de la negativa.** Qué preguntó el viajero, qué no se contestó, a quién se
+   derivó, cuándo. Es el artefacto que prueba el cumplimiento y es **lo único del plano que una
+   consultoría puede construir, licenciar MIT y vender en cuatro regiones sin pedir permiso a un
+   regulador: documentar una negativa no es distribuir un seguro.**
+
+**Lo que promete y lo que no.** Promete que el agente nunca emita una interpretación de cobertura sin
+cláusula citada, y que toda pregunta que no puede contestar salga con destinatario. **No** promete
+decirle al viajero si le conviene un producto: eso es el acto licenciado, y es el que no se hace.
+
+## Receta 35 — Un flujo de reserva, cuatro políticas regionales de seguro (la receta transversal del plano)
+
+**Por qué hace falta.** Es el primer eje de esta KB donde **las cuatro regiones tienen norma viva
+aplicable a un agente** y **cada una la puso en un tramo distinto del acto**. No hay una política
+única que sirva; hay cuatro interruptores sobre el mismo flujo.
+
+| Región | Qué regula | Lo que cambia en el flujo |
+| --- | --- | --- |
+| **APAC (India)** | **La UI de la venta** | Circular de IRDAI vigente desde **1-10-2019**: **prohibida la preselección** de la cobertura en portales y apps; *opt-out* obligatorio **antes de concluir la transacción**; nombre de aseguradora, prima e impuesto visibles como costo. Doméstico: prima no cobrable con más de **90 días** de anticipación (internacional, sin esa restricción) |
+| **North America** | **Quién puede hablar** | Licencia de productor; figura del *limited lines travel insurance producer*, con el minorista de viaje exento si **sólo «ofrece y disemina»**. NAIC #632, **38 estados con la ley promulgada a abril de 2026** |
+| **EMEA (Reino Unido)** | **La salida cuando se dice no** | *Signposting* de la FCA al directorio de MoneyHelper ante rechazo, no-oferta o recarga por condición preexistente |
+| **LATAM (Brasil)** | **La prueba del siniestro** | **Lei 15.040/2024**: el asegurado accede a los documentos que la aseguradora usó en la regulación del siniestro, salvo sigilo legal, y hay plazos objetivos. ⚠️ **vigencia en conflicto: 11-12-2025 (fuentes jurídicas, art. 134) vs 10-12-2024 (Agência Câmara, aparente error)** |
+
+**El cableado:**
+
+1. **Un solo modelo de evento, cuatro proyecciones.** El evento es `oferta_de_cobertura` con
+   atributos: `preseleccionado` (siempre `false`), `prima`, `impuesto`, `aseguradora`,
+   `verbo_usado` (`describir` | `comparar` | `recomendar` | `ninguno`), `derivacion`, `jurisdiccion`.
+2. **India apaga el default y enciende tres campos.** Ningún checkbox tildado; el *opt-out* se
+   renderiza **antes** del botón que concluye la transacción, no en una pantalla posterior.
+3. **EE. UU. apaga verbos.** En jurisdicción US el enum `verbo_usado` se restringe por
+   configuración a `describir | ninguno`: `comparar` y `recomendar` quedan **inhabilitados a nivel
+   de tool**, no pedidos al modelo por prompt. Un límite regulatorio no se implementa con una
+   instrucción en lenguaje natural.
+4. **Reino Unido enciende la derivación.** El estado `no_puedo_responder` de la Receta 34 pasa a ser
+   **obligatorio** —no opcional— cuando la causa es una condición médica preexistente, y lleva el
+   directorio como destino.
+5. **Brasil enciende el expediente.** Todo lo que el motor usó para decidir el siniestro se
+   conserva exportable al asegurado: entradas, versiones de tabla de `openl-tablets`, documentos con
+   su SHA256. La trazabilidad de la Receta 34 **deja de ser buena práctica y pasa a ser derecho del
+   asegurado.**
+
+**Lo que promete y lo que no.** Promete que el mismo flujo satisfaga las cuatro normas con
+configuración y no con cuatro productos. **No** promete cubrir las jurisdicciones no medidas: de
+APAC sólo se midió India con detalle operativo (las Guidelines de AI del MAS son del **7-10-2026**
+con exigibilidad **contradictoria entre fuentes**, y del AI Discussion Paper v1.1 de la FSA japonesa
+—**3-3-2026**— se verificó la existencia, **no el contenido**).
+
+## Receta 36 — Un vuelo demorado, dos derechos, un solo cobro (la receta de EMEA)
+
+**El modo de falla que la justifica, y es el mismo del plano anterior.** Un vuelo que aterriza tarde
+activa dos derechos a la vez: la **compensación del transportista** (EU261/UK261, suma **fija por
+distancia**, obligación legal) y el **pago del seguro** (**indemnizatorio**, reembolsa gasto real).
+El principio indemnizatorio prohíbe recuperar dos veces la misma pérdida: el asegurado debe
+**declarar lo ya recibido** *(fuentes secundarias del sector — **[sin verificar]** contra
+condicionados)*.
+
+Un agente que ejecute las dos tareas por separado y **correctamente** reclama el mismo gasto dos
+veces y **expone al viajero a una declaración falsa**. Es exactamente la forma de la falla del plano
+del comprobante: **el agente destruye el derecho cumpliendo bien su instrucción.** Y ninguno de los
+seis repos de los dos tramos implementa el principio.
+
+**Piezas:**
+
+| Pieza | Licencia (archivo leído) | Rol |
+| --- | --- | --- |
+| [DECRUX9812/hermes-plugin-delayclaim](https://github.com/DECRUX9812/hermes-plugin-delayclaim) (MIT, 7★, creado 2026-11-10) | MIT | Calcula y sigue la compensación EU261/UK261. El más estrellado del tramo — y tiene semanas de vida: **tratar como código de referencia, no como dependencia estable** |
+| [MRJonam91/eu261-claim](https://github.com/MRJonam91/eu261-claim) (AGPL-3.0, 2★) | **AGPL-3.0** | Checker y generador de carta de reclamo. Copyleft de red: **como servicio separado, no embebido** |
+| [tourclaim/tourclaim-cli](https://github.com/tourclaim/tourclaim-cli) (MIT, 2026-10-04) | MIT | Recolección de evidencia del lado seguro (parte del proveedor, notificación del transportista, registro meteorológico oficial) y armado del reclamo. ⚠️ en *review mode* desde 10-2026 crea reclamos **sintéticos** |
+| [Vujavujavuja/Overdoo](https://github.com/Vujavujavuja/Overdoo) (MIT, 4★, push 2026-11-16) | MIT | El patrón paramétrico: **el disparador es el dato de vuelo, no un juicio de cobertura** |
+| El motor de datos de vuelo de la **Receta 11** | permisivo, ya verificado en esta KB | La fuente única de verdad del evento: hora real de aterrizaje y causa |
+| [openl-tablets](https://github.com/openl-tablets/openl-tablets) (LGPL-3.0) | LGPL-3.0 | Las reglas de coordinación de beneficios, en tabla firmada por el cliente |
+
+**El cableado:**
+
+1. **Un evento, un libro mayor por gasto.** El vuelo demorado crea **un** registro con la lista de
+   gastos acreditados (hotel, comida, traslado) y, por cada uno, dos campos: `cubierto_por_261` y
+   `cubierto_por_poliza`.
+2. **EU261 primero, porque es fijo y no mira el gasto.** Se calcula con `hermes-plugin-delayclaim` y
+   se registra **lo que efectivamente se cobró**, no lo que correspondía.
+3. **El seguro después, y sólo sobre el residuo.** `tourclaim` arma el reclamo **únicamente por los
+   gastos con los dos campos en falso**. El importe de EU261 ya cobrado se **declara** en el
+   expediente, no se oculta: la declaración es parte del entregable.
+4. **El paramétrico no entra al libro mayor por gasto.** Un pago paramétrico (`Overdoo`, o los
+   productos comerciales de 2026 del mapa de mercado) se dispara por **umbral de demora**, no por
+   gasto, así que se registra como beneficio independiente — **y hay que verificar en el condicionado
+   si coordina o no**, porque esa es exactamente la cláusula que esta pasada no pudo leer.
+5. **AGPL en su propio contenedor.** `eu261-claim` es AGPL-3.0: si se usa, corre como servicio
+   separado detrás de una API. No se compila dentro del entregable del cliente.
+
+**Lo que promete y lo que no.** Promete que el viajero cobre **todo lo que le corresponde una sola
+vez**, con un expediente que muestra qué vía pagó cada gasto. **No** promete interpretar la cláusula
+de coordinación de beneficios de una póliza concreta: eso vuelve al estado `no_puedo_responder` de
+la Receta 34, con el asegurador como destinatario.

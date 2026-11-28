@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 📈 Repos trending — Travel & Hospitality
@@ -10,6 +10,59 @@ updated: 2026-11-23
 > Este archivo sigue **repos de infraestructura y plataforma**. Para agentes y skills ver
 > `agents/trending.md`. Hasta el 2026-11-21 ambos archivos eran copias idénticas; desde este
 > ciclo tienen contenido distinto.
+
+## 2026-11-28 — duodécima pasada (plano del seguro: la capa horizontal viva es copyleft, y la permisiva no sabe de viajes)
+
+**La medición de la pasada, y es la inversa exacta de la undécima.** En el plano del comprobante la
+capa horizontal era **permisiva, enorme y con push de hoy** (`wmixvideo/nfe` 770★ Apache-2.0,
+`mustangproject` 497★ Apache-2.0) y el problema era la ausencia de un campo. Acá la capa horizontal
+también está viva —tres repos con **push del 2026-11-28, hoy**— pero **la que está viva es
+copyleft**, y la permisiva que está viva **no sabe nada de seguros de viaje**:
+
+| Repo | Licencia **leída del archivo** | ★ / forks | Push | Qué es, y qué significa la licencia acá |
+|---|---|---|---|---|
+| `openl-tablets/openl-tablets` | **LGPL-3.0** (`main/LICENSE.md`) | 215★ 57f | **2026-11-28** | BRMS de reglas de negocio en tablas Excel, el estándar de facto abierto para tarifación y reglas de póliza. LGPL: enlazable desde producto cerrado, **modificaciones del propio motor hay que liberarlas** |
+| `OasisLMF/OasisLMF` | **BSD-3-Clause** (`main/LICENSE`) | 174★ 78f | **2026-11-28** | Framework de modelado de pérdidas. **Permisivo y vivísimo — y es modelado de catástrofes: no sabe qué es un vuelo demorado** |
+| `OasisLMF/OasisPlatform` | **BSD-3-Clause** | 47★ 24f | **2026-11-28** | La plataforma sobre el framework anterior. Misma licencia, misma distancia del vertical |
+| `openimis/openimis-be_py` | **AGPL v3** (`main/LICENSE.md`) ⚠️ la API dice `NOASSERTION` | 13★ **86f** | 2026-11-27 | Núcleo de gestión de seguro (salud, financiado por cooperación al desarrollo). **86 forks contra 13★**: no se mira, se despliega. AGPL: se corre como servicio, **no se embebe** |
+| `bhavek-jamnadas/open-rating-engine` | **Apache-2.0** | 1★ | 2026-11-16 | Motor de tarifación nuevo (creado 2026-10-24). Permisivo, pero es un recién nacido de un solo autor |
+| `nemmons/aspire` | MIT | 13★ | **2021-03-01** | «A Simple Python Insurance Rating Engine». Permisivo, legible… y **dormido hace cinco años** |
+| `aposin/CalculusPrime-PnC` | Apache-2.0 | 6★ | **2019-11-28** | Motor de tarifas corporativo liberado por un banco. Permisivo y **muerto hace siete años** |
+
+**La regla que sale de la tabla, y es nueva:** en este plano **lo permisivo y vivo está lejos del
+problema, y lo cercano al problema está copyleft o dormido.** Las dos únicas piezas horizontales
+permisivas y vivas que uno querría embeber —`open-rating-engine` (1★, un autor) y OasisLMF (catástrofes)—
+no cubren tarifación de viaje. La que sí la cubre bien, `openl-tablets`, es **LGPL-3.0**: utilizable,
+pero obliga a decidir *antes* de arquitecturar, no después.
+
+**El tramo EU261, que es el vecino de pared del plano.** El mismo evento —un vuelo que llega tarde—
+dispara **dos derechos distintos**: la compensación del transportista (EU261, obligación) y el pago
+del seguro (contrato, indemnizatorio). Lo que hay de código, medido:
+
+| Repo | Licencia (archivo) | ★ | Creado / push | Nota |
+|---|---|---|---|---|
+| `DECRUX9812/hermes-plugin-delayclaim` | **MIT** (`master/LICENSE`) | 7★ | 2026-11-10 / 2026-11-10 | «EU261/UK261 flight compensation, computed and tracked». El más estrellado del tramo, y tiene **18 días de vida** |
+| `MRJonam91/eu261-claim` | **AGPL-3.0** | 2★ | 2026-09-27 | Checker + generador de carta de reclamo. Copyleft de red: como servicio, no embebido |
+| `isitanand/airtruth` | ⚠️ **sin licencia** | 1★ | 2026-11-17 | «forensic audit engine» que cruza las excusas de la aerolínea. Sin licencia = inusable |
+
+Los tres fueron creados **en los últimos tres meses**. El tramo de derechos del pasajero en código
+abierto es tan joven como el del seguro, y el principio indemnizatorio que los liga —**no se cobra dos
+veces la misma pérdida**— no está implementado en ninguno de los seis repos de los dos tramos.
+
+**LATAM, y repite el patrón de la undécima pasada con una diferencia.** `open insurance brazil opin`
+devuelve **un (1) repo**: `luciano-coelho/opin-doctor-ppgcc-ufsc` (MIT, creado 2026-07-20, push
+2026-11-24), un entorno local completo de Open Insurance Brasil —gateway mTLS, Authorization Server—
+publicado desde un posgrado de la UFSC. Brasil vuelve a ser la única región con una implementación
+abierta de su propio régimen. **La diferencia con el comprobante:** allí la pieza brasileña tenía
+770★ y respaldo de mercado; acá tiene **0★ y es una tesis**. Y su archivo MIT dice «Copyright (c)
+2025 Open Insurance Brasil», una entidad que no es la que publica el repo (ver trampa 3 de
+`agents/top.md`).
+
+**El estándar del sector no tiene implementación abierta, por tercera vez en esta KB.**
+`ACORD insurance standard` → **3 repos, cero con licencia**, el más nuevo es un perfil de API de
+directorio. Es el mismo hallazgo que OpenTravel (accesibilidad) y que el organismo de estándares del
+plano de visibilidad: **el vocabulario del sector existe, es la pieza que todos citan, y nadie lo
+publicó de forma usable.** Tres planos, tres organismos, idéntico resultado.
 
 ## 2026-11-23 — undécima pasada (plano del comprobante: 770★ brasileños contra un repo de 2017)
 

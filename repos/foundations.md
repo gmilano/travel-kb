@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 🏗️ Repos fundacionales — Travel & Hospitality
@@ -1378,3 +1378,99 @@ la licencia se lee del archivo, en las dos ramas, siempre.**
   Ninguna fuente localizada trata **hoteles** en particular.
 - **No se leyó código** de ninguno de los doce MCP de `cmendezs`: se verificó licencia, liveness,
   estrellas y fecha de push. Que declaren un esquema no prueba que lo implementen bien.
+
+## Plano del seguro — el primer plano donde la capa vertical es más permisiva que la horizontal
+
+*(duodécima pasada, 2026-11-28. Terreno virgen: `seguro`, `siniestro`, `insurance` y `claim`
+aparecían 0 veces en `repos/` antes de esta pasada.)*
+
+### Método de verificación de este plano
+
+24 repos medidos. Existencia por `git ls-remote` (**24/24 LIVE**, 0 muertos). Estrellas, forks,
+`created_at` y `pushed_at` por `search/repositories` de la API de GitHub. **Licencia leída del
+archivo** (`LICENSE`, `LICENSE.md`, `LICENSE.txt`, probando `main` y `master`), nunca del badge ni
+del campo de la API — y en esta pasada **la API se equivocó en dos de las tres licencias que
+importaban**, en direcciones opuestas (ver la auditoría más abajo).
+
+Lo que esta pasada **no** pudo hacer: el endpoint de la API `repos/{owner}/{repo}` está fuera del
+alcance de GitHub de esta sesión, así que los metadatos salen de `search/repositories`. Las
+estrellas se reportan **tal como las devolvió la API el 2026-11-28**, sin curvas ni proyecciones —
+esta KB fabricó curvas de estrellas en los ciclos 5, 6 y 8 y no se repite.
+
+### Capa horizontal — núcleo de seguro, reglas y tarifación
+
+| Repo | Licencia (archivo) | ★ / forks | Creado / push | Para qué sirve en travel |
+|---|---|---|---|---|
+| `openl-tablets/openl-tablets` | **LGPL-3.0** | 215★ 57f | 2015-07-21 / **2026-11-28** | Reglas de póliza y tarifación en tablas que un actuario edita sin programar. Es la pieza horizontal más cercana al problema del vertical |
+| `OasisLMF/OasisLMF` | **BSD-3-Clause** | 174★ 78f | 2018-01-15 / **2026-11-28** | Modelado de pérdidas. Permisivo, vivo, y **de catástrofes**: útil si el cliente agrega riesgo de interrupción por evento climático, inútil para una demora de vuelo |
+| `OasisLMF/OasisPlatform` | **BSD-3-Clause** | 47★ 24f | 2016-04-27 / **2026-11-28** | Orquestación y API sobre el anterior |
+| `openimis/openimis-be_py` | **AGPL v3** | 13★ **86f** | 2019-03-14 / 2026-11-27 | Núcleo de gestión de asegurados, pólizas y siniestros, de origen salud y cooperación. **Más forks que estrellas**: es software que se despliega, no que se mira |
+| `bhavek-jamnadas/open-rating-engine` | **Apache-2.0** | 1★ | 2026-10-24 / 2026-11-16 | Motor de tarifación nuevo. Permisivo pero de un solo autor y un mes de vida: **riesgo de autor único declarado** |
+| `nemmons/aspire` | MIT | 13★ | 2020-12-07 / **2021-03-01** | Motor de tarifación Python legible. **Dormido hace 5 años** — sirve como referencia de diseño, no como dependencia |
+| `aposin/CalculusPrime-PnC` | Apache-2.0 | 6★ | 2019 / **2019-11-28** | Motor de tarifas liberado por un banco. **Muerto hace 7 años** |
+
+### Capa vertical de viaje — existe, es permisiva, y tiene catorce semanas
+
+La tabla completa, con la cita de autolimitación de cada uno, está en
+`agents/top.md` → «Seguro y siniestro». Lo foundational es esto:
+
+| Repo | Licencia (archivo) | ★ | Creado | Qué aporta como base |
+|---|---|---|---|---|
+| `phil-cc/voyara-travel-insurance` | **MIT** | 0★ | 2026-11-08 | **La referencia de arquitectura del plano**: un Quote API con dos canales agentic (MCP + WebMCP) y el binding deliberadamente fuera del alcance del agente |
+| `tourclaim/tourclaim-cli` | **MIT** | 0★ | 2026-10-04 | SDK + CLI + MCP de reclamo contra el seguro de la tarjeta; el adjudicador queda afuera |
+| `Vujavujavuja/Overdoo` | **MIT** | 4★ 1f | 2026-08-22 | Paramétrico de demora: el disparador es dato de vuelo verificable, no juicio de cobertura |
+| `byteball/flight-delays-insurance` | **MIT** (`master/LICENSE`) | 18★ 9f | 2017-07-27 / **2022-11-24** | El antecedente histórico: el paramétrico de demora más estrellado del vertical, **dormido hace 4 años**. Útil como prueba de que la idea no es nueva; inútil como dependencia |
+
+**La inversión, dicha con precisión.** Es el primer plano de los doce donde **lo vertical está mejor
+licenciado que lo horizontal**: los cuatro repos verticales usables son **MIT**, mientras que la capa
+horizontal viva y cercana al problema es **LGPL-3.0 y AGPL-3.0**. El precio de la inversión es la
+madurez: lo vertical MIT suma **4★ entre cuatro repos**.
+
+### ⚠️ La auditoría de licencia de este plano — la API falló en las dos direcciones
+
+En la undécima pasada el error del campo de licencia de la API tuvo **una sola dirección**
+(subdeclaró 5/5 veces, sobredeclaró 0). En esta pasada falló en ambas, y eso obliga a corregir la
+conclusión anterior de esta KB:
+
+| Repo | Campo de la API | El archivo dice | Causa |
+|---|---|---|---|
+| `openimis/openimis-be_py` | `NOASSERTION` | **GNU AGPL v3** | Línea de encabezado antes del nombre: «The program users must agree to the following terms». **Confirma la causa que la pasada anterior conjeturó** |
+| `sepehr071/iran-insurance-mcp` | `NOASSERTION` | **«Free for personal and non-commercial use… Commercial use…»** → **no es open source** | Licencia propietaria a medida, no detectable |
+| `luciano-coelho/opin-doctor-ppgcc-ufsc` | `MIT` | MIT, pero «Copyright (c) 2025 **Open Insurance Brasil**» — titular ≠ publicador | La API no mira el titular |
+
+**Conclusión corregida de esta KB:** `NOASSERTION` **no** significa «probablemente permisiva». Significa
+**«abrí el archivo»**, y el archivo puede ir para cualquiera de los dos lados. Y un `MIT` correcto en la
+API **tampoco cierra el tema**: hay que leer *de quién* es el copyright.
+
+### Brechas del plano del seguro, medidas el 2026-11-28
+
+| Lo que falta | Medición | Consecuencia para una propuesta |
+|---|---|---|
+| Asistencia en viaje open source | `travel assistance repatriation` → **0 repos**; `medical assistance travel api` → **0** | El corazón operativo del producto (red médica, repatriación, garantía de pago a un hospital) **no tiene una línea abierta en el mundo**. Se compra. No se promete construir |
+| Implementación abierta de ACORD | `ACORD insurance standard` → **3 repos, 0 con licencia** | No hay cómo hablar con un carrier en el formato del sector sin licenciar un toolkit comercial. Tercer organismo de estándares de esta KB en la misma situación |
+| El principio indemnizatorio en código | 0 de 6 repos de los tramos seguro + EU261 lo implementan | Un agente que reclame EU261 y seguro por el mismo gasto **expone al cliente a una declaración falsa**. Hay que construirlo (Receta 36) |
+| El segundo estado del tool (derivar a quien sí puede) | 0 de 6 repos verticales lo implementan; **un solo regulador en el mundo lo nombra** (FCA/MoneyHelper) | Es el hueco de producto del plano (Receta 34) |
+| Capa abierta de seguro de viaje en LATAM | `open insurance brazil opin` → 1 repo académico; **cero repos de seguro de viaje de Brasil, México, Chile, Argentina, Colombia o Perú** | Declarado como ausencia medida, no asumida |
+
+### ⚠️ Lo que esta sesión NO pudo verificar, dicho en voz alta
+
+1. **El estatuto de Florida y sus «seis actividades de solicitation»** (incluido «recomendar» y
+   «comparar o interpretar coberturas»): la fuente es el blog de un proveedor de agentes de voz
+   citando el estatuto. **No se leyó el texto estatutario.** Es la pieza más citable del plano y la
+   que más falta verificar contra la fuente primaria antes de usarla con un cliente.
+2. **El umbral de la regla de *signposting* de la FCA.** La norma es de abril de 2021 y el umbral
+   reportado en prensa de la época es una **recarga de £100 o más** por condición preexistente; la
+   FCA consultó cambios en CP24/26 **con efecto 1 de enero de 2026** que afectan, entre otras
+   cosas, ese disparador. **No se localizó el umbral vigente.** Usar «hay un umbral y cambió en
+   enero de 2026», no una cifra.
+3. **La vigencia de la Lei 15.040/2024 de Brasil.** Las fuentes jurídicas dicen **11/12/2025** (art.
+   134: un año después de la publicación); la Agência Câmara tituló la entrada en vigor el
+   10/12/2024, que parece un error de la propia agencia. **Conflicto registrado y no resuelto.**
+   No se localizó el plazo de regulación de siniestro en días.
+4. **La relación entre las Guidelines de AI del MAS (7-10-2026) y los principios FEAT de 2018**: no
+   se pudo determinar si los reemplazan, los enmiendan o conviven. Las fechas de exigibilidad que
+   dan las fuentes **se contradicen** (una dice vigencia 7-10-2027, otra «cumplimiento desde
+   octubre 2027 e implementación plena en octubre 2028»).
+5. **El AI Discussion Paper v1.1 de la FSA japonesa (3-3-2026)**: existe y está fechado, pero el
+   documento es en japonés y **no se localizó su contenido sobre distribución de seguros**. Se
+   reporta su existencia, no su contenido.

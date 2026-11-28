@@ -1,7 +1,7 @@
 ---
 industry: travel
 region: Global
-updated: 2026-11-23
+updated: 2026-11-28
 ---
 
 # 📡 Tendencias — Travel & Hospitality
@@ -984,3 +984,114 @@ de licencia que el viejo sí tenía**.
 
 **Regla para esta KB y para cualquier engagement:** un skill se audita como una dependencia —
 licencia leída del archivo, no de la descripción — **antes** de copiarlo.
+
+## 47. El primer plano donde el acto regulado es *hablar*, no *ejecutar*
+
+Once planos midieron fallas por omisión: un campo que no se pasó (comprobante), una categoría que
+no existe (precio), un vocabulario sin licencia (accesibilidad). El seguro invierte el eje: **el
+agente falla cuando contesta bien.**
+
+- **EE. UU.:** describir una cobertura, **recomendar** un límite y **comparar o interpretar
+  coberturas** figuran entre las actividades de *solicitation* que exigen licencia según el
+  estatuto de Florida *(fuente secundaria: blog de proveedor citando el estatuto — **[sin
+  verificar]**)*. La licencia **se adhiere al acto, no a la herramienta**.
+- **UE:** EIOPA preguntó en septiembre de 2026 (artículo vinculado a Eurofi) si un chatbot que
+  recolecta datos, **filtra productos o da recomendaciones** realiza **distribución de seguros**
+  bajo la IDD. Pregunta abierta de la autoridad, **no norma**.
+
+Consecuencia que cambia el alcance de todo concierge ya desplegado: el asistente hotelero que
+responde «¿esto me lo cubre el seguro?» cruzó un límite regulatorio **sin cobrar, sin bindear y sin
+tocar un pago**. En los planos de pago y comprobante el corte estaba en la transacción. Acá **el
+corte está en la frase**.
+
+## 48. La capa agentic del vertical nació en catorce semanas, y ya trae la baranda puesta
+
+Los seis repos agentic de seguro de viaje que existen en GitHub fueron **creados entre el
+2026-08-22 y el 2026-11-08**; ninguno pasa de **2★** (el de 4★ es un DApp). Es la capa vertical más
+joven que esta KB midió en doce planos.
+
+Y **cuatro de los seis traen el límite escrito en el propio README**, sin norma que los obligue:
+
+- `voyara` (MIT): «a reference build showing how an insurer can let AI agents **quote a policy
+  without letting them buy one**».
+- `10life`: «**Premiums and scores are indicative. The product page is the authority**», prohíbe PII
+  en el parámetro de razón de llamada, máximo 5 planes por respuesta.
+- `tourclaim` (MIT): «the card's benefit administrator, **who decides coverage**», y declara que en
+  *review mode* crea reclamos **sintéticos**.
+- `HelloSafe`: un solo tool, `get_quote`. **No existe tool de compra.**
+
+**La inversión temporal es el hallazgo.** En el plano de la reseña la obligación llegó y la
+herramienta no. En el del comprobante la obligación llegó y faltaba un campo. Acá **la herramienta
+llegó primero y se autolimitó antes de que el regulador terminara la frase**. Es la primera
+evidencia en esta KB de una industria que escribe su propio corte sin que se lo pidan — y la razón
+es económica, no ética: quien cruza el límite pierde la licencia, no una multa.
+
+## 49. Es el primer plano donde lo vertical está mejor licenciado que lo horizontal
+
+La ley estructural de esta KB —«lo permisivo es la infraestructura, el copyleft es la plataforma»—
+se da vuelta:
+
+| Capa | Licencias medidas | Estado |
+|---|---|---|
+| **Vertical de viaje** | **MIT** los cuatro usables (`voyara`, `tourclaim`, `Overdoo`, `byteball`) | 4★ **en total entre los cuatro**; uno dormido desde 2022 |
+| **Horizontal cercana al problema** | **LGPL-3.0** (`openl-tablets`, 215★) y **AGPL v3** (`openimis`, 86 forks) | Las dos con push de esta semana |
+| **Horizontal permisiva y viva** | **BSD-3-Clause** (`OasisLMF`, `OasisPlatform`, push 2026-11-28) | Permisiva de verdad — **y es modelado de catástrofes: no sabe qué es un vuelo demorado** |
+| **Horizontal permisiva y cercana** | MIT (`aspire`), Apache-2.0 (`CalculusPrime`) | **Push de 2021 y 2019.** Muertas |
+
+El precio de la inversión es la madurez: **lo permisivo y vivo está lejos del problema; lo cercano
+al problema está copyleft o dormido.** La decisión de licencia en este plano hay que tomarla
+*antes* de elegir arquitectura, porque AGPL obliga a correr `openimis` como servicio separado y eso
+es una decisión de topología, no de legal.
+
+## 50. `NOASSERTION` va para los dos lados — corrección a la tendencia 42
+
+La undécima pasada midió cinco casos de `NOASSERTION` en los que el archivo tenía una licencia
+**real y permisiva**, cero casos inversos, y concluyó que la API **sub**declara. Esta pasada
+encontró el inverso: `sepehr071/iran-insurance-mcp` devuelve `NOASSERTION` y su archivo dice
+**«Free for personal and non-commercial use… Commercial use…»** — no es open source, y la API no lo
+advierte en ninguna dirección.
+
+**La tendencia 42 queda corregida, no borrada:** el campo de licencia de la API no tiene un sesgo
+estable. `NOASSERTION` significa **«abrí el archivo»**, y nada más. Y un `MIT` correcto en la API
+tampoco cierra el tema: `luciano-coelho/opin-doctor-ppgcc-ufsc` es MIT de verdad y su línea de
+copyright nombra a **«Open Insurance Brasil»**, una entidad que no es quien publica el repo —
+**cuarto modo de trampa de licencia** de esta KB, después del badge que miente, el archivo ausente
+y las tres licencias en un archivo.
+
+## 51. El mismo vuelo demorado dispara dos derechos, y ninguna pieza abierta impide cobrarlo dos veces
+
+Un vuelo que aterriza tarde activa simultáneamente:
+
+1. **La compensación del transportista** (EU261 en la UE, UK261 en el Reino Unido): suma **fija por
+   distancia**, obligación legal, independiente del gasto real.
+2. **El pago del seguro**: **indemnizatorio**, reembolsa gasto real acreditado.
+
+El principio que los separa es el **indemnizatorio**: no se recupera dos veces la misma pérdida. En
+la práctica, el asegurado debe **declarar lo ya recibido** y algunas pólizas traen cláusulas de
+coordinación de beneficios *(fuentes secundarias: guías y foros del sector — **[sin verificar]**
+contra condicionados; no se leyó ningún condicionado completo)*.
+
+**Lo medido en código:** los seis repos de los dos tramos —`hermes-plugin-delayclaim` (MIT, 7★,
+creado hace 18 días), `eu261-claim` (AGPL-3.0), `airtruth` (sin licencia), `Overdoo`, `tourclaim`,
+`voyara`— **no implementan ninguno el principio indemnizatorio.** Un agente que reclame las dos vías
+por el mismo gasto **expone al viajero a una declaración falsa**, y lo hace ejecutando
+correctamente las dos tareas por separado. Es el mismo modo de falla que la identidad fiscal del
+plano anterior: **el agente destruye el derecho cumpliendo bien su instrucción.** Receta 36.
+
+## 52. Las cuatro regiones regulan el mismo acto y ninguna regula el mismo tramo del acto
+
+Primer eje de esta KB donde las cuatro regiones tienen norma **viva y aplicable a un agente**, y
+donde cada una la puso en un lugar distinto de la conversación:
+
+| Región | Dónde pusieron la norma | Artefacto fechado |
+|---|---|---|
+| **North America** | En **quién puede hablar**: licencia de productor, con la figura del *limited lines travel insurance producer* y el minorista de viaje exento si sólo «ofrece y disemina» | NAIC Travel Insurance Model Act #632 (adoptado 12-2018), **38 estados con la ley promulgada a abril de 2026** (NAIC) |
+| **EMEA** | En **qué cuenta como distribuir**, y en **a quién derivar cuando se dice no** | Opinion de EIOPA sobre gobernanza de AI **EIOPA-BoS-25-360, 6-8-2025** (no vinculante, sin requisitos nuevos, revisión prevista ~8-2027); encuesta de GenAI de EIOPA del **2-2-2026** (347 entidades, 25 países); regla de *signposting* de la FCA desde **4-2021**, con cambios de CP24/26 **vigentes 1-1-2026** |
+| **APAC** | En **la mecánica de la venta**, con el detalle más agresivo del mundo para un flujo agentic | Circular de IRDAI vigente desde el **1-10-2019**: **prohibida la preselección** de la cobertura en portales y apps, obligatorio el *opt-out* **antes de concluir la transacción**, y nombre de aseguradora + prima + impuesto visibles. Para domésticos, prima no cobrable con más de **90 días** de anticipación |
+| **LATAM** | En **el contrato**, con la primera ley integral de contrato de seguro de la región | **Lei 15.040/2024** de Brasil (Marco Legal dos Seguros): acceso del asegurado a los documentos usados en la regulación del siniestro y plazos objetivos. **Vigencia en conflicto entre fuentes: 11-12-2025 (jurídicas, art. 134) vs 10-12-2024 (Agência Câmara, aparente error)** |
+
+**Lo que esto significa para un diseño único.** Un mismo agente de viaje no puede tener una sola
+política de seguro: en India el obstáculo es **la UI** (no tildar nada por defecto, mostrar tres
+datos), en EE. UU. es **el verbo** (no recomendar ni comparar), en el Reino Unido es **la salida**
+(derivar al directorio), y en Brasil es **la prueba** (qué documentos tiene derecho a ver el
+asegurado). Las cuatro son satisfacibles a la vez, y ninguna se satisface sola. Receta 35.
